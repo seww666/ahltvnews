@@ -295,6 +295,7 @@
     }
     .btn svg{width:16px;height:16px}
     .btn:active{transform:scale(.975)}
+    .btn:disabled{opacity:.65;cursor:wait;transform:none}
     .btn-primary{color:white;background:linear-gradient(135deg,#7040d0,#9d5cff);box-shadow:0 12px 30px rgba(111,58,210,.22)}
     .btn-ghost{color:#d8d1df;background:rgba(255,255,255,.045);border:1px solid var(--line)}
     .btn-danger{color:#ffb4bf;background:rgba(255,93,116,.08);border:1px solid rgba(255,93,116,.12)}
@@ -660,6 +661,16 @@
     $("loginBtn").addEventListener("click",login);
     $("registerBtn").addEventListener("click",register);
     $("guestBtn").addEventListener("click",guestMode);
+
+    $("loginPassword").addEventListener("keydown",e=>{
+      if(e.key==="Enter") login();
+    });
+    $("loginUsername").addEventListener("keydown",e=>{
+      if(e.key==="Enter") $("loginPassword").focus();
+    });
+    $("regPassword").addEventListener("keydown",e=>{
+      if(e.key==="Enter") register();
+    });
     $("logoutBtn").addEventListener("click",logout);
     $("copyIdBtn").addEventListener("click",copyUserId);
 
@@ -753,26 +764,58 @@
   async function login(){
     const username=$("loginUsername").value.trim();
     const password=$("loginPassword").value;
-    if(!username || !password){ toast("Введи нік і пароль","err"); return; }
+    const btn=$("loginBtn");
 
-    const {data,error}=await sb.auth.signInWithPassword({email:usernameToEmail(username),password});
-    if(error){ toast("Невірний нік або пароль","err"); return; }
+    if(!username || !password){
+      toast("Введи нік і пароль","err");
+      return;
+    }
 
-    state.user=data.user;
-    await loadProfile();
-    renderSession();
-    closeModal("profileModal");
+    if(btn.disabled) return;
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Вхід...';
 
-    if(state.profile?.role === "admin"){
-      toast("Вхід адміністратора виконано");
-      setTimeout(async()=>{
-        $("siteTitleInput").value=state.settings.title||"";
-        $("siteSubtitleInput").value=state.settings.subtitle||"";
-        openModal("adminModal");
-        await loadAdminDashboard();
-      },180);
-    }else{
-      toast("Вхід виконано");
+    try{
+      const email=usernameToEmail(username);
+      const {data,error}=await sb.auth.signInWithPassword({email,password});
+
+      if(error) throw error;
+
+      state.user=data.user;
+
+      // Give Supabase auth state a moment to settle before DB requests.
+      await new Promise(resolve=>setTimeout(resolve,80));
+      await loadProfile();
+
+      renderSession();
+      closeModal("profileModal");
+
+      if(state.profile?.role === "admin"){
+        toast("Вхід адміністратора виконано");
+        setTimeout(async()=>{
+          $("siteTitleInput").value=state.settings.title||"";
+          $("siteSubtitleInput").value=state.settings.subtitle||"";
+          openModal("adminModal");
+          await loadAdminDashboard();
+        },180);
+      }else{
+        toast("Вхід виконано");
+      }
+    }catch(error){
+      console.error("Login error:",error);
+      const msg=String(error?.message||"").toLowerCase();
+
+      if(msg.includes("invalid login credentials")){
+        toast("Невірний нік або пароль","err");
+      }else if(msg.includes("email not confirmed")){
+        toast("У Supabase вимкни Confirm email","err");
+      }else{
+        toast("Помилка входу: "+(error?.message||"невідома помилка"),"err");
+      }
+    }finally{
+      btn.disabled=false;
+      btn.innerHTML='<i data-lucide="log-in"></i>Увійти';
+      icons();
     }
   }
 
@@ -1038,11 +1081,18 @@
       .subscribe();
   }
 
-  sb.auth.onAuthStateChange(async(_event,session)=>{
-    state.user=session?.user||null;
-    if(state.user && !state.user.is_anonymous) await loadProfile();
-    else state.profile=null;
-    renderSession();
+  sb.auth.onAuthStateChange((_event,session)=>{
+    // Do not await Supabase DB calls directly inside this callback.
+    // Deferring prevents auth calls from hanging on some browsers/devices.
+    setTimeout(async()=>{
+      state.user=session?.user||null;
+      if(state.user && !state.user.is_anonymous){
+        await loadProfile();
+      }else{
+        state.profile=null;
+      }
+      renderSession();
+    },0);
   });
 
   init();
