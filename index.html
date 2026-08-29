@@ -274,7 +274,7 @@
     .confirm-box{padding:4px 0}.confirm-box p{margin:0 0 16px;color:#94a7ba;font-size:12px;line-height:1.55}
 
   
-    /* ===== TisGram 2.3 BLACK PURPLE MOTION ===== */
+    /* ===== TisGram 2.4 BLACK PURPLE MOTION ===== */
     :root{
       --bg:#05030a;
       --panel:rgba(15,10,25,.72);
@@ -427,6 +427,32 @@
     .interpool-preview .hint{flex:1}
     @media(max-width:760px){.interpool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.interpool-form-grid{grid-template-columns:1fr}}
     @media(max-width:480px){.interpool-grid{grid-template-columns:1fr}}
+
+
+    /* ===== Interpool 2.0 ===== */
+    .interpool-modal{width:min(1040px,100%);max-height:94vh}
+    .interpool-shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:14px}
+    .interpool-side{padding:14px;border-radius:20px;background:linear-gradient(180deg,rgba(14,10,22,.76),rgba(8,5,14,.66));border:1px solid rgba(195,151,255,.08)}
+    .interpool-brand{padding:10px 8px 16px;border-bottom:1px solid rgba(255,255,255,.055);margin-bottom:10px}
+    .interpool-brand-badge{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:24px;background:linear-gradient(145deg,#9f59ff,#5b21b6);box-shadow:0 12px 30px rgba(89,28,169,.28)}
+    .interpool-brand h4{margin:12px 0 4px;font-size:18px}.interpool-brand p{margin:0;color:#82758f;font-size:10px;line-height:1.5}
+    .interpool-nav{display:flex;flex-direction:column;gap:6px}
+    .interpool-nav button{height:42px;border-radius:13px;background:transparent;color:#b9acc8;cursor:pointer;text-align:left;padding:0 12px;border:1px solid transparent}
+    .interpool-nav button.active{background:rgba(146,71,231,.12);border-color:rgba(177,111,255,.12);color:#eadcff}
+    .interpool-main{min-width:0}
+    .interpool-headerbox{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding:15px 16px;border-radius:18px;background:linear-gradient(145deg,rgba(32,20,49,.68),rgba(12,8,19,.6));border:1px solid rgba(194,151,255,.08)}
+    .interpool-headerbox .text{flex:1}.interpool-headerbox h4{margin:0;font-size:18px}.interpool-headerbox p{margin:4px 0 0;color:#887b97;font-size:10px}
+    .interpool-access{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;background:rgba(142,70,229,.10);border:1px solid rgba(178,111,255,.12);color:#caa9f0;font-size:9px;font-weight:800}
+    .interpool-admin-list{display:flex;flex-direction:column;gap:8px}
+    .interpool-admin-row{display:flex;align-items:center;gap:10px;padding:11px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055)}
+    .interpool-admin-row .avatar{width:40px;height:40px;min-width:40px}.interpool-admin-row .info{flex:1;min-width:0}
+    .interpool-admin-row strong{display:block;font-size:12px}.interpool-admin-row span{display:block;margin-top:2px;color:#7f738c;font-size:10px}
+    .interpool-admin-row button{height:32px;padding:0 10px;border-radius:10px;background:rgba(255,91,128,.08);color:#ff9fb1;cursor:pointer}
+    .grant-box{padding:14px;border-radius:18px;background:rgba(145,69,229,.055);border:1px solid rgba(177,111,255,.10);margin-bottom:12px}
+    .grant-box-title{font-size:12px;font-weight:900;margin-bottom:10px}.grant-row{display:flex;gap:8px}
+    .grant-row input{flex:1;height:42px;border-radius:12px;padding:0 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:white;outline:none}
+    .grant-row input:focus{border-color:rgba(177,111,255,.28)}
+    @media(max-width:780px){.interpool-shell{grid-template-columns:1fr}.interpool-side{padding:10px}.interpool-nav{flex-direction:row;overflow-x:auto}.interpool-nav button{min-width:max-content}.interpool-brand{display:none}}
 
 </style>
 </head>
@@ -641,26 +667,55 @@
   <div class="modal glass interpool-modal">
     <div class="modal-head"><h3>Interpool</h3><button id="closeInterpool" class="icon-btn" type="button">×</button></div>
     <div class="modal-body">
-      <div class="interpool-toolbar">
-        <div class="interpool-titlebox">
-          <h4>Interpool Registry</h4>
-          <p>Внутрішній каталог TisGram</p>
-        </div>
-        <button id="refreshInterpool" class="secondary" type="button">Оновити</button>
+      <div class="interpool-shell">
+        <aside class="interpool-side">
+          <div class="interpool-brand">
+            <div class="interpool-brand-badge">🕵️</div>
+            <h4>Interpool</h4>
+            <p>Внутрішній реєстр TisGram. Не є офіційним сервісом INTERPOL.</p>
+          </div>
+          <div class="interpool-nav">
+            <button id="interpoolRegistryTab" class="active" type="button">Реєстр</button>
+            <button id="interpoolAddTab" type="button">Додати</button>
+            <button id="interpoolAccessTab" type="button">Права доступу</button>
+          </div>
+        </aside>
+
+        <section class="interpool-main">
+          <div class="interpool-headerbox">
+            <div class="text"><h4 id="interpoolViewTitle">Реєстр Interpool</h4><p id="interpoolViewSubtitle">Фото, ім’я та причина додавання</p></div>
+            <div id="interpoolAccessBadge" class="interpool-access">Перегляд</div>
+            <button id="refreshInterpool" class="secondary" type="button">Оновити</button>
+          </div>
+
+          <div id="interpoolRegistryView"><div id="interpoolGrid" class="interpool-grid"></div></div>
+
+          <div id="interpoolAddView" class="hidden">
+            <form id="interpoolAdminForm" class="interpool-admin">
+              <div class="interpool-admin-head"><strong>Новий запис</strong><span id="interpoolAdminHint"></span></div>
+              <div class="interpool-form-grid">
+                <div class="field"><label for="interpoolName">Ім'я</label><input id="interpoolName" maxlength="80" required placeholder="Ім'я"></div>
+                <div class="field"><label for="interpoolPhoto">Фото</label><input id="interpoolPhoto" type="file" accept="image/png,image/jpeg,image/webp" required></div>
+                <div class="field full"><label for="interpoolReason">Причина</label><textarea id="interpoolReason" maxlength="600" required placeholder="Причина додавання..."></textarea></div>
+                <div id="interpoolPreview" class="interpool-preview hidden full"><img id="interpoolPreviewImg" alt=""><div class="hint">Попередній перегляд фото</div></div>
+              </div>
+              <div class="modal-actions"><button id="addInterpoolButton" class="primary" type="submit">Додати запис</button></div>
+            </form>
+          </div>
+
+          <div id="interpoolAccessView" class="hidden">
+            <div id="grantAccessBox" class="grant-box">
+              <div class="grant-box-title">Надати права на Interpool</div>
+              <div class="grant-row">
+                <input id="grantInterpoolUsername" placeholder="username" autocomplete="off">
+                <button id="grantInterpoolButton" class="primary" type="button">Надати</button>
+              </div>
+              <div class="hint" style="margin-top:8px">Адміністратор зможе додавати та видаляти записи.</div>
+            </div>
+            <div id="interpoolAdminList" class="interpool-admin-list"></div>
+          </div>
+        </section>
       </div>
-
-      <form id="interpoolAdminForm" class="interpool-admin hidden">
-        <div class="interpool-admin-head"><strong>Додати запис</strong><span>Доступ: @sewa1488</span></div>
-        <div class="interpool-form-grid">
-          <div class="field"><label for="interpoolName">Ім'я</label><input id="interpoolName" maxlength="80" required placeholder="Ім'я"></div>
-          <div class="field"><label for="interpoolPhoto">Фото</label><input id="interpoolPhoto" type="file" accept="image/png,image/jpeg,image/webp" required></div>
-          <div class="field full"><label for="interpoolReason">Причина</label><textarea id="interpoolReason" maxlength="600" required placeholder="Напиши причину..."></textarea></div>
-          <div id="interpoolPreview" class="interpool-preview hidden full"><img id="interpoolPreviewImg" alt=""><div class="hint">Попередній перегляд фото</div></div>
-        </div>
-        <div class="modal-actions"><button id="addInterpoolButton" class="primary" type="submit">Додати в Interpool</button></div>
-      </form>
-
-      <div id="interpoolGrid" class="interpool-grid"></div>
     </div>
   </div>
 </div>
@@ -716,7 +771,14 @@ const dom = {
   interpoolButton:$("#interpoolButton"), interpoolModal:$("#interpoolModal"), closeInterpool:$("#closeInterpool"),
   refreshInterpool:$("#refreshInterpool"), interpoolAdminForm:$("#interpoolAdminForm"), interpoolName:$("#interpoolName"),
   interpoolPhoto:$("#interpoolPhoto"), interpoolReason:$("#interpoolReason"), interpoolPreview:$("#interpoolPreview"),
-  interpoolPreviewImg:$("#interpoolPreviewImg"), interpoolGrid:$("#interpoolGrid"), addInterpoolButton:$("#addInterpoolButton")
+  interpoolPreviewImg:$("#interpoolPreviewImg"), interpoolGrid:$("#interpoolGrid"), addInterpoolButton:$("#addInterpoolButton"), interpoolRegistryTab:$("#interpoolRegistryTab"),
+  interpoolAddTab:$("#interpoolAddTab"), interpoolAccessTab:$("#interpoolAccessTab"),
+  interpoolRegistryView:$("#interpoolRegistryView"), interpoolAddView:$("#interpoolAddView"),
+  interpoolAccessView:$("#interpoolAccessView"), interpoolViewTitle:$("#interpoolViewTitle"),
+  interpoolViewSubtitle:$("#interpoolViewSubtitle"), interpoolAccessBadge:$("#interpoolAccessBadge"),
+  interpoolAdminHint:$("#interpoolAdminHint"), grantAccessBox:$("#grantAccessBox"),
+  grantInterpoolUsername:$("#grantInterpoolUsername"), grantInterpoolButton:$("#grantInterpoolButton"),
+  interpoolAdminList:$("#interpoolAdminList")
 };
 
 function showToast(message,type="normal"){
@@ -730,6 +792,7 @@ function readableError(e){
   console.error(e);
   const m=String(e?.message||e?.error_description||e||"Невідома помилка");
   if(m.includes("duplicate key")||m.includes("profiles_username")) return "Такий username вже зайнятий";
+  if(m.toLowerCase().includes("jwt expired")) return "Сесія застаріла — оновлюю її автоматично";
   if(m.includes("Anonymous sign-ins are disabled")) return "У Supabase увімкни Allow anonymous sign-ins";
   if(m.includes("Failed to fetch")||m.includes("Network")) return "Помилка: перевір підключення";
   return m;
@@ -752,17 +815,56 @@ function dateLabel(v){const d=new Date(v),t=new Date(),y=new Date();y.setDate(t.
 function scrollBottom(instant=false){requestAnimationFrame(()=>dom.messages.scrollTo({top:dom.messages.scrollHeight,behavior:instant?"auto":"smooth"}))}
 function autoResize(){dom.messageInput.style.height="auto";dom.messageInput.style.height=Math.min(dom.messageInput.scrollHeight,150)+"px"}
 
+async function ensureFreshSession(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session)return null;
+  const now=Math.floor(Date.now()/1000);
+  if(session.expires_at && session.expires_at-now<90){
+    const {data,error}=await sb.auth.refreshSession();
+    if(error)throw error;
+    return data.session;
+  }
+  return session;
+}
+function isJwtExpiredError(error){
+  const m=String(error?.message||error||"").toLowerCase();
+  return m.includes("jwt expired")||m.includes("token is expired")||m.includes("refresh_token_not_found");
+}
+async function recoverExpiredSession(){
+  try{
+    const {data,error}=await sb.auth.refreshSession();
+    if(!error&&data?.session){state.user=data.session.user;return true}
+  }catch{}
+  try{await sb.auth.signOut({scope:"local"})}catch{}
+  state.user=null;state.profile=null;showRegistration();
+  showToast("Сесія закінчилась. Зареєструйся знову.","error");
+  return false;
+}
+async function withSessionRetry(fn){
+  try{
+    await ensureFreshSession();
+    return await fn();
+  }catch(error){
+    if(isJwtExpiredError(error)){
+      const ok=await recoverExpiredSession();
+      if(ok)return await fn();
+    }
+    throw error;
+  }
+}
 async function initialize(){
   try{
-    const {data:{session},error}=await sb.auth.getSession();
-    if(error)throw error;
+    const session=await ensureFreshSession();
     if(!session?.user){showRegistration();return}
     state.user=session.user;
-    const p=await getMyProfile();
+    const p=await withSessionRetry(()=>getMyProfile());
     if(!p){showRegistration();return}
     state.profile=p;
     await openApplication();
-  }catch(e){showToast(readableError(e),"error");showRegistration()}
+  }catch(e){
+    if(isJwtExpiredError(e)){await recoverExpiredSession();return}
+    showToast(readableError(e),"error");showRegistration();
+  }
 }
 function showRegistration(){dom.app.classList.add("hidden");dom.registerScreen.classList.remove("hidden");dom.splash.classList.add("closed")}
 async function openApplication(){dom.registerScreen.classList.add("hidden");dom.app.classList.remove("hidden");dom.sidebarUsername.textContent="@"+state.profile.username;await loadConversations();subscribeRealtime();dom.splash.classList.add("closed")}
@@ -1391,78 +1493,98 @@ dom.activeChatName.onclick=()=>state.activeUser&&openUserProfile(state.activeUse
 
 
 
-/* ===================== TISGRAM 2.3 INTERPOOL ===================== */
-function isInterpoolAdmin(){
-  return String(state.profile?.username||"").toLowerCase()==="sewa1488";
+/* ===================== TISGRAM 2.4 INTERPOOL ===================== */
+async function getInterpoolRole(){
+  return await withSessionRetry(async()=>{
+    const {data,error}=await sb.rpc("get_my_interpool_role");
+    if(error)throw error;
+    return data||"viewer";
+  });
+}
+function canManageInterpool(role){return role==="owner"||role==="admin"}
+function isInterpoolOwner(role){return role==="owner"}
+
+function setInterpoolView(view){
+  const registry=view==="registry",add=view==="add",access=view==="access";
+  dom.interpoolRegistryTab.classList.toggle("active",registry);
+  dom.interpoolAddTab.classList.toggle("active",add);
+  dom.interpoolAccessTab.classList.toggle("active",access);
+  dom.interpoolRegistryView.classList.toggle("hidden",!registry);
+  dom.interpoolAddView.classList.toggle("hidden",!add);
+  dom.interpoolAccessView.classList.toggle("hidden",!access);
+  if(registry){dom.interpoolViewTitle.textContent="Реєстр Interpool";dom.interpoolViewSubtitle.textContent="Фото, ім’я та причина додавання"}
+  else if(add){dom.interpoolViewTitle.textContent="Додати запис";dom.interpoolViewSubtitle.textContent="Створення нового запису"}
+  else{dom.interpoolViewTitle.textContent="Права доступу";dom.interpoolViewSubtitle.textContent="Керування адміністраторами"}
 }
 
-function closeInterpoolModal(){
-  dom.interpoolModal.classList.add("hidden");
-}
+function closeInterpoolModal(){dom.interpoolModal.classList.add("hidden")}
 
 async function openInterpool(){
-  dom.interpoolAdminForm.classList.toggle("hidden",!isInterpoolAdmin());
-  dom.interpoolModal.classList.remove("hidden");
-  await loadInterpool();
+  try{
+    const role=await getInterpoolRole();
+    dom.interpoolAccessBadge.textContent=role==="owner"?"Власник":role==="admin"?"Адміністратор":"Перегляд";
+    dom.interpoolAddTab.classList.toggle("hidden",!canManageInterpool(role));
+    dom.interpoolAccessTab.classList.toggle("hidden",!isInterpoolOwner(role));
+    dom.interpoolAdminForm.classList.toggle("hidden",!canManageInterpool(role));
+    dom.interpoolAdminHint.textContent=role==="owner"?"Повний доступ":role==="admin"?"Надано власником":"Лише перегляд";
+    dom.grantAccessBox.classList.toggle("hidden",!isInterpoolOwner(role));
+    setInterpoolView("registry");
+    dom.interpoolModal.classList.remove("hidden");
+    await loadInterpool();
+  }catch(e){
+    if(isJwtExpiredError(e)){await recoverExpiredSession();return}
+    showToast(readableError(e),"error");
+  }
 }
 
 async function loadInterpool(){
   try{
-    dom.interpoolGrid.replaceChildren();
-    const loading=document.createElement("div");
-    loading.className="interpool-empty";loading.textContent="Завантаження...";
-    dom.interpoolGrid.appendChild(loading);
-
-    const {data,error}=await sb.from("interpool_entries").select("*").order("created_at",{ascending:false});
-    if(error)throw error;
-
+    const entries=await withSessionRetry(async()=>{
+      const {data,error}=await sb.from("interpool_entries").select("*").order("created_at",{ascending:false});
+      if(error)throw error;return data||[];
+    });
+    const role=await getInterpoolRole();
     dom.interpoolGrid.replaceChildren();
 
-    if(!(data||[]).length){
-      const empty=document.createElement("div");
-      empty.className="interpool-empty";
+    if(!entries.length){
+      const empty=document.createElement("div");empty.className="interpool-empty";
       empty.innerHTML="<strong>Interpool поки порожній</strong><div style='margin-top:6px'>Записи ще не додані.</div>";
-      dom.interpoolGrid.appendChild(empty);
-      return;
+      dom.interpoolGrid.appendChild(empty);return;
     }
 
-    for(const entry of data){
+    for(const entry of entries){
       const card=document.createElement("article");card.className="interpool-card";
-
-      const img=document.createElement("img");
-      img.className="interpool-photo";img.src=entry.photo_url;img.alt="";
-      img.onerror=()=>{img.style.display="none"};
-
+      const img=document.createElement("img");img.className="interpool-photo";img.src=entry.photo_url;img.alt="";img.loading="lazy";img.onerror=()=>img.style.display="none";
       const content=document.createElement("div");content.className="interpool-content";
       const name=document.createElement("div");name.className="interpool-name";name.textContent=entry.name;
       const reason=document.createElement("div");reason.className="interpool-reason";reason.textContent=entry.reason;
       const meta=document.createElement("div");meta.className="interpool-meta";
       meta.textContent=new Date(entry.created_at).toLocaleString("uk-UA",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
-
       content.append(name,reason,meta);
 
-      if(isInterpoolAdmin()){
+      if(canManageInterpool(role)){
         const actions=document.createElement("div");actions.className="interpool-actions";
-        const del=document.createElement("button");del.type="button";del.className="danger";del.textContent="Видалити";
-        del.onclick=()=>deleteInterpoolEntry(entry);
+        const del=document.createElement("button");del.type="button";del.className="danger";del.textContent="Видалити";del.onclick=()=>deleteInterpoolEntry(entry);
         actions.appendChild(del);content.appendChild(actions);
       }
-
       card.append(img,content);dom.interpoolGrid.appendChild(card);
     }
   }catch(e){
     dom.interpoolGrid.replaceChildren();
+    if(isJwtExpiredError(e)){await recoverExpiredSession();return}
     showToast(readableError(e),"error");
   }
 }
 
 async function uploadInterpoolPhoto(file){
-  const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
-  const path=`${state.user.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
-  const {error}=await sb.storage.from("interpool-media").upload(path,file,{contentType:file.type||"image/jpeg",upsert:false});
-  if(error)throw error;
-  const {data}=sb.storage.from("interpool-media").getPublicUrl(path);
-  return {url:data.publicUrl,path};
+  return await withSessionRetry(async()=>{
+    const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+    const path=`${state.user.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+    const {error}=await sb.storage.from("interpool-media").upload(path,file,{contentType:file.type||"image/jpeg",upsert:false});
+    if(error)throw error;
+    const {data}=sb.storage.from("interpool-media").getPublicUrl(path);
+    return {url:data.publicUrl,path};
+  });
 }
 
 dom.interpoolPhoto.addEventListener("change",()=>{
@@ -1477,45 +1599,117 @@ dom.interpoolPhoto.addEventListener("change",()=>{
 
 dom.interpoolAdminForm.addEventListener("submit",async e=>{
   e.preventDefault();
-  if(!isInterpoolAdmin())return showToast("Немає доступу","error");
-  const name=dom.interpoolName.value.trim();
-  const reason=dom.interpoolReason.value.trim();
-  const file=dom.interpoolPhoto.files?.[0];
+  const role=await getInterpoolRole();
+  if(!canManageInterpool(role))return showToast("У тебе немає прав Interpool","error");
+  const name=dom.interpoolName.value.trim(),reason=dom.interpoolReason.value.trim(),file=dom.interpoolPhoto.files?.[0];
   if(!name||!reason||!file)return showToast("Заповни ім'я, причину і фото","error");
 
   dom.addInterpoolButton.disabled=true;dom.addInterpoolButton.textContent="Додавання...";
   try{
     const uploaded=await uploadInterpoolPhoto(file);
-    const {error}=await sb.from("interpool_entries").insert({
-      name,reason,photo_url:uploaded.url,photo_path:uploaded.path,created_by:state.user.id
+    await withSessionRetry(async()=>{
+      const {error}=await sb.from("interpool_entries").insert({name,reason,photo_url:uploaded.url,photo_path:uploaded.path,created_by:state.user.id});
+      if(error)throw error;
     });
-    if(error)throw error;
-
-    dom.interpoolAdminForm.reset();
-    dom.interpoolPreview.classList.add("hidden");
+    dom.interpoolAdminForm.reset();dom.interpoolPreview.classList.add("hidden");
     if(state.interpoolPreviewUrl)URL.revokeObjectURL(state.interpoolPreviewUrl);
     state.interpoolPreviewUrl=null;
-    showToast("Запис додано в Interpool","success");
-    await loadInterpool();
-  }catch(err){showToast(readableError(err),"error")}
-  finally{dom.addInterpoolButton.disabled=false;dom.addInterpoolButton.textContent="Додати в Interpool"}
+    showToast("Запис додано в Interpool","success");setInterpoolView("registry");await loadInterpool();
+  }catch(err){
+    if(isJwtExpiredError(err)){await recoverExpiredSession();return}
+    showToast(readableError(err),"error");
+  }finally{
+    dom.addInterpoolButton.disabled=false;dom.addInterpoolButton.textContent="Додати запис";
+  }
 });
 
 async function deleteInterpoolEntry(entry){
-  if(!isInterpoolAdmin())return;
+  const role=await getInterpoolRole();if(!canManageInterpool(role))return;
   if(!confirm(`Видалити ${entry.name} з Interpool?`))return;
   try{
-    const {error}=await sb.from("interpool_entries").delete().eq("id",entry.id);
-    if(error)throw error;
-    if(entry.photo_path)await sb.storage.from("interpool-media").remove([entry.photo_path]);
-    showToast("Запис видалено","success");
-    await loadInterpool();
+    await withSessionRetry(async()=>{
+      const {error}=await sb.from("interpool_entries").delete().eq("id",entry.id);if(error)throw error;
+    });
+    if(entry.photo_path){
+      await withSessionRetry(async()=>{const {error}=await sb.storage.from("interpool-media").remove([entry.photo_path]);if(error)console.warn(error)});
+    }
+    showToast("Запис видалено","success");await loadInterpool();
+  }catch(e){showToast(readableError(e),"error")}
+}
+
+async function loadInterpoolAdmins(){
+  const role=await getInterpoolRole();if(!isInterpoolOwner(role))return;
+  try{
+    const admins=await withSessionRetry(async()=>{
+      const {data,error}=await sb.from("interpool_admins").select("user_id,created_at,profiles:user_id(id,username,display_name,avatar_url)").order("created_at",{ascending:false});
+      if(error)throw error;return data||[];
+    });
+
+    dom.interpoolAdminList.replaceChildren();
+    if(!admins.length){
+      const empty=document.createElement("div");empty.className="empty";
+      empty.innerHTML="<strong>Додаткових адміністраторів немає</strong>Додай username вище.";
+      dom.interpoolAdminList.appendChild(empty);return;
+    }
+
+    for(const row of admins){
+      const p=row.profiles;if(!p)continue;
+      const item=document.createElement("div");item.className="interpool-admin-row";
+      item.appendChild(createAvatar(p));
+      const info=document.createElement("div");info.className="info";
+      const strong=document.createElement("strong");strong.textContent=p.display_name||p.username;
+      const span=document.createElement("span");span.textContent="@"+p.username;
+      info.append(strong,span);
+      const revoke=document.createElement("button");revoke.type="button";revoke.textContent="Забрати";revoke.onclick=()=>revokeInterpoolAccess(p);
+      item.append(info,revoke);dom.interpoolAdminList.appendChild(item);
+    }
+  }catch(e){showToast(readableError(e),"error")}
+}
+
+async function grantInterpoolAccess(){
+  const role=await getInterpoolRole();
+  if(!isInterpoolOwner(role))return showToast("Тільки власник може видавати права","error");
+
+  const username=normalizeUsername(dom.grantInterpoolUsername.value);
+  if(!validUsername(username))return showToast("Некоректний username","error");
+
+  try{
+    const profile=await withSessionRetry(async()=>{
+      const {data,error}=await sb.from("profiles").select("id,username,display_name,avatar_url").ilike("username",username).maybeSingle();
+      if(error)throw error;return data;
+    });
+    if(!profile)return showToast("Користувача не знайдено","error");
+    if(profile.id===state.user.id)return showToast("Ти вже власник Interpool","error");
+
+    await withSessionRetry(async()=>{
+      const {error}=await sb.from("interpool_admins").insert({user_id:profile.id,granted_by:state.user.id});
+      if(error&&error.code!=="23505")throw error;
+    });
+
+    dom.grantInterpoolUsername.value="";
+    showToast(`Права Interpool надано @${profile.username}`,"success");
+    await loadInterpoolAdmins();
+  }catch(e){showToast(readableError(e),"error")}
+}
+
+async function revokeInterpoolAccess(profile){
+  if(!confirm(`Забрати права Interpool у @${profile.username}?`))return;
+  try{
+    await withSessionRetry(async()=>{
+      const {error}=await sb.from("interpool_admins").delete().eq("user_id",profile.id);if(error)throw error;
+    });
+    showToast(`Права @${profile.username} забрано`,"success");await loadInterpoolAdmins();
   }catch(e){showToast(readableError(e),"error")}
 }
 
 dom.interpoolButton.onclick=openInterpool;
 dom.closeInterpool.onclick=closeInterpoolModal;
-dom.refreshInterpool.onclick=loadInterpool;
+dom.refreshInterpool.onclick=async()=>{if(!dom.interpoolAccessView.classList.contains("hidden"))await loadInterpoolAdmins();else await loadInterpool()};
+dom.interpoolRegistryTab.onclick=()=>setInterpoolView("registry");
+dom.interpoolAddTab.onclick=()=>setInterpoolView("add");
+dom.interpoolAccessTab.onclick=async()=>{const role=await getInterpoolRole();if(!isInterpoolOwner(role))return;setInterpoolView("access");await loadInterpoolAdmins()};
+dom.grantInterpoolButton.onclick=grantInterpoolAccess;
+dom.grantInterpoolUsername.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();grantInterpoolAccess()}});
 dom.interpoolModal.addEventListener("click",e=>{if(e.target===dom.interpoolModal)closeInterpoolModal()});
 
 initialize();
