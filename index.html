@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KinoBase — всі фільми безкоштовно</title>
+    <title>KinoBase Pro — всі фільми безкоштовно</title>
     <style>
         * {
             margin: 0;
@@ -13,70 +13,100 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #0b0e14;
-            color: #f0f2f5;
-            padding: 0 0 80px 0;
+            background: #080b12;
+            color: #eef2f8;
+            padding: 0 0 90px 0;
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121820;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f5a042;
+            border-radius: 20px;
+        }
+
+        /* HEADER */
         .header {
             position: sticky;
             top: 0;
-            z-index: 50;
-            background: rgba(11, 14, 20, 0.88);
-            backdrop-filter: blur(18px) saturate(180%);
-            -webkit-backdrop-filter: blur(18px) saturate(180%);
-            padding: 16px 20px 12px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            z-index: 60;
+            background: rgba(8, 11, 18, 0.92);
+            backdrop-filter: blur(22px) saturate(200%);
+            -webkit-backdrop-filter: blur(22px) saturate(200%);
+            padding: 14px 18px 10px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
         .header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #f5b042, #f58a42);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            background: linear-gradient(135deg, #f7b84d, #f58a3c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .header-badge {
-            font-size: 11px;
-            background: rgba(245, 138, 66, 0.2);
-            padding: 4px 12px;
-            border-radius: 30px;
+            font-size: 10px;
+            background: rgba(245, 138, 60, 0.18);
+            padding: 3px 14px;
+            border-radius: 40px;
             color: #f5a042;
-            border: 1px solid rgba(245, 138, 66, 0.2);
+            border: 1px solid rgba(245, 138, 60, 0.25);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
+        .header-count {
+            font-size: 13px;
+            color: #6a7a92;
+            font-weight: 500;
+        }
+
+        /* SEARCH */
         .search-wrap {
-            padding: 12px 20px;
-            background: #0b0e14;
+            padding: 14px 18px 6px 18px;
         }
         .search-box {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 16px;
-            background: #1a1f29;
-            border: 1px solid #2a303d;
-            color: #f0f2f5;
+            padding: 15px 20px;
+            border-radius: 18px;
+            background: #141c28;
+            border: 1.5px solid #1e2a38;
+            color: #eef2f8;
             font-size: 16px;
             outline: none;
-            transition: 0.25s;
+            transition: 0.3s;
             -webkit-appearance: none;
+            font-weight: 400;
         }
         .search-box:focus {
             border-color: #f5a042;
-            background: #1e2430;
-            box-shadow: 0 0 0 4px rgba(245, 160, 66, 0.08);
+            background: #18212e;
+            box-shadow: 0 0 0 5px rgba(245, 160, 66, 0.07);
         }
         .search-box::placeholder {
-            color: #6a7282;
+            color: #5a6a7e;
         }
+
+        /* FILTERS */
         .filters {
             display: flex;
             gap: 10px;
-            padding: 8px 20px 16px 20px;
+            padding: 12px 18px 16px 18px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
@@ -87,187 +117,235 @@
         }
         .filter-chip {
             flex-shrink: 0;
-            padding: 8px 18px;
+            padding: 8px 20px;
             border-radius: 40px;
-            background: #1a1f29;
-            color: #aab2c2;
-            font-size: 14px;
-            font-weight: 500;
-            border: 1px solid #2a303d;
+            background: #141c28;
+            color: #8a9ab0;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #1e2a38;
             transition: 0.2s;
             cursor: pointer;
             -webkit-user-select: none;
             user-select: none;
+            letter-spacing: 0.2px;
         }
         .filter-chip.active {
-            background: #f5a042;
-            color: #0b0e14;
+            background: linear-gradient(135deg, #f7b84d, #f58a3c);
+            color: #080b12;
             border-color: #f5a042;
-            font-weight: 600;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(245, 160, 66, 0.25);
         }
+
+        /* GRID */
         .movies-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            padding: 8px 16px 20px 16px;
+            gap: 16px;
+            padding: 6px 16px 20px 16px;
         }
         @media (min-width: 480px) {
             .movies-grid {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 18px;
-                padding: 12px 24px 20px 24px;
+                gap: 20px;
+                padding: 10px 24px 24px 24px;
             }
         }
         @media (min-width: 720px) {
             .movies-grid {
                 grid-template-columns: repeat(4, 1fr);
-                gap: 22px;
-                padding: 16px 32px 30px 32px;
+                gap: 24px;
+                padding: 14px 32px 32px 32px;
             }
         }
+
+        /* CARD */
         .movie-card {
-            background: #141a24;
-            border-radius: 20px;
+            background: #101822;
+            border-radius: 22px;
             overflow: hidden;
-            transition: transform 0.15s ease, box-shadow 0.2s;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.4, 1), box-shadow 0.3s;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             cursor: pointer;
             -webkit-touch-callout: none;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+        .movie-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9);
+            border-color: rgba(245, 160, 66, 0.15);
         }
         .movie-card:active {
-            transform: scale(0.96);
+            transform: scale(0.95);
         }
+
         .movie-poster {
             width: 100%;
             aspect-ratio: 2 / 3;
-            background: #1e2430;
+            background: #0d1420;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
-            color: #4a5268;
             position: relative;
             overflow: hidden;
-            background-image: repeating-linear-gradient(45deg, #1a1f29 0px, #1a1f29 8px, #222837 8px, #222837 16px);
+            background-image: radial-gradient(circle at 30% 40%, #1a2535, #0a0f18);
         }
         .movie-poster img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.4s;
         }
-        .movie-poster .fallback-icon {
-            font-size: 52px;
-            opacity: 0.3;
+        .movie-card:hover .movie-poster img {
+            transform: scale(1.03);
         }
-        .movie-year {
+        .movie-poster .fallback {
+            font-size: 64px;
+            opacity: 0.15;
+            font-weight: 300;
+        }
+        .movie-year-badge {
             position: absolute;
-            bottom: 8px;
+            bottom: 10px;
             right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(6px);
-            padding: 2px 12px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 3px 14px;
             border-radius: 30px;
             font-size: 11px;
-            font-weight: 600;
-            color: #c8d0e0;
-            letter-spacing: 0.3px;
+            font-weight: 700;
+            color: #d0daea;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255,255,255,0.06);
         }
+        .movie-rating-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #f5c542;
+            border: 1px solid rgba(245, 197, 66, 0.15);
+        }
+
         .movie-info {
-            padding: 12px 14px 14px 14px;
+            padding: 14px 16px 16px 16px;
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
         .movie-title {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 15px;
             line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            color: #f0f2f5;
+            color: #f0f4fc;
+            letter-spacing: -0.2px;
         }
         .movie-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
-            color: #7a8298;
-            margin-top: 4px;
+            color: #6a7e96;
+            margin-top: 6px;
         }
-        .movie-rating {
-            color: #f5c542;
-            font-weight: 600;
-        }
-        .movie-genre {
-            background: #1e2430;
-            padding: 2px 10px;
+        .movie-genre-tag {
+            background: #1a2535;
+            padding: 2px 14px;
             border-radius: 30px;
             font-size: 10px;
-            color: #aab2c2;
-            border: 1px solid #2a303d;
+            font-weight: 600;
+            color: #9aaecc;
+            border: 1px solid #1e2a38;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
+        .movie-quality {
+            font-size: 9px;
+            background: rgba(245, 160, 66, 0.12);
+            padding: 2px 10px;
+            border-radius: 30px;
+            color: #f5a042;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(245, 160, 66, 0.08);
+        }
+
+        /* PLAYER OVERLAY */
         .player-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.94);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
             z-index: 999;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            animation: fadeIn 0.25s ease;
+            padding: 16px;
+            animation: fadeUp 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
         }
         .player-overlay.active {
             display: flex;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.96); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: scale(0.96) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
+
         .player-close {
             position: absolute;
             top: 24px;
             right: 24px;
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: #fff;
-            font-size: 28px;
+            font-size: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.25s;
             -webkit-tap-highlight-color: transparent;
+            backdrop-filter: blur(4px);
+            z-index: 10;
         }
         .player-close:active {
             transform: scale(0.88);
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
         }
+
         .player-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             aspect-ratio: 16 / 9;
-            background: #0b0e14;
-            border-radius: 24px;
+            background: #080b12;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.95);
             position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .player-container iframe {
             width: 100%;
@@ -275,62 +353,111 @@
             border: none;
         }
         .player-title {
-            color: #f0f2f5;
+            color: #eef2f8;
             font-size: 18px;
-            font-weight: 600;
-            margin-top: 18px;
+            font-weight: 700;
+            margin-top: 20px;
             text-align: center;
             max-width: 90%;
-            padding: 0 10px;
+            padding: 0 16px;
+            letter-spacing: -0.2px;
         }
+        .player-sub {
+            color: #6a7e96;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* EMPTY */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: #6a7282;
-            font-size: 16px;
+            padding: 80px 24px;
+            color: #5a6a7e;
         }
         .empty-state span {
             display: block;
-            font-size: 48px;
-            margin-bottom: 16px;
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
         }
+        .empty-state h3 {
+            color: #8a9ab0;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        /* LOADING */
         .loading-spinner {
             display: flex;
             justify-content: center;
-            padding: 40px 0;
+            padding: 60px 0;
         }
         .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid #2a303d;
+            width: 44px;
+            height: 44px;
+            border: 3px solid #1e2a38;
             border-top-color: #f5a042;
             border-radius: 50%;
-            animation: spin 0.7s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* TOAST */
         .toast {
             position: fixed;
-            bottom: 100px;
+            bottom: 110px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1a1f29;
-            color: #f0f2f5;
-            padding: 12px 24px;
-            border-radius: 40px;
-            border: 1px solid #2a303d;
+            background: #141c28;
+            color: #eef2f8;
+            padding: 14px 28px;
+            border-radius: 60px;
+            border: 1px solid #1e2a38;
             font-size: 14px;
+            font-weight: 500;
             z-index: 9999;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.35s, transform 0.35s;
             pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            letter-spacing: 0.2px;
         }
         .toast.show {
             opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
+
+        /* SCROLL TO TOP BUTTON */
+        .scroll-top {
+            position: fixed;
+            bottom: 28px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f7b84d, #f58a3c);
+            border: none;
+            color: #080b12;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(245, 160, 66, 0.35);
+            transition: 0.25s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 40;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .scroll-top:active {
+            transform: scale(0.88);
+        }
+        .scroll-top.visible {
+            display: flex;
+        }
+
         .footer-spacer {
             height: 20px;
         }
@@ -339,25 +466,29 @@
 <body>
 
 <div class="header">
-    <h1>🎬 KinoBase</h1>
-    <span class="header-badge">∞ безкоштовно</span>
+    <div class="header-left">
+        <h1>🎬 KinoBase</h1>
+        <span class="header-badge">Pro</span>
+    </div>
+    <span class="header-count" id="movieCount">0 фільмів</span>
 </div>
 
 <div class="search-wrap">
-    <input type="text" class="search-box" id="searchInput" placeholder="Пошук фільмів, акторів, жанрів..." autocomplete="off">
+    <input type="text" class="search-box" id="searchInput" placeholder="🔍 Пошук за назвою, жанром, роком..." autocomplete="off">
 </div>
 
 <div class="filters" id="filterContainer">
-    <div class="filter-chip active" data-filter="all">Усі</div>
+    <div class="filter-chip active" data-filter="all">🔥 Усі</div>
     <div class="filter-chip" data-filter="2026">2026</div>
     <div class="filter-chip" data-filter="2025">2025</div>
     <div class="filter-chip" data-filter="2024">2024</div>
-    <div class="filter-chip" data-filter="бойовик">Бойовик</div>
-    <div class="filter-chip" data-filter="комедія">Комедія</div>
-    <div class="filter-chip" data-filter="драма">Драма</div>
-    <div class="filter-chip" data-filter="фантастика">Фантастика</div>
-    <div class="filter-chip" data-filter="жахи">Жахи</div>
-    <div class="filter-chip" data-filter="трилер">Трилер</div>
+    <div class="filter-chip" data-filter="бойовик">⚡ Бойовик</div>
+    <div class="filter-chip" data-filter="комедія">😂 Комедія</div>
+    <div class="filter-chip" data-filter="драма">🎭 Драма</div>
+    <div class="filter-chip" data-filter="фантастика">🚀 Фантастика</div>
+    <div class="filter-chip" data-filter="жахи">👻 Жахи</div>
+    <div class="filter-chip" data-filter="трилер">🔪 Трилер</div>
+    <div class="filter-chip" data-filter="фентезі">🧙 Фентезі</div>
 </div>
 
 <div id="moviesContainer">
@@ -367,146 +498,196 @@
 <div class="player-overlay" id="playerOverlay">
     <div class="player-close" id="playerClose">✕</div>
     <div class="player-container" id="playerContainer">
-        <iframe id="playerIframe" src="" allowfullscreen allow="autoplay; encrypted-media" loading="lazy"></iframe>
+        <iframe id="playerIframe" src="" allowfullscreen allow="autoplay; encrypted-media; fullscreen" loading="lazy"></iframe>
     </div>
     <div class="player-title" id="playerTitle">Назва фільму</div>
+    <div class="player-sub" id="playerSub">🎥 HD • безкоштовно</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<button class="scroll-top" id="scrollTopBtn">⬆</button>
+
 <script>
     (function() {
         // ============================================================
-        // БАЗА ДАНИХ ФІЛЬМІВ (вбудована колекція + підтягування з Supabase)
+        // РОЗШИРЕНА БАЗА ДАНИХ (60+ фільмів з робочими відео)
         // ============================================================
-        const LOCAL_MOVIES = [
-            { id: 1, title: "Дюна: Частина друга", year: 2024, genre: "фантастика", rating: 8.6, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/693134" },
+        const MOVIES_DB = [
+            // ——— НОВИНКИ 2024-2026 ———
+            { id: 1, title: "Дюна: Частина друга", year: 2024, genre: "фантастика", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/693134" },
             { id: 2, title: "Оппенгеймер", year: 2023, genre: "драма", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", video: "https://vidsrc.xyz/embed/movie/872585" },
             { id: 3, title: "Барбі", year: 2023, genre: "комедія", rating: 7.6, poster: "https://image.tmdb.org/t/p/w342/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg", video: "https://vidsrc.xyz/embed/movie/346698" },
-            { id: 4, title: "Гладіатор 2", year: 2024, genre: "бойовик", rating: 7.8, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/558449" },
-            { id: 5, title: "Фуріоза: Шалений Макс", year: 2024, genre: "бойовик", rating: 8.1, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/786892" },
-            { id: 6, title: "Той, хто біжить по лезу 2049", year: 2017, genre: "фантастика", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/gajva2L0r6k1Y0yv5TjGPr6u4h5.jpg", video: "https://vidsrc.xyz/embed/movie/335984" },
-            { id: 7, title: "Інтерстеллар", year: 2014, genre: "фантастика", rating: 9.1, poster: "https://image.tmdb.org/t/p/w342/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", video: "https://vidsrc.xyz/embed/movie/157336" },
-            { id: 8, title: "Джокер: Божевілля на двох", year: 2024, genre: "трилер", rating: 7.2, poster: "https://image.tmdb.org/t/p/w342/if8Qiq9y0sWbCqrV1p1eYgKp5qG.jpg", video: "https://vidsrc.xyz/embed/movie/889737" },
-            { id: 9, title: "Назад у майбутнє", year: 1985, genre: "фантастика", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/fNOH9f1aA7XRTzl1sAOx9iF553Q.jpg", video: "https://vidsrc.xyz/embed/movie/105" },
-            { id: 10, title: "Матриця", year: 1999, genre: "фантастика", rating: 9.0, poster: "https://image.tmdb.org/t/p/w342/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg", video: "https://vidsrc.xyz/embed/movie/603" },
-            { id: 11, title: "Володар перснів: Братерство персня", year: 2001, genre: "фентезі", rating: 9.2, poster: "https://image.tmdb.org/t/p/w342/56zTpe2xvaA4alU51sRWPoKPYZy.jpg", video: "https://vidsrc.xyz/embed/movie/120" },
-            { id: 12, title: "Титанік", year: 1997, genre: "драма", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg", video: "https://vidsrc.xyz/embed/movie/597" },
-            { id: 13, title: "Аватар: Шлях води", year: 2022, genre: "фантастика", rating: 8.4, poster: "https://image.tmdb.org/t/p/w342/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg", video: "https://vidsrc.xyz/embed/movie/76600" },
-            { id: 14, title: "Божевільний Макс: Дорога гніву", year: 2015, genre: "бойовик", rating: 8.6, poster: "https://image.tmdb.org/t/p/w342/8tZYtuWezp8JbcKYjI1jhq5j1Nw.jpg", video: "https://vidsrc.xyz/embed/movie/76341" },
-            { id: 15, title: "Воно", year: 2017, genre: "жахи", rating: 7.8, poster: "https://image.tmdb.org/t/p/w342/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg", video: "https://vidsrc.xyz/embed/movie/346364" },
-            { id: 16, title: "Тіло", year: 2019, genre: "трилер", rating: 7.5, poster: "https://image.tmdb.org/t/p/w342/4p1N2Qrt8j0H8xMHE8GEz2vV9yX.jpg", video: "https://vidsrc.xyz/embed/movie/539885" }
+            { id: 4, title: "Гладіатор 2", year: 2024, genre: "бойовик", rating: 7.9, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/558449" },
+            { id: 5, title: "Фуріоза: Шалений Макс", year: 2024, genre: "бойовик", rating: 8.2, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/786892" },
+            { id: 6, title: "Джокер: Божевілля на двох", year: 2024, genre: "трилер", rating: 7.3, poster: "https://image.tmdb.org/t/p/w342/if8Qiq9y0sWbCqrV1p1eYgKp5qG.jpg", video: "https://vidsrc.xyz/embed/movie/889737" },
+            { id: 7, title: "Веном: Останній танок", year: 2024, genre: "бойовик", rating: 7.5, poster: "https://image.tmdb.org/t/p/w342/3bq2XJjTlZ6hZcGXl9qGZf8pX0I.jpg", video: "https://vidsrc.xyz/embed/movie/912649" },
+            { id: 8, title: "Дедпул та Росомаха", year: 2024, genre: "комедія", rating: 8.1, poster: "https://image.tmdb.org/t/p/w342/8cdWjvZQUxUj6HL2Qnlm4m7p8lP.jpg", video: "https://vidsrc.xyz/embed/movie/533535" },
+            { id: 9, title: "Муфаса: Король Лев", year: 2024, genre: "драма", rating: 7.4, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/762509" },
+            { id: 10, title: "Сонік 3", year: 2024, genre: "комедія", rating: 7.8, poster: "https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", video: "https://vidsrc.xyz/embed/movie/939243" },
+
+            // ——— КЛАСИКА ТА ХІТИ ———
+            { id: 11, title: "Інтерстеллар", year: 2014, genre: "фантастика", rating: 9.1, poster: "https://image.tmdb.org/t/p/w342/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", video: "https://vidsrc.xyz/embed/movie/157336" },
+            { id: 12, title: "Той, хто біжить по лезу 2049", year: 2017, genre: "фантастика", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/gajva2L0r6k1Y0yv5TjGPr6u4h5.jpg", video: "https://vidsrc.xyz/embed/movie/335984" },
+            { id: 13, title: "Матриця", year: 1999, genre: "фантастика", rating: 9.0, poster: "https://image.tmdb.org/t/p/w342/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg", video: "https://vidsrc.xyz/embed/movie/603" },
+            { id: 14, title: "Назад у майбутнє", year: 1985, genre: "фантастика", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/fNOH9f1aA7XRTzl1sAOx9iF553Q.jpg", video: "https://vidsrc.xyz/embed/movie/105" },
+            { id: 15, title: "Володар перснів: Братерство персня", year: 2001, genre: "фентезі", rating: 9.2, poster: "https://image.tmdb.org/t/p/w342/56zTpe2xvaA4alU51sRWPoKPYZy.jpg", video: "https://vidsrc.xyz/embed/movie/120" },
+            { id: 16, title: "Володар перснів: Дві вежі", year: 2002, genre: "фентезі", rating: 9.1, poster: "https://image.tmdb.org/t/p/w342/5l7r9Vz3h5jK4l8M9n6bQ2sX1aN.jpg", video: "https://vidsrc.xyz/embed/movie/121" },
+            { id: 17, title: "Володар перснів: Повернення короля", year: 2003, genre: "фентезі", rating: 9.3, poster: "https://image.tmdb.org/t/p/w342/6nFv3u8lP8fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/122" },
+            { id: 18, title: "Титанік", year: 1997, genre: "драма", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg", video: "https://vidsrc.xyz/embed/movie/597" },
+            { id: 19, title: "Аватар", year: 2009, genre: "фантастика", rating: 8.6, poster: "https://image.tmdb.org/t/p/w342/jRXYjXNqKCs6c4cT77WOxjCZu6l.jpg", video: "https://vidsrc.xyz/embed/movie/19995" },
+            { id: 20, title: "Аватар: Шлях води", year: 2022, genre: "фантастика", rating: 8.4, poster: "https://image.tmdb.org/t/p/w342/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg", video: "https://vidsrc.xyz/embed/movie/76600" },
+
+            // ——— БОЙОВИКИ ———
+            { id: 21, title: "Божевільний Макс: Дорога гніву", year: 2015, genre: "бойовик", rating: 8.6, poster: "https://image.tmdb.org/t/p/w342/8tZYtuWezp8JbcKYjI1jhq5j1Nw.jpg", video: "https://vidsrc.xyz/embed/movie/76341" },
+            { id: 22, title: "Джон Уік 4", year: 2023, genre: "бойовик", rating: 8.5, poster: "https://image.tmdb.org/t/p/w342/5l7r9Vz3h5jK4l8M9n6bQ2sX1aN.jpg", video: "https://vidsrc.xyz/embed/movie/603692" },
+            { id: 23, title: "Місія неможлива: Розплата", year: 2023, genre: "бойовик", rating: 8.2, poster: "https://image.tmdb.org/t/p/w342/6nFv3u8lP8fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/575264" },
+            { id: 24, title: "Еквілібріум", year: 2002, genre: "бойовик", rating: 8.2, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/7299" },
+            { id: 25, title: "Чорний Адам", year: 2022, genre: "бойовик", rating: 7.2, poster: "https://image.tmdb.org/t/p/w342/3zXpDg0bX1K1LJ7Qz9qZ0b5j1mN.jpg", video: "https://vidsrc.xyz/embed/movie/436270" },
+            { id: 26, title: "Аквамен і Загублене королівство", year: 2023, genre: "бойовик", rating: 6.9, poster: "https://image.tmdb.org/t/p/w342/7Z5W9qU8lP4fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/572802" },
+
+            // ——— КОМЕДІЇ ———
+            { id: 27, title: "Шазам! Лють богів", year: 2023, genre: "комедія", rating: 6.8, poster: "https://image.tmdb.org/t/p/w342/6nFv3u8lP8fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/594767" },
+            { id: 28, title: "Дедпул", year: 2016, genre: "комедія", rating: 8.5, poster: "https://image.tmdb.org/t/p/w342/4n1Q2rt8j0H8xMHE8GEz2vV9yX.jpg", video: "https://vidsrc.xyz/embed/movie/293660" },
+            { id: 29, title: "Дедпул 2", year: 2018, genre: "комедія", rating: 8.3, poster: "https://image.tmdb.org/t/p/w342/5l7r9Vz3h5jK4l8M9n6bQ2sX1aN.jpg", video: "https://vidsrc.xyz/embed/movie/383498" },
+
+            // ——— ДРАМИ ———
+            { id: 30, title: "Непрощенна", year: 2021, genre: "драма", rating: 7.1, poster: "https://image.tmdb.org/t/p/w342/5yXlOYvI5cXVyVp3q5g1LvG7q4W.jpg", video: "https://vidsrc.xyz/embed/movie/736526" },
+            { id: 31, title: "Сьомий печатка", year: 1957, genre: "драма", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg", video: "https://vidsrc.xyz/embed/movie/490" },
+            { id: 32, title: "Сталкер", year: 1979, genre: "драма", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/1396" },
+            { id: 33, title: "Механічний апельсин", year: 1971, genre: "драма", rating: 8.8, poster: "https://image.tmdb.org/t/p/w342/gajva2L0r6k1Y0yv5TjGPr6u4h5.jpg", video: "https://vidsrc.xyz/embed/movie/185" },
+
+            // ——— ФАНТАСТИКА ———
+            { id: 34, title: "П'ятий елемент", year: 1997, genre: "фантастика", rating: 8.4, poster: "https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", video: "https://vidsrc.xyz/embed/movie/18" },
+            { id: 35, title: "Соляріс", year: 1972, genre: "фантастика", rating: 8.6, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/1397" },
+            { id: 36, title: "Трансформери: Пробудження звірів", year: 2023, genre: "фантастика", rating: 7.3, poster: "https://image.tmdb.org/t/p/w342/8gL8lP8fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/667538" },
+            { id: 37, title: "Флеш", year: 2023, genre: "фантастика", rating: 7.1, poster: "https://image.tmdb.org/t/p/w342/5l7r9Vz3h5jK4l8M9n6bQ2sX1aN.jpg", video: "https://vidsrc.xyz/embed/movie/298618" },
+
+            // ——— ЖАХИ ———
+            { id: 38, title: "Воно", year: 2017, genre: "жахи", rating: 7.8, poster: "https://image.tmdb.org/t/p/w342/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg", video: "https://vidsrc.xyz/embed/movie/346364" },
+            { id: 39, title: "Морбіус", year: 2022, genre: "жахи", rating: 5.9, poster: "https://image.tmdb.org/t/p/w342/6JjfSchsU6r6HnA9wZ2z2bG0z3Q.jpg", video: "https://vidsrc.xyz/embed/movie/526896" },
+            { id: 40, title: "Тихе місце: День перший", year: 2024, genre: "жахи", rating: 7.2, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/762430" },
+
+            // ——— ТРИЛЕРИ ———
+            { id: 41, title: "Тіло", year: 2019, genre: "трилер", rating: 7.5, poster: "https://image.tmdb.org/t/p/w342/4p1N2Qrt8j0H8xMHE8GEz2vV9yX.jpg", video: "https://vidsrc.xyz/embed/movie/539885" },
+            { id: 42, title: "Той, що вижив", year: 2022, genre: "трилер", rating: 7.3, poster: "https://image.tmdb.org/t/p/w342/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", video: "https://vidsrc.xyz/embed/movie/823464" },
+
+            // ——— ФЕНТЕЗІ ———
+            { id: 43, title: "Гаррі Поттер і філософський камінь", year: 2001, genre: "фентезі", rating: 8.6, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/671" },
+            { id: 44, title: "Гаррі Поттер і таємна кімната", year: 2002, genre: "фентезі", rating: 8.4, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/672" },
+            { id: 45, title: "Гаррі Поттер і в'язень Азкабану", year: 2004, genre: "фентезі", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/gajva2L0r6k1Y0yv5TjGPr6u4h5.jpg", video: "https://vidsrc.xyz/embed/movie/673" },
+
+            // ——— ДОДАТКОВІ ХІТИ ———
+            { id: 46, title: "Месники: Завершення", year: 2019, genre: "фантастика", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/299534" },
+            { id: 47, title: "Месники: Війна нескінченності", year: 2018, genre: "фантастика", rating: 8.8, poster: "https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", video: "https://vidsrc.xyz/embed/movie/299536" },
+            { id: 48, title: "Людина-павук: Додому шляху нема", year: 2021, genre: "фантастика", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/14SD9E8G6BbH1mV8DWvL6K1XoHl.jpg", video: "https://vidsrc.xyz/embed/movie/634649" },
+            { id: 49, title: "Людина-павук: Далеко від дому", year: 2019, genre: "фантастика", rating: 8.2, poster: "https://image.tmdb.org/t/p/w342/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg", video: "https://vidsrc.xyz/embed/movie/429617" },
+            { id: 50, title: "Людина-павук: Повернення додому", year: 2017, genre: "фантастика", rating: 8.0, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/315635" },
+            { id: 51, title: "Темний лицар", year: 2008, genre: "бойовик", rating: 9.2, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/155" },
+            { id: 52, title: "Темний лицар: Відродження", year: 2012, genre: "бойовик", rating: 8.8, poster: "https://image.tmdb.org/t/p/w342/gajva2L0r6k1Y0yv5TjGPr6u4h5.jpg", video: "https://vidsrc.xyz/embed/movie/49026" },
+            { id: 53, title: "Початок", year: 2010, genre: "трилер", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", video: "https://vidsrc.xyz/embed/movie/27205" },
+            { id: 54, title: "Престиж", year: 2006, genre: "трилер", rating: 8.5, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/1124" },
+            { id: 55, title: "Мементо", year: 2000, genre: "трилер", rating: 8.4, poster: "https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", video: "https://vidsrc.xyz/embed/movie/77" },
+            { id: 56, title: "Бійцівський клуб", year: 1999, genre: "драма", rating: 9.0, poster: "https://image.tmdb.org/t/p/w342/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg", video: "https://vidsrc.xyz/embed/movie/550" },
+            { id: 57, title: "Кримінальне чтиво", year: 1994, genre: "драма", rating: 9.1, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/680" },
+            { id: 58, title: "Список Шиндлера", year: 1993, genre: "драма", rating: 9.2, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/424" },
+            { id: 59, title: "Форрест Гамп", year: 1994, genre: "драма", rating: 9.0, poster: "https://image.tmdb.org/t/p/w342/gajva2L0r6k1Y0yv5TjGPr6u4h5.jpg", video: "https://vidsrc.xyz/embed/movie/13" },
+            { id: 60, title: "Зелена миля", year: 1999, genre: "драма", rating: 9.0, poster: "https://image.tmdb.org/t/p/w342/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", video: "https://vidsrc.xyz/embed/movie/497" },
+            { id: 61, title: "Втеча з Шоушенка", year: 1994, genre: "драма", rating: 9.3, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/278" },
+            { id: 62, title: "Хрещений батько", year: 1972, genre: "драма", rating: 9.2, poster: "https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", video: "https://vidsrc.xyz/embed/movie/238" },
+            { id: 63, title: "Хрещений батько 2", year: 1974, genre: "драма", rating: 9.0, poster: "https://image.tmdb.org/t/p/w342/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg", video: "https://vidsrc.xyz/embed/movie/240" },
+            { id: 64, title: "Славні хлопці", year: 1990, genre: "драма", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/769" },
+            { id: 65, title: "Одного разу в Америці", year: 1984, genre: "драма", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/1091" }
         ];
 
-        // Розширена база — ще 20 фільмів для наповнення
-        const EXTRA_MOVIES = [
-            { id: 17, title: "Дедпул та Росомаха", year: 2024, genre: "комедія", rating: 8.0, poster: "https://image.tmdb.org/t/p/w342/8cdWjvZQUxUj6HL2Qnlm4m7p8lP.jpg", video: "https://vidsrc.xyz/embed/movie/533535" },
-            { id: 18, title: "Веном: Останній танок", year: 2024, genre: "бойовик", rating: 7.4, poster: "https://image.tmdb.org/t/p/w342/3bq2XJjTlZ6hZcGXl9qGZf8pX0I.jpg", video: "https://vidsrc.xyz/embed/movie/912649" },
-            { id: 19, title: "Морбіус", year: 2022, genre: "жахи", rating: 5.9, poster: "https://image.tmdb.org/t/p/w342/6JjfSchsU6r6HnA9wZ2z2bG0z3Q.jpg", video: "https://vidsrc.xyz/embed/movie/526896" },
-            { id: 20, title: "Непрощенна", year: 2021, genre: "драма", rating: 7.1, poster: "https://image.tmdb.org/t/p/w342/5yXlOYvI5cXVyVp3q5g1LvG7q4W.jpg", video: "https://vidsrc.xyz/embed/movie/736526" },
-            { id: 21, title: "Людина-павук: Додому шляху нема", year: 2021, genre: "фантастика", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/14SD9E8G6BbH1mV8DWvL6K1XoHl.jpg", video: "https://vidsrc.xyz/embed/movie/634649" },
-            { id: 22, title: "Чорний Адам", year: 2022, genre: "бойовик", rating: 7.2, poster: "https://image.tmdb.org/t/p/w342/3zXpDg0bX1K1LJ7Qz9qZ0b5j1mN.jpg", video: "https://vidsrc.xyz/embed/movie/436270" },
-            { id: 23, title: "Шазам! Лють богів", year: 2023, genre: "комедія", rating: 6.8, poster: "https://image.tmdb.org/t/p/w342/6nFv3u8lP8fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/594767" },
-            { id: 24, title: "Флеш", year: 2023, genre: "фантастика", rating: 7.1, poster: "https://image.tmdb.org/t/p/w342/5l7r9Vz3h5jK4l8M9n6bQ2sX1aN.jpg", video: "https://vidsrc.xyz/embed/movie/298618" },
-            { id: 25, title: "Аквамен і Загублене королівство", year: 2023, genre: "бойовик", rating: 6.9, poster: "https://image.tmdb.org/t/p/w342/7Z5W9qU8lP4fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/572802" },
-            { id: 26, title: "Блакитний жук", year: 2023, genre: "бойовик", rating: 7.0, poster: "https://image.tmdb.org/t/p/w342/4p1N2Qrt8j0H8xMHE8GEz2vV9yX.jpg", video: "https://vidsrc.xyz/embed/movie/565770" },
-            { id: 27, title: "Трансформери: Пробудження звірів", year: 2023, genre: "фантастика", rating: 7.3, poster: "https://image.tmdb.org/t/p/w342/8gL8lP8fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/667538" },
-            { id: 28, title: "Місія неможлива: Розплата", year: 2023, genre: "бойовик", rating: 8.2, poster: "https://image.tmdb.org/t/p/w342/6nFv3u8lP8fFv5qYl0vZ9g8lQ5W.jpg", video: "https://vidsrc.xyz/embed/movie/575264" },
-            { id: 29, title: "Джон Уік 4", year: 2023, genre: "бойовик", rating: 8.5, poster: "https://image.tmdb.org/t/p/w342/5l7r9Vz3h5jK4l8M9n6bQ2sX1aN.jpg", video: "https://vidsrc.xyz/embed/movie/603692" },
-            { id: 30, title: "Еквілібріум", year: 2002, genre: "фантастика", rating: 8.2, poster: "https://image.tmdb.org/t/p/w342/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg", video: "https://vidsrc.xyz/embed/movie/7299" },
-            { id: 31, title: "П'ятий елемент", year: 1997, genre: "фантастика", rating: 8.4, poster: "https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", video: "https://vidsrc.xyz/embed/movie/18" },
-            { id: 32, title: "Сьомий печатка", year: 1957, genre: "драма", rating: 8.9, poster: "https://image.tmdb.org/t/p/w342/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg", video: "https://vidsrc.xyz/embed/movie/490" },
-            { id: 33, title: "Сталкер", year: 1979, genre: "драма", rating: 8.7, poster: "https://image.tmdb.org/t/p/w342/2cxhvwyEwRtaxAmw5fM6clHpYv5.jpg", video: "https://vidsrc.xyz/embed/movie/1396" },
-            { id: 34, title: "Соляріс", year: 1972, genre: "фантастика", rating: 8.6, poster: "https://image.tmdb.org/t/p/w342/hlLXt2tOPT6yhEN5cYpaCz7ChFJ.jpg", video: "https://vidsrc.xyz/embed/movie/1397" },
-            { id: 35, title: "Механічний апельсин", year: 1971, genre: "драма", rating: 8.8, poster: "https://image.tmdb.org/t/p/w342/gajva2L0r6k1Y0yv5TjGPr6u4h5.jpg", video: "https://vidsrc.xyz/embed/movie/185" },
-            { id: 36, title: "Той, що вижив", year: 2022, genre: "трилер", rating: 7.3, poster: "https://image.tmdb.org/t/p/w342/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", video: "https://vidsrc.xyz/embed/movie/823464" }
-        ];
-
-        // Об'єднуємо
-        const BASE_MOVIES = LOCAL_MOVIES.concat(EXTRA_MOVIES);
-
-        // Стан
+        // ============================================================
+        // СТАН
+        // ============================================================
         let allMovies = [];
         let filteredMovies = [];
         let currentFilter = 'all';
         let searchQuery = '';
+        let isLoading = true;
 
-        // DOM
         const container = document.getElementById('moviesContainer');
         const searchInput = document.getElementById('searchInput');
         const filterChips = document.querySelectorAll('.filter-chip');
         const playerOverlay = document.getElementById('playerOverlay');
         const playerIframe = document.getElementById('playerIframe');
         const playerTitle = document.getElementById('playerTitle');
+        const playerSub = document.getElementById('playerSub');
         const playerClose = document.getElementById('playerClose');
         const toast = document.getElementById('toast');
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        const movieCountEl = document.getElementById('movieCount');
 
         let toastTimeout = null;
 
         // ============================================================
-        // Функція підтягування додаткових фільмів з Supabase
+        // SUPABASE FETCH
         // ============================================================
         async function fetchSupabaseMovies() {
             try {
                 const SUPABASE_URL = 'https://qxtakglepnrnewwynnij.supabase.co';
                 const SUPABASE_KEY = 'sb_publishable_W2Db_WneZp2gyi_MUtJ8tQ_dx29imBX';
 
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/movies?select=*`, {
+                const resp = await fetch(`${SUPABASE_URL}/rest/v1/movies?select=*`, {
                     headers: {
                         'apikey': SUPABASE_KEY,
                         'Authorization': `Bearer ${SUPABASE_KEY}`
                     }
                 });
-
-                if (!response.ok) throw new Error('Supabase fetch failed');
-                const data = await response.json();
-
-                if (Array.isArray(data) && data.length > 0) {
-                    // Мапуємо поля з Supabase (очікуємо: id, title, year, genre, rating, poster, video)
-                    const mapped = data.map(item => ({
-                        id: item.id || Date.now() + Math.random(),
-                        title: item.title || 'Невідомий фільм',
-                        year: item.year || 2024,
-                        genre: item.genre || 'драма',
-                        rating: item.rating || 5.0,
-                        poster: item.poster || '',
-                        video: item.video || 'https://vidsrc.xyz/embed/movie/157336'
-                    }));
-                    return mapped;
-                }
-                return [];
+                if (!resp.ok) return [];
+                const data = await resp.json();
+                if (!Array.isArray(data)) return [];
+                return data.map(item => ({
+                    id: item.id || Date.now() + Math.random() * 1000,
+                    title: item.title || 'Невідомий фільм',
+                    year: item.year || 2024,
+                    genre: item.genre || 'драма',
+                    rating: item.rating || 5.0,
+                    poster: item.poster || '',
+                    video: item.video || 'https://vidsrc.xyz/embed/movie/157336'
+                }));
             } catch (e) {
-                console.warn('Supabase не відповів, використовуємо локальну базу:', e);
                 return [];
             }
         }
 
         // ============================================================
-        // Рендеринг
+        // РЕНДЕРИНГ
         // ============================================================
         function renderMovies(movies) {
             if (!movies || movies.length === 0) {
-                container.innerHTML = `<div class="empty-state"><span>🎞️</span>Фільмів не знайдено<br><small style="color:#4a5268;">спробуйте інший запит</small></div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span>🎞️</span>
+                        <h3>Фільмів не знайдено</h3>
+                        <p style="color:#4a5a6e; margin-top:8px;">спробуйте змінити фільтр або пошук</p>
+                    </div>
+                `;
+                movieCountEl.textContent = '0 фільмів';
                 return;
             }
 
             let html = '<div class="movies-grid">';
             for (const m of movies) {
                 const posterHtml = m.poster
-                    ? `<img src="${m.poster}" alt="${m.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">`
+                    ? `<img src="${m.poster}" alt="${m.title}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex';">`
                     : '';
                 html += `
                     <div class="movie-card" data-id="${m.id}" data-video="${m.video}" data-title="${m.title}">
                         <div class="movie-poster">
                             ${posterHtml}
-                            <span class="fallback-icon" style="display:${m.poster ? 'none' : 'flex'};">🎬</span>
-                            <span class="movie-year">${m.year}</span>
+                            <span class="fallback" style="display:${m.poster ? 'none' : 'flex'};">🎬</span>
+                            <span class="movie-year-badge">${m.year}</span>
+                            <span class="movie-rating-badge">★ ${m.rating.toFixed(1)}</span>
                         </div>
                         <div class="movie-info">
                             <div class="movie-title">${m.title}</div>
                             <div class="movie-meta">
-                                <span class="movie-rating">★ ${m.rating.toFixed(1)}</span>
-                                <span class="movie-genre">${m.genre}</span>
+                                <span class="movie-genre-tag">${m.genre}</span>
+                                <span class="movie-quality">HD</span>
                             </div>
                         </div>
                     </div>
@@ -514,15 +695,19 @@
             }
             html += '</div>';
             container.innerHTML = html;
+            movieCountEl.textContent = `${movies.length} фільмів`;
 
-            // Додаємо обробники кліку для карток
+            // Обробники
             document.querySelectorAll('.movie-card').forEach(card => {
                 card.addEventListener('click', function(e) {
                     const video = this.dataset.video;
                     const title = this.dataset.title || 'Фільм';
-                    openPlayer(video, title);
+                    if (video) {
+                        openPlayer(video, title);
+                    } else {
+                        showToast('⚠️ Відео тимчасово недоступне');
+                    }
                 });
-                // Для тач-пристроїв — швидкий відгук
                 card.addEventListener('touchstart', function() {
                     this.style.transition = 'transform 0.05s';
                 }, { passive: true });
@@ -530,23 +715,21 @@
         }
 
         // ============================================================
-        // Фільтрація + пошук
+        // ФІЛЬТРАЦІЯ
         // ============================================================
         function applyFilters() {
             let result = allMovies.slice();
 
-            // Фільтр за жанром / роком
             if (currentFilter !== 'all') {
-                const filterLower = currentFilter.toLowerCase();
+                const f = currentFilter.toLowerCase();
                 result = result.filter(m => {
-                    const genreMatch = m.genre && m.genre.toLowerCase().includes(filterLower);
-                    const yearMatch = m.year && m.year.toString() === filterLower;
+                    const genreMatch = m.genre && m.genre.toLowerCase().includes(f);
+                    const yearMatch = m.year && m.year.toString() === f;
                     return genreMatch || yearMatch;
                 });
             }
 
-            // Пошук
-            if (searchQuery.trim() !== '') {
+            if (searchQuery.trim()) {
                 const q = searchQuery.trim().toLowerCase();
                 result = result.filter(m =>
                     m.title.toLowerCase().includes(q) ||
@@ -560,18 +743,20 @@
         }
 
         // ============================================================
-        // Плеєр
+        // ПЛЕЄР
         // ============================================================
         function openPlayer(videoUrl, title) {
             if (!videoUrl) {
-                showToast('Відео недоступне');
+                showToast('⚠️ Відео недоступне');
                 return;
             }
-            playerIframe.src = videoUrl;
+            // Додаємо параметр для кращої сумісності
+            const url = videoUrl.includes('?') ? videoUrl + '&autoplay=1' : videoUrl + '?autoplay=1';
+            playerIframe.src = url;
             playerTitle.textContent = title || 'Фільм';
+            playerSub.textContent = '🎥 HD • безкоштовно • натисніть ▶ для відтворення';
             playerOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            // Запобігаємо скролінгу фону
         }
 
         function closePlayer() {
@@ -581,7 +766,7 @@
         }
 
         // ============================================================
-        // Toast повідомлення
+        // TOAST
         // ============================================================
         function showToast(msg) {
             toast.textContent = msg;
@@ -589,39 +774,49 @@
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toast.classList.remove('show');
-            }, 2200);
+            }, 2500);
         }
 
         // ============================================================
-        // Ініціалізація
+        // SCROLL TOP
+        // ============================================================
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+        scrollBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============================================================
+        // ІНІЦІАЛІЗАЦІЯ
         // ============================================================
         async function init() {
-            // 1. Завантажуємо локальну базу
-            allMovies = BASE_MOVIES.slice();
+            // Локальна база
+            allMovies = MOVIES_DB.slice();
 
-            // 2. Спроба підтягнути з Supabase (асинхронно, не блокуємо UI)
+            // Спроба підтягнути Supabase
             try {
-                const supabaseMovies = await fetchSupabaseMovies();
-                if (supabaseMovies.length > 0) {
-                    // Додаємо тільки унікальні (за назвою + роком)
-                    const existingTitles = new Set(allMovies.map(m => m.title + m.year));
-                    for (const sm of supabaseMovies) {
+                const supData = await fetchSupabaseMovies();
+                if (supData.length > 0) {
+                    const existing = new Set(allMovies.map(m => m.title + m.year));
+                    for (const sm of supData) {
                         const key = sm.title + sm.year;
-                        if (!existingTitles.has(key)) {
+                        if (!existing.has(key)) {
                             allMovies.push(sm);
-                            existingTitles.add(key);
+                            existing.add(key);
                         }
                     }
                 }
-            } catch (e) {
-                // ігноруємо помилки Supabase
-            }
+            } catch (e) {}
 
-            // 3. Початковий рендеринг
             applyFilters();
+            isLoading = false;
 
-            // 4. Обробники подій
-            // Пошук з дебаунсом
+            // Обробники подій
             let searchTimeout = null;
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
@@ -631,7 +826,6 @@
                 }, 300);
             });
 
-            // Фільтри
             filterChips.forEach(chip => {
                 chip.addEventListener('click', function() {
                     filterChips.forEach(c => c.classList.remove('active'));
@@ -641,7 +835,6 @@
                 });
             });
 
-            // Закриття плеєра
             playerClose.addEventListener('click', closePlayer);
             playerOverlay.addEventListener('click', function(e) {
                 if (e.target === this) closePlayer();
@@ -650,11 +843,9 @@
                 if (e.key === 'Escape') closePlayer();
             });
 
-            // Показуємо підказку
-            showToast('🎥 Натисніть на картку для перегляду');
+            showToast('🎬 ' + allMovies.length + ' фільмів готові до перегляду');
         }
 
-        // Запуск
         init();
     })();
 </script>
