@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
   <meta name="theme-color" content="#09070d" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>News AHLTV & UMP by sewa/vadim</title>
+  <title>News AHLTV & UMP by sewa/vadim777</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1191,12 +1191,52 @@
 
   async function uploadImage(bucket,file,prefix){
     if(!file) return null;
-    if(file.size>8*1024*1024) throw new Error("Фото завелике. Максимум 8 MB.");
-    const ext=(file.name.split(".").pop()||"webp").toLowerCase();
-    const path=`${prefix}/${crypto.randomUUID()}.${ext}`;
-    const {error}=await sb.storage.from(bucket).upload(path,file,{cacheControl:"3600",upsert:false});
-    if(error) throw error;
-    return sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+
+    const allowedTypes=["image/jpeg","image/png","image/webp"];
+    if(!allowedTypes.includes(file.type)){
+      throw new Error("Підтримуються тільки JPG, PNG або WebP");
+    }
+
+    if(file.size>8*1024*1024){
+      throw new Error("Фото завелике. Максимум 8 MB.");
+    }
+
+    const extMap={
+      "image/jpeg":"jpg",
+      "image/png":"png",
+      "image/webp":"webp"
+    };
+
+    const ext=extMap[file.type] || "jpg";
+    const safeId=(crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`);
+    const path=`${prefix}/${state.user.id}/${safeId}.${ext}`;
+
+    const {data,error}=await sb.storage
+      .from(bucket)
+      .upload(path,file,{
+        cacheControl:"3600",
+        upsert:false,
+        contentType:file.type
+      });
+
+    if(error){
+      console.error("Storage upload error:", error);
+
+      if(/bucket not found/i.test(error.message||"")){
+        throw new Error(`Storage bucket "${bucket}" не створений`);
+      }
+      if(/row-level security|rls|unauthorized/i.test(error.message||"")){
+        throw new Error("Supabase Storage не дає право завантажувати фото");
+      }
+      throw error;
+    }
+
+    const {data:publicData}=sb.storage.from(bucket).getPublicUrl(data.path);
+    if(!publicData?.publicUrl){
+      throw new Error("Не вдалося отримати посилання на фото");
+    }
+
+    return publicData.publicUrl;
   }
 
   async function publishNews(){
@@ -1328,7 +1368,7 @@
           logo_url=await uploadImage("site-assets",file,"logo");
         }catch(uploadError){
           console.error("Logo upload error:",uploadError);
-          throw new Error("Не вдалося завантажити логотип: " + (uploadError?.message || "Storage error"));
+          throw new Error(uploadError?.message || "Не вдалося завантажити логотип у Storage");
         }
       }
 
