@@ -273,7 +273,131 @@
     .settings-divider{height:1px;background:rgba(255,255,255,.055);margin:6px 10px}
     .confirm-box{padding:4px 0}.confirm-box p{margin:0 0 16px;color:#94a7ba;font-size:12px;line-height:1.55}
 
-  </style>
+  
+    /* ===== TisGram 2.2 BLACK PURPLE MOTION ===== */
+    :root{
+      --bg:#05030a;
+      --panel:rgba(15,10,25,.72);
+      --panel2:rgba(24,15,40,.78);
+      --glass:rgba(255,255,255,.045);
+      --glass2:rgba(255,255,255,.075);
+      --border:rgba(193,150,255,.11);
+      --text:#f8f5ff;
+      --muted:#978ca8;
+      --blue:#9b5cff;
+      --blue2:#6f2cff;
+      --danger:#ff6480;
+      --success:#4bd8a1;
+      --shadow:0 28px 90px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.05)
+    }
+    html,body{
+      background:
+        radial-gradient(circle at 14% 8%,rgba(118,50,220,.18),transparent 30%),
+        radial-gradient(circle at 85% 88%,rgba(77,28,148,.17),transparent 34%),
+        linear-gradient(145deg,#020205,#07040c 48%,#030205);
+    }
+    body:before{
+      content:"";position:fixed;inset:-20%;pointer-events:none;z-index:-1;
+      background:
+        radial-gradient(circle at 25% 25%,rgba(153,73,255,.08),transparent 24%),
+        radial-gradient(circle at 75% 60%,rgba(98,49,190,.07),transparent 26%);
+      filter:blur(40px);animation:ambientMove 14s ease-in-out infinite alternate
+    }
+    @keyframes ambientMove{from{transform:translate3d(-2%,-1%,0) scale(1)}to{transform:translate3d(3%,2%,0) scale(1.06)}}
+    *{scroll-behavior:smooth}
+    .glass,.modal,.register-card,.welcome-card{border-color:rgba(194,154,255,.10)}
+    .sidebar{
+      background:
+        radial-gradient(circle at 20% 0%,rgba(132,69,235,.11),transparent 28%),
+        linear-gradient(160deg,rgba(19,12,31,.88),rgba(6,4,12,.82));
+      border-right:1px solid rgba(190,143,255,.09);
+      transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s ease
+    }
+    .chat-area{
+      background:
+        radial-gradient(circle at 82% 10%,rgba(130,61,230,.09),transparent 30%),
+        radial-gradient(circle at 16% 84%,rgba(81,31,153,.09),transparent 35%),
+        rgba(4,3,8,.76)
+    }
+    .chat-header{
+      background:linear-gradient(145deg,rgba(24,15,40,.74),rgba(10,6,18,.72));
+      border-bottom-color:rgba(191,143,255,.09)
+    }
+    .mini-logo,.logo,.brand-logo{
+      background:linear-gradient(145deg,#b26cff,#6f2cff)!important;
+      box-shadow:0 12px 34px rgba(118,49,220,.28),inset 0 1px 0 rgba(255,255,255,.28)!important
+    }
+    .primary,.send,.nft-buy{
+      background:linear-gradient(135deg,#a35cff,#6a27d8)!important;
+      box-shadow:0 12px 32px rgba(111,44,255,.25),inset 0 1px 0 rgba(255,255,255,.18)!important
+    }
+    .primary:hover,.send:hover,.nft-buy:hover{filter:brightness(1.10);transform:translateY(-1px) scale(1.01)}
+    .chat-item,.icon-btn,.media-btn,.profile-action-btn,.setting-row,.nft-card,.gift-mini,.message-row,.modal,.toast{
+      transition:
+        transform .28s cubic-bezier(.22,1,.36,1),
+        opacity .24s ease,
+        background .24s ease,
+        border-color .24s ease,
+        box-shadow .24s ease,
+        filter .24s ease
+    }
+    .chat-item:hover{transform:translateX(4px);background:linear-gradient(135deg,rgba(143,73,235,.13),rgba(255,255,255,.025))}
+    .chat-item.active{
+      background:linear-gradient(135deg,rgba(150,78,244,.22),rgba(92,43,170,.12));
+      border-color:rgba(179,112,255,.18);
+      box-shadow:0 10px 30px rgba(51,15,91,.17),inset 0 1px 0 rgba(255,255,255,.045)
+    }
+    .bubble{
+      background:linear-gradient(145deg,rgba(34,24,49,.88),rgba(17,11,27,.86));
+      border-color:rgba(198,159,255,.08)
+    }
+    .message-row.mine .bubble{
+      background:linear-gradient(145deg,rgba(128,61,213,.92),rgba(89,35,158,.92));
+      border-color:rgba(210,177,255,.14);
+      box-shadow:0 9px 28px rgba(72,25,128,.25),inset 0 1px 0 rgba(255,255,255,.08)
+    }
+    .message-row{animation:messageIn .28s cubic-bezier(.22,1,.36,1)}
+    @keyframes messageIn{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+    .input-wrap{
+      background:linear-gradient(145deg,rgba(32,21,48,.78),rgba(14,9,22,.76));
+      border-color:rgba(188,142,255,.09)
+    }
+    .input-wrap:focus-within{border-color:rgba(174,109,255,.35);box-shadow:0 0 0 4px rgba(137,64,236,.05),0 14px 40px rgba(0,0,0,.2)}
+    .media-btn,.icon-btn{background:rgba(255,255,255,.035);border-color:rgba(196,152,255,.055)}
+    .media-btn:hover,.icon-btn:hover{background:rgba(142,70,232,.13);border-color:rgba(180,114,255,.14);color:#fff;transform:translateY(-1px)}
+    .modal-overlay{animation:fadeOverlay .22s ease}.modal{animation:modalPop .32s cubic-bezier(.22,1,.36,1)}
+    @keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
+    @keyframes modalPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+    .profile-hero,.public-profile-cover{
+      background:
+        radial-gradient(circle at 50% -10%,rgba(157,76,255,.30),transparent 42%),
+        radial-gradient(circle at 85% 90%,rgba(88,37,170,.18),transparent 38%),
+        linear-gradient(160deg,rgba(29,17,47,.88),rgba(8,5,15,.68))!important
+    }
+    .premium-badge,.shop-balance{background:rgba(139,68,224,.10)!important;border-color:rgba(177,111,255,.15)!important;color:#d5b6ff!important}
+    #splash{background:radial-gradient(circle at 50% 35%,rgba(135,59,232,.18),transparent 34%),#040207}
+    .call-btn{font-size:17px}
+    .call-overlay-card{width:min(430px,100%);text-align:center;padding:28px}
+    .call-avatar-wrap{width:112px;height:112px;margin:6px auto 18px;position:relative}
+    .call-avatar-wrap .avatar{width:112px;height:112px;border:3px solid rgba(219,189,255,.15);box-shadow:0 20px 60px rgba(68,23,124,.34),0 0 0 10px rgba(145,75,235,.045)}
+    .call-avatar-wrap.ringing:before,.call-avatar-wrap.ringing:after{
+      content:"";position:absolute;inset:-10px;border:1px solid rgba(177,109,255,.24);border-radius:50%;animation:ringPulse 1.8s ease-out infinite
+    }
+    .call-avatar-wrap.ringing:after{animation-delay:.7s}
+    @keyframes ringPulse{0%{opacity:.65;transform:scale(.88)}100%{opacity:0;transform:scale(1.35)}}
+    .call-title{font-size:24px;font-weight:900;letter-spacing:-.5px}
+    .call-status{margin-top:7px;color:#9a8da9;font-size:12px}
+    .call-timer{margin-top:8px;color:#c8a8f2;font-size:12px;font-variant-numeric:tabular-nums}
+    .call-actions{display:flex;justify-content:center;gap:16px;margin-top:25px}
+    .call-action{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:21px;cursor:pointer;color:#fff;border:1px solid rgba(255,255,255,.08);transition:.2s}
+    .call-action:hover{transform:scale(1.06)}
+    .call-action.accept{background:linear-gradient(145deg,#42d797,#1da56c)}
+    .call-action.end{background:linear-gradient(145deg,#ff6c87,#d83b5d)}
+    .call-action.neutral{background:rgba(255,255,255,.07)}
+    .call-note{margin-top:18px;color:#6f647d;font-size:10px;line-height:1.5}
+    .hidden-by-call{display:none!important}
+
+</style>
 </head>
 <body>
 <div id="splash">
@@ -341,6 +465,7 @@
           <div id="activeChatName"></div>
           <div id="activeChatUsername"></div>
         </div>
+        <button id="audioCallButton" class="icon-btn call-btn" type="button" title="Аудіодзвінок">📞</button>
         <button id="chatSettingsButton" class="icon-btn chat-menu-btn" type="button" title="Налаштування чату">⋯</button>
       </header>
       <div id="messages" class="messages"><div id="messagesInner" class="messages-inner"></div></div>
@@ -478,6 +603,24 @@
   </div>
 </div>
 
+
+<div id="callModal" class="modal-overlay hidden">
+  <div class="modal glass call-overlay-card">
+    <div id="callAvatarWrap" class="call-avatar-wrap ringing"><div id="callAvatar"></div></div>
+    <div id="callTitle" class="call-title">Дзвінок</div>
+    <div id="callStatus" class="call-status">З'єднання…</div>
+    <div id="callTimer" class="call-timer hidden">00:00</div>
+    <div class="call-actions">
+      <button id="declineCallButton" class="call-action end hidden" type="button" title="Відхилити">✕</button>
+      <button id="acceptCallButton" class="call-action accept hidden" type="button" title="Прийняти">✓</button>
+      <button id="muteMicButton" class="call-action neutral hidden" type="button" title="Мікрофон">🎙️</button>
+      <button id="endCallButton" class="call-action end hidden" type="button" title="Завершити">📵</button>
+    </div>
+    <div class="call-note">Аудіо передається напряму між браузерами через WebRTC. Для мікрофона сайт має бути відкритий через HTTPS або localhost.</div>
+  </div>
+</div>
+<audio id="remoteAudio" autoplay playsinline></audio>
+
 <div id="toastContainer"></div>
 
 <script>
@@ -493,7 +636,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 const state = {
   user:null, profile:null, conversations:[], profiles:new Map(),
   activeConversation:null, activeUser:null, messages:[],
-  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null, pendingMessagePhoto:null, selectedGift:null, chatSettings:new Map(), confirmAction:null
+  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null, pendingMessagePhoto:null, selectedGift:null, chatSettings:new Map(), confirmAction:null, callPeer:null, callStream:null, callRemoteStream:null, callInbox:null, callTarget:null, incomingOffer:null, callStartedAt:null, callTimerInterval:null, micMuted:false
 };
 
 const $ = s => document.querySelector(s);
@@ -525,7 +668,11 @@ const dom = {
   chatSettingsProfile:$("#chatSettingsProfile"), viewProfileFromSettings:$("#viewProfileFromSettings"),
   muteChatButton:$("#muteChatButton"), muteSwitch:$("#muteSwitch"), clearChatButton:$("#clearChatButton"), hideChatButton:$("#hideChatButton"),
   confirmActionModal:$("#confirmActionModal"), confirmActionTitle:$("#confirmActionTitle"), confirmActionText:$("#confirmActionText"),
-  closeConfirmAction:$("#closeConfirmAction"), cancelConfirmAction:$("#cancelConfirmAction"), doConfirmAction:$("#doConfirmAction")
+  closeConfirmAction:$("#closeConfirmAction"), cancelConfirmAction:$("#cancelConfirmAction"), doConfirmAction:$("#doConfirmAction"),
+  audioCallButton:$("#audioCallButton"), callModal:$("#callModal"), callAvatarWrap:$("#callAvatarWrap"),
+  callAvatar:$("#callAvatar"), callTitle:$("#callTitle"), callStatus:$("#callStatus"), callTimer:$("#callTimer"),
+  declineCallButton:$("#declineCallButton"), acceptCallButton:$("#acceptCallButton"), muteMicButton:$("#muteMicButton"),
+  endCallButton:$("#endCallButton"), remoteAudio:$("#remoteAudio")
 };
 
 function showToast(message,type="normal"){
@@ -1196,6 +1343,182 @@ openUserProfile=async function(p){
 };
 dom.activeChatAvatar.onclick=()=>state.activeUser&&openUserProfile(state.activeUser);
 dom.activeChatName.onclick=()=>state.activeUser&&openUserProfile(state.activeUser);
+
+
+/* ===================== TISGRAM 2.2 AUDIO CALLS ===================== */
+const RTC_CONFIG={iceServers:[
+  {urls:"stun:stun.l.google.com:19302"},
+  {urls:"stun:stun1.l.google.com:19302"}
+]};
+
+function callInboxName(uid){return "tisgram-call-inbox-"+uid}
+
+function setCallUi(mode,person,status){
+  dom.callModal.classList.remove("hidden");
+  dom.callAvatar.replaceChildren(createAvatar(person||state.activeUser||state.profile,""));
+  dom.callTitle.textContent=person?.display_name||"TisGram Call";
+  dom.callStatus.textContent=status||"З'єднання…";
+  dom.callTimer.classList.add("hidden");
+  dom.acceptCallButton.classList.toggle("hidden",mode!=="incoming");
+  dom.declineCallButton.classList.toggle("hidden",mode!=="incoming");
+  dom.muteMicButton.classList.toggle("hidden",mode!=="active");
+  dom.endCallButton.classList.toggle("hidden",mode==="incoming");
+  dom.callAvatarWrap.classList.toggle("ringing",mode!=="active");
+}
+
+function startCallTimer(){
+  state.callStartedAt=Date.now();
+  dom.callTimer.classList.remove("hidden");
+  clearInterval(state.callTimerInterval);
+  state.callTimerInterval=setInterval(()=>{
+    const s=Math.floor((Date.now()-state.callStartedAt)/1000);
+    dom.callTimer.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+  },1000)
+}
+
+async function sendCallSignal(targetId,event,payload={}){
+  return new Promise((resolve,reject)=>{
+    const ch=sb.channel(callInboxName(targetId),{config:{broadcast:{ack:true}}});
+    let settled=false;
+    ch.subscribe(async status=>{
+      if(status==="SUBSCRIBED"&&!settled){
+        settled=true;
+        try{
+          await ch.send({type:"broadcast",event,payload:{...payload,from:state.user.id}});
+          setTimeout(()=>sb.removeChannel(ch),250);
+          resolve();
+        }catch(e){sb.removeChannel(ch);reject(e)}
+      }
+      if(status==="CHANNEL_ERROR"&&!settled){settled=true;sb.removeChannel(ch);reject(new Error("Realtime channel error"))}
+    });
+  });
+}
+
+async function setupCallInbox(){
+  if(state.callInbox)sb.removeChannel(state.callInbox);
+  state.callInbox=sb.channel(callInboxName(state.user.id));
+  ["call-offer","call-answer","call-ice","call-hangup","call-decline","call-busy"].forEach(ev=>{
+    state.callInbox.on("broadcast",{event:ev},({payload})=>handleCallSignal(ev,payload));
+  });
+  state.callInbox.subscribe();
+}
+
+async function getProfileById(id){
+  const cached=state.profiles.get(id);if(cached)return cached;
+  const {data,error}=await sb.from("profiles").select("*").eq("id",id).maybeSingle();
+  if(error)throw error;if(data)state.profiles.set(id,data);return data;
+}
+
+async function createPeer(targetId){
+  const pc=new RTCPeerConnection(RTC_CONFIG);
+  state.callPeer=pc;state.callTarget=targetId;
+  state.callRemoteStream=new MediaStream();dom.remoteAudio.srcObject=state.callRemoteStream;
+  pc.ontrack=e=>e.streams[0].getTracks().forEach(t=>state.callRemoteStream.addTrack(t));
+  pc.onicecandidate=e=>{if(e.candidate&&state.callTarget)sendCallSignal(state.callTarget,"call-ice",{candidate:e.candidate.toJSON()}).catch(console.error)};
+  pc.onconnectionstatechange=()=>{
+    if(pc.connectionState==="connected"){
+      dom.callStatus.textContent="З'єднано";setCallUi("active",state.activeUser||state.callTargetProfile,"З'єднано");startCallTimer()
+    }
+    if(["failed","disconnected","closed"].includes(pc.connectionState)&&!dom.callModal.classList.contains("hidden")){
+      if(pc.connectionState==="failed")showToast("Не вдалося встановити дзвінок","error");
+    }
+  };
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});
+  state.callStream=stream;stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+  return pc;
+}
+
+async function startAudioCall(){
+  if(!state.activeUser||!state.activeConversation)return;
+  if(state.callPeer||state.incomingOffer)return showToast("Уже є активний дзвінок","error");
+  try{
+    setCallUi("outgoing",state.activeUser,"Виклик…");
+    const pc=await createPeer(state.activeUser.id);
+    const offer=await pc.createOffer();await pc.setLocalDescription(offer);
+    await sendCallSignal(state.activeUser.id,"call-offer",{offer,conversation_id:state.activeConversation.id});
+  }catch(e){
+    cleanupCall(false);showToast(e?.name==="NotAllowedError"?"Дозволь доступ до мікрофона":readableError(e),"error")
+  }
+}
+
+async function handleCallSignal(event,payload){
+  try{
+    if(event==="call-offer"){
+      if(state.callPeer||state.incomingOffer){
+        await sendCallSignal(payload.from,"call-busy",{});return;
+      }
+      const person=await getProfileById(payload.from);if(!person)return;
+      state.callTarget=payload.from;state.callTargetProfile=person;state.incomingOffer=payload.offer;
+      setCallUi("incoming",person,"Вхідний аудіодзвінок");
+      return;
+    }
+    if(event==="call-answer"&&state.callPeer){
+      await state.callPeer.setRemoteDescription(new RTCSessionDescription(payload.answer));
+      dom.callStatus.textContent="З'єднання…";return;
+    }
+    if(event==="call-ice"&&state.callPeer&&payload.candidate){
+      try{await state.callPeer.addIceCandidate(new RTCIceCandidate(payload.candidate))}catch(e){console.warn(e)}
+      return;
+    }
+    if(event==="call-hangup"){showToast("Дзвінок завершено");cleanupCall();return}
+    if(event==="call-decline"){showToast("Дзвінок відхилено");cleanupCall();return}
+    if(event==="call-busy"){showToast("Користувач зараз зайнятий","error");cleanupCall();return}
+  }catch(e){console.error("call signal",e);showToast("Помилка дзвінка","error");cleanupCall()}
+}
+
+async function acceptIncomingCall(){
+  if(!state.incomingOffer||!state.callTarget)return;
+  try{
+    const pc=await createPeer(state.callTarget);
+    await pc.setRemoteDescription(new RTCSessionDescription(state.incomingOffer));
+    const answer=await pc.createAnswer();await pc.setLocalDescription(answer);
+    await sendCallSignal(state.callTarget,"call-answer",{answer});
+    state.incomingOffer=null;setCallUi("active",state.callTargetProfile,"З'єднання…")
+  }catch(e){showToast(e?.name==="NotAllowedError"?"Дозволь доступ до мікрофона":readableError(e),"error");cleanupCall()}
+}
+
+async function declineIncomingCall(){
+  if(state.callTarget)await sendCallSignal(state.callTarget,"call-decline",{}).catch(()=>{});
+  cleanupCall()
+}
+
+async function endActiveCall(){
+  const target=state.callTarget;
+  cleanupCall();
+  if(target)await sendCallSignal(target,"call-hangup",{}).catch(()=>{})
+}
+
+function cleanupCall(hide=true){
+  clearInterval(state.callTimerInterval);state.callTimerInterval=null;
+  try{state.callPeer?.close()}catch{}
+  state.callPeer=null;
+  state.callStream?.getTracks().forEach(t=>t.stop());state.callStream=null;
+  state.callRemoteStream?.getTracks().forEach(t=>t.stop());state.callRemoteStream=null;
+  dom.remoteAudio.srcObject=null;
+  state.callTarget=null;state.incomingOffer=null;state.callStartedAt=null;state.micMuted=false;state.callTargetProfile=null;
+  if(hide!==false)dom.callModal.classList.add("hidden");
+}
+
+dom.audioCallButton.onclick=startAudioCall;
+dom.acceptCallButton.onclick=acceptIncomingCall;
+dom.declineCallButton.onclick=declineIncomingCall;
+dom.endCallButton.onclick=endActiveCall;
+dom.muteMicButton.onclick=()=>{
+  if(!state.callStream)return;
+  state.micMuted=!state.micMuted;
+  state.callStream.getAudioTracks().forEach(t=>t.enabled=!state.micMuted);
+  dom.muteMicButton.textContent=state.micMuted?"🔇":"🎙️";
+  dom.callStatus.textContent=state.micMuted?"Мікрофон вимкнено":"З'єднано"
+};
+
+const _openApplication22=openApplication;
+openApplication=async function(){
+  await _openApplication22();
+  await setupCallInbox();
+};
+
+/* UI bug guards */
+window.addEventListener("beforeunload",()=>{try{state.callStream?.getTracks().forEach(t=>t.stop())}catch{}});
 
 initialize();
 </script>
