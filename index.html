@@ -543,13 +543,13 @@
       <div class="admin-pane active" id="admin-publish">
         <div class="admin-card">
           <h4>Нова публікація</h4>
-          <div class="field"><label>Заголовок</label><input class="input" id="newsTitleInput" maxlength="120" placeholder="Короткий сильний заголовок"></div>
+          <div class="field"><label>Заголовок</label><input class="input" id="newsTitleInput" maxlength="120" placeholder="Заголовок новини" autocomplete="off"></div>
           <div class="field"><label>Категорія</label>
             <select class="select" id="newsCategoryInput">
               <option>AHLTV</option><option>UMP</option><option>Transfers</option><option>Matches</option>
             </select>
           </div>
-          <div class="field"><label>Опис</label><textarea class="textarea" id="newsDescInput" placeholder="Основний текст новини"></textarea></div>
+          <div class="field"><label>Опис</label><textarea class="textarea" id="newsDescInput" placeholder="Напиши опис новини"></textarea></div>
           <div class="field">
             <label>Фото</label>
             <div class="file-box">
@@ -577,6 +577,9 @@
           <div class="field"><label>Підпис</label><input class="input" id="siteSubtitleInput" placeholder="by sewa/vadim777"></div>
           <div class="field"><label>Лого</label><input class="input" id="siteLogoInput" type="file" accept="image/jpeg,image/png,image/webp"></div>
           <button class="btn btn-primary" id="saveSiteBtn"><i data-lucide="save"></i>Зберегти</button>
+          <div style="margin-top:9px;color:var(--muted);font-size:9px;line-height:1.5">
+            Назва й підпис зберігаються в Supabase для всіх користувачів.
+          </div>
         </div>
       </div>
     </div>
@@ -730,6 +733,9 @@
 
     $("newsImageInput").addEventListener("change",previewNewsImage);
     $("publishNewsBtn").addEventListener("click",publishNews);
+    $("newsDescInput").addEventListener("keydown",e=>{
+      if((e.ctrlKey || e.metaKey) && e.key==="Enter") publishNews();
+    });
     $("saveSiteBtn").addEventListener("click",saveSiteSettings);
   }
 
@@ -1039,37 +1045,98 @@
   }
 
   async function publishNews(){
-    if(state.profile?.role!=="admin"){ toast("Немає доступу","err"); return; }
-    const title=$("newsTitleInput").value.trim();
-    const description=$("newsDescInput").value.trim();
-    const category=$("newsCategoryInput").value;
-    const file=$("newsImageInput").files[0];
+    if(state.profile?.role!=="admin"){
+      toast("Немає доступу адміністратора","err");
+      return;
+    }
 
-    if(title.length<5 || description.length<10){ toast("Заповни заголовок і опис","err"); return; }
-
+    const titleEl=$("newsTitleInput");
+    const descEl=$("newsDescInput");
+    const categoryEl=$("newsCategoryInput");
+    const imageEl=$("newsImageInput");
     const btn=$("publishNewsBtn");
-    btn.disabled=true; btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Публікація...';
+
+    const title=(titleEl?.value || "").trim();
+    const description=(descEl?.value || "").trim();
+    const category=(categoryEl?.value || "AHLTV").trim();
+    const file=imageEl?.files?.[0] || null;
+
+    if(!title){
+      toast("Напиши заголовок новини","err");
+      titleEl?.focus();
+      return;
+    }
+
+    if(!description){
+      toast("Напиши опис новини","err");
+      descEl?.focus();
+      return;
+    }
+
+    if(btn.disabled) return;
+
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Публікую...';
 
     try{
-      const image_url=await uploadImage("news-images",file,"news");
-      const {error}=await sb.from("news").insert({
-        title,description,category,image_url,
-        author:state.profile.username || "Admin",
+      let image_url=null;
+
+      if(file){
+        image_url=await uploadImage("news-images",file,"news");
+      }
+
+      const payload={
+        title,
+        description,
+        category,
+        image_url,
+        author:state.profile?.username || "Sewa199",
         created_by:state.user.id
-      });
+      };
+
+      const {data,error}=await sb
+        .from("news")
+        .insert(payload)
+        .select("id,title,description,image_url,category,author,created_at")
+        .single();
+
       if(error) throw error;
 
-      $("newsTitleInput").value="";
-      $("newsDescInput").value="";
-      $("newsImageInput").value="";
+      titleEl.value="";
+      descEl.value="";
+      if(imageEl) imageEl.value="";
       $("newsPreview").style.display="none";
-      await loadNews();
+
+      if(data){
+        state.news=[data,...state.news.filter(n=>String(n.id)!==String(data.id))];
+        renderNews();
+      }else{
+        await loadNews();
+      }
+
       await loadAdminDashboard();
       toast("Новину опубліковано");
-    }catch(e){
-      console.error(e); toast(e.message||"Помилка публікації","err");
+
+    }catch(error){
+      console.error("Publish news error:",error);
+
+      let msg=error?.message || "Не вдалося опублікувати";
+
+      if(/relation .*news.* does not exist/i.test(msg)){
+        msg="У Supabase ще немає таблиці news";
+      }else if(/row-level security|rls/i.test(msg)){
+        msg="Supabase блокує публікацію. Потрібні права admin для news";
+      }else if(/bucket.*news-images|bucket not found/i.test(msg)){
+        msg="У Supabase немає Storage bucket news-images";
+      }else if(/violates not-null constraint/i.test(msg)){
+        msg="У таблиці news є обов'язкове поле, якого сайт не заповнює";
+      }
+
+      toast(msg,"err");
     }finally{
-      btn.disabled=false; btn.innerHTML='<i data-lucide="send"></i>Опублікувати'; icons();
+      btn.disabled=false;
+      btn.innerHTML='<i data-lucide="send"></i>Опублікувати';
+      icons();
     }
   }
 
@@ -1082,19 +1149,94 @@
   }
 
   async function saveSiteSettings(){
-    if(state.profile?.role!=="admin") return;
-    const title=$("siteTitleInput").value.trim()||"News AHLTV & UMP";
-    const subtitle=$("siteSubtitleInput").value.trim()||"by sewa/vadim777";
+    if(state.profile?.role!=="admin"){
+      toast("Немає прав адміністратора","err");
+      return;
+    }
+
+    const btn=$("saveSiteBtn");
+    const title=$("siteTitleInput").value.trim() || "News AHLTV & UMP";
+    const subtitle=$("siteSubtitleInput").value.trim() || "by sewa/vadim777";
     const file=$("siteLogoInput").files[0];
+
+    if(btn.disabled) return;
+
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Збереження...';
+
     try{
-      let logo_url=state.settings.logo_url||null;
-      if(file) logo_url=await uploadImage("site-assets",file,"logo");
-      const {error}=await sb.from("site_settings").upsert({id:1,title,subtitle,logo_url,updated_by:state.user.id},{onConflict:"id"});
+      let logo_url=state.settings.logo_url || null;
+
+      // 1. Upload logo only if a new file was selected.
+      if(file){
+        try{
+          logo_url=await uploadImage("site-assets",file,"logo");
+        }catch(uploadError){
+          console.error("Logo upload error:",uploadError);
+          throw new Error("Не вдалося завантажити логотип: " + (uploadError?.message || "Storage error"));
+        }
+      }
+
+      // 2. Update the existing settings row.
+      // This avoids UPSERT/RLS edge cases when row id=1 already exists.
+      const payload={
+        title,
+        subtitle,
+        logo_url,
+        updated_by:state.user.id,
+        updated_at:new Date().toISOString()
+      };
+
+      let {data,error}=await sb
+        .from("site_settings")
+        .update(payload)
+        .eq("id",1)
+        .select("id,title,subtitle,logo_url")
+        .maybeSingle();
+
+      // 3. If settings row does not exist, create it.
+      if(!error && !data){
+        const insertResult=await sb
+          .from("site_settings")
+          .insert({id:1,...payload})
+          .select("id,title,subtitle,logo_url")
+          .single();
+
+        data=insertResult.data;
+        error=insertResult.error;
+      }
+
       if(error) throw error;
-      state.settings={title,subtitle,logo_url};
+
+      state.settings={
+        title:data?.title || title,
+        subtitle:data?.subtitle || subtitle,
+        logo_url:data?.logo_url ?? logo_url
+      };
+
       applySettings();
-      toast("Налаштування збережено");
-    }catch(e){ console.error(e); toast("Не вдалося зберегти","err"); }
+      $("siteLogoInput").value="";
+      toast("Налаштування сайту збережено");
+
+    }catch(error){
+      console.error("Save site settings error:",error);
+
+      let message=error?.message || "Невідома помилка";
+
+      if(/row-level security|rls/i.test(message)){
+        message="Supabase заблокував збереження через RLS";
+      }else if(/column .* does not exist/i.test(message)){
+        message="У таблиці site_settings не вистачає потрібної колонки";
+      }else if(/bucket|storage/i.test(message) && file){
+        message="Не вдалося зберегти логотип у Storage";
+      }
+
+      toast(message,"err");
+    }finally{
+      btn.disabled=false;
+      btn.innerHTML='<i data-lucide="save"></i>Зберегти';
+      icons();
+    }
   }
 
   function setupRealtime(){
