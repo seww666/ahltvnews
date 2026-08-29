@@ -1,673 +1,598 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blackbox Minecraft Server Orchestrator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0b0e14;
-            color: #cdd6e0;
-            font-family: 'Segoe UI', 'Roboto', monospace;
-            padding: 2rem 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container {
-            max-width: 1100px;
-            width: 100%;
-            background: #141a22;
-            border-radius: 28px;
-            padding: 2.5rem 2.2rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 1px 0 #2a333f;
-            border: 1px solid #2a333f;
-        }
-        h1 {
-            font-size: 2.4rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-            color: #f0f4fa;
-            border-bottom: 1px solid #2a333f;
-            padding-bottom: 1.2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        h1 small {
-            font-size: 0.9rem;
-            color: #7a8a9e;
-            font-weight: 400;
-            margin-left: auto;
-            background: #1e2835;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            border: 1px solid #2f3d4e;
-        }
-        .grid-2col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        .form-group {
-            margin-bottom: 1.8rem;
-        }
-        label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #8fa2b9;
-            margin-bottom: 0.4rem;
-        }
-        select, input, textarea {
-            width: 100%;
-            background: #0f151e;
-            border: 1px solid #2a333f;
-            border-radius: 14px;
-            padding: 0.75rem 1rem;
-            color: #e6edf5;
-            font-size: 0.95rem;
-            font-family: inherit;
-            transition: 0.2s;
-            outline: none;
-        }
-        select:focus, input:focus, textarea:focus {
-            border-color: #5b7b9e;
-            box-shadow: 0 0 0 3px rgba(60, 130, 210, 0.2);
-        }
-        select option {
-            background: #141a22;
-        }
-        .inline-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .inline-group .form-group {
-            flex: 1;
-            min-width: 120px;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 0.3rem;
-        }
-        .checkbox-group label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 400;
-            text-transform: none;
-            font-size: 0.95rem;
-            color: #bcc9db;
-            cursor: pointer;
-        }
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #3d7eb3;
-        }
-        .btn {
-            background: #1f2b3a;
-            border: none;
-            border-radius: 40px;
-            padding: 0.8rem 2rem;
-            font-weight: 600;
-            font-size: 1rem;
-            color: #eef4fc;
-            cursor: pointer;
-            transition: 0.25s;
-            border: 1px solid #31415a;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-primary {
-            background: #2b4b70;
-            border-color: #3f6a97;
-            box-shadow: 0 4px 12px rgba(40, 100, 200, 0.2);
-        }
-        .btn-primary:hover {
-            background: #35628f;
-            transform: scale(1.02);
-            border-color: #5a8bc2;
-        }
-        .btn-success {
-            background: #1d6b4a;
-            border-color: #2b8f62;
-        }
-        .btn-success:hover {
-            background: #268a5b;
-        }
-        .btn-danger {
-            background: #6b2e3a;
-            border-color: #914a5a;
-        }
-        .btn-danger:hover {
-            background: #8a3d4d;
-        }
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #252f3d;
-        }
-        .log-area {
-            margin-top: 2rem;
-            background: #0a0f16;
-            border-radius: 18px;
-            padding: 1.2rem 1.5rem;
-            border: 1px solid #1f2937;
-            max-height: 280px;
-            overflow-y: auto;
-            font-family: 'JetBrains Mono', 'Consolas', monospace;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            color: #b3c7db;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .log-area .log-entry {
-            border-bottom: 1px solid #18212b;
-            padding: 0.2rem 0;
-        }
-        .log-area .log-entry .time {
-            color: #5f7a96;
-            margin-right: 1rem;
-        }
-        .badge {
-            background: #1f2b3a;
-            padding: 0.2rem 0.8rem;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #9bb0c9;
-            border: 1px solid #2f4057;
-        }
-        .repo-config {
-            background: #0e141d;
-            border-radius: 16px;
-            padding: 1.2rem;
-            margin-top: 1.2rem;
-            border: 1px solid #1e2939;
-        }
-        .repo-config input {
-            background: #070b10;
-        }
-        .flex-row {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .flex-row .form-group {
-            flex: 2;
-            min-width: 200px;
-        }
-        .flex-row .btn {
-            flex: 0 0 auto;
-        }
-        @media (max-width: 760px) {
-            .grid-2col {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            .container {
-                padding: 1.5rem;
-            }
-        }
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        .status-online { background: #3fcf8e; }
-        .status-offline { background: #cf5a5a; }
-        .status-pending { background: #e6b450; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#050b14" />
+  <title>TisGram</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --bg:#030811;
+      --panel:rgba(10,22,38,.72);
+      --panel2:rgba(15,31,50,.74);
+      --glass:rgba(255,255,255,.055);
+      --glass2:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.085);
+      --text:#f6faff;
+      --muted:#8093a8;
+      --blue:#2aaef3;
+      --blue2:#157bc1;
+      --danger:#ff5d67;
+      --success:#3fd492;
+      --shadow:0 24px 70px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.055);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
+      radial-gradient(circle at 15% 10%,rgba(32,155,232,.16),transparent 32%),
+      radial-gradient(circle at 85% 85%,rgba(79,64,188,.12),transparent 35%),
+      linear-gradient(145deg,#02060c,#06101b 48%,#020712);color:var(--text)}
+    button,input,textarea{font:inherit}
+    button{border:0}
+    .hidden{display:none!important}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px}
+    .glass{background:linear-gradient(145deg,rgba(18,39,61,.72),rgba(8,20,34,.66));border:1px solid var(--border);backdrop-filter:blur(30px) saturate(145%);-webkit-backdrop-filter:blur(30px) saturate(145%);box-shadow:var(--shadow)}
+    .icon-btn{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;border:1px solid transparent;transition:.2s}
+    .icon-btn:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.06)}
+    .primary{min-height:48px;padding:0 20px;border-radius:14px;background:linear-gradient(145deg,#36b9f7,#1579bf);color:white;font-weight:800;cursor:pointer;box-shadow:0 10px 28px rgba(22,137,205,.27),inset 0 1px 0 rgba(255,255,255,.22);transition:.2s}
+    .primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .secondary{min-height:46px;padding:0 18px;border-radius:13px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.07);color:var(--text);cursor:pointer}
+    .field{margin-bottom:16px}
+    .field label{display:block;margin-bottom:8px;color:#b9c8d7;font-size:13px;font-weight:700}
+    .field input,.field textarea{width:100%;border:1px solid rgba(255,255,255,.08);outline:none;color:white;background:rgba(255,255,255,.045);border-radius:14px;transition:.2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+    .field input{height:50px;padding:0 15px}
+    .field textarea{min-height:90px;padding:13px 15px;resize:vertical}
+    .field input:focus,.field textarea:focus{border-color:rgba(59,182,244,.48);background:rgba(39,154,220,.07);box-shadow:0 0 0 4px rgba(42,174,243,.055)}
+    .hint{margin-top:6px;color:#6f8196;font-size:11px}
+    #splash{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(circle at 50% 35%,rgba(42,171,238,.17),transparent 35%),#050b14;transition:.35s}
+    #splash.closed{opacity:0;visibility:hidden;pointer-events:none}
+    .logo{width:84px;height:84px;border-radius:28px;display:grid;place-items:center;background:linear-gradient(145deg,#38bdf8,#147bc0);box-shadow:0 20px 60px rgba(42,171,238,.32),inset 0 1px 0 rgba(255,255,255,.25)}
+    .logo svg,.mini-logo svg{fill:white}
+    .splash-title{margin-top:20px;font-size:30px;font-weight:900;letter-spacing:-1px}
+    .splash-sub{margin-top:6px;color:var(--muted);font-size:13px}
+    .loader{width:30px;height:30px;margin-top:25px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #registerScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;background:
+      radial-gradient(circle at 20% 15%,rgba(37,165,235,.2),transparent 33%),
+      radial-gradient(circle at 88% 80%,rgba(75,63,190,.13),transparent 38%),
+      linear-gradient(145deg,#02070e,#071422)}
+    .register-card{width:min(460px,100%);padding:36px;border-radius:30px}
+    .brand{display:flex;gap:14px;align-items:center;margin-bottom:28px}
+    .mini-logo{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#37baf4,#147fc2);box-shadow:0 10px 30px rgba(42,171,238,.25),inset 0 1px 0 rgba(255,255,255,.25)}
+    .mini-logo svg{width:28px}
+    .brand h1{margin:0;font-size:25px;letter-spacing:-.7px}
+    .brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+    .register-card h2{font-size:28px;margin:0 0 7px}
+    .desc{color:var(--muted);line-height:1.6;font-size:14px;margin:0 0 25px}
+    .register-submit{width:100%}
+    #app{width:100%;height:100%;display:grid;grid-template-columns:360px minmax(0,1fr)}
+    .sidebar{height:100%;display:flex;flex-direction:column;border-right:1px solid var(--border);background:linear-gradient(160deg,rgba(11,26,43,.8),rgba(5,14,26,.74));backdrop-filter:blur(30px) saturate(145%);-webkit-backdrop-filter:blur(30px) saturate(145%);box-shadow:12px 0 50px rgba(0,0,0,.16);z-index:10}
+    .sidebar-top{padding:max(14px,env(safe-area-inset-top)) 14px 13px;border-bottom:1px solid rgba(255,255,255,.055)}
+    .sidebar-head{display:flex;align-items:center;gap:11px}
+    .sidebar-brand{flex:1;min-width:0}
+    .sidebar-brand strong{font-size:19px}
+    .sidebar-user{margin-top:2px;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .search{position:relative;margin-top:14px}
+    .search input{width:100%;height:43px;border-radius:14px;border:1px solid rgba(255,255,255,.065);outline:none;background:rgba(255,255,255,.048);color:white;padding:0 40px 0 14px}
+    .search input:focus{border-color:rgba(57,178,242,.45);background:rgba(32,152,220,.075);box-shadow:0 0 0 4px rgba(42,174,243,.07)}
+    .clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:31px;height:31px;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer;display:none}
+    .clear.visible{display:block}
+    .section-label{padding:14px 18px 6px;color:#73859a;font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}
+    .list{flex:1;overflow:auto;padding:4px 8px 14px}
+    .empty{padding:45px 24px;text-align:center;color:var(--muted);font-size:13px}
+    .empty strong{display:block;color:#c7d3df;margin-bottom:6px}
+    .chat-item{display:flex;align-items:center;gap:11px;min-height:72px;padding:10px;border-radius:16px;border:1px solid transparent;cursor:pointer;transition:.2s}
+    .chat-item:hover{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));border-color:rgba(255,255,255,.055)}
+    .chat-item.active{background:linear-gradient(135deg,rgba(39,164,232,.22),rgba(22,104,171,.1));border-color:rgba(69,183,243,.16)}
+    .avatar{width:50px;height:50px;min-width:50px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#1b91cc,#6558dc);border:1px solid rgba(255,255,255,.12);box-shadow:0 7px 20px rgba(0,0,0,.24)}
+    .avatar-fallback{display:grid;place-items:center;font-weight:900;color:#fff;text-transform:uppercase}
+    .chat-info{flex:1;min-width:0}
+    .line1{display:flex;gap:7px;align-items:center}
+    .chat-name{flex:1;min-width:0;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .chat-time{font-size:10px;color:#6e8197}
+    .preview,.search-username{margin-top:5px;color:#74869a;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .chat-area{position:relative;min-width:0;height:100%;display:flex;flex-direction:column;background:
+      radial-gradient(circle at 80% 10%,rgba(29,156,232,.085),transparent 32%),
+      radial-gradient(circle at 20% 85%,rgba(81,68,190,.07),transparent 35%),
+      rgba(3,10,18,.72)}
+    .chat-area:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.07;background-image:radial-gradient(rgba(255,255,255,.22) .5px,transparent .5px);background-size:23px 23px}
+    .welcome{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:30px}
+    .welcome-card{width:min(420px,100%);padding:35px;border-radius:30px;text-align:center}
+    .welcome-card h2{margin:0;font-size:26px}
+    .welcome-card p{margin:9px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+    #activeChat{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column}
+    .chat-header{height:68px;min-height:68px;display:flex;align-items:center;gap:12px;padding:0 16px;background:linear-gradient(145deg,rgba(15,31,50,.69),rgba(8,20,34,.62));border-bottom:1px solid rgba(255,255,255,.075);backdrop-filter:blur(32px) saturate(150%);-webkit-backdrop-filter:blur(32px) saturate(150%)}
+    .header-avatar{width:43px;height:43px;min-width:43px}
+    .chat-head-info{flex:1;min-width:0}
+    #activeChatName{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    #activeChatUsername{font-size:11px;color:#6f8499;margin-top:2px}
+    .mobile-back{display:none}
+    .messages{flex:1;min-height:0;overflow-y:auto;padding:18px clamp(14px,4vw,60px) 22px;scroll-behavior:smooth}
+    .messages-inner{width:min(870px,100%);margin:0 auto;display:flex;flex-direction:column;gap:5px}
+    .date-separator{align-self:center;margin:11px 0;padding:5px 10px;border-radius:999px;background:rgba(10,23,37,.62);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(18px);color:#a2b2c3;font-size:10px;font-weight:700}
+    .message-row{display:flex;align-items:flex-end;gap:7px}
+    .message-row.mine{justify-content:flex-end}
+    .bubble{max-width:min(72%,650px);padding:9px 11px 7px;border-radius:17px 17px 17px 5px;background:linear-gradient(145deg,rgba(28,50,75,.78),rgba(15,34,55,.75));border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px) saturate(125%);box-shadow:0 7px 22px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.055);overflow-wrap:anywhere}
+    .message-row.mine .bubble{border-radius:17px 17px 5px 17px;background:linear-gradient(145deg,rgba(30,145,211,.9),rgba(13,91,153,.9));border-color:rgba(94,199,255,.16)}
+    .message-text{white-space:pre-wrap;line-height:1.42;font-size:14px}
+    .meta{display:flex;justify-content:flex-end;gap:4px;margin-top:3px;color:rgba(221,235,247,.62);font-size:9px}
+    .actions{display:flex;opacity:0;pointer-events:none;transition:.18s}
+    .message-row:hover .actions{opacity:1;pointer-events:auto}
+    .msg-action{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(7,17,29,.85);color:#8094aa;cursor:pointer}
+    .composer-shell{padding:10px clamp(12px,3vw,35px) max(12px,env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(5,14,24,.35),rgba(5,14,24,.78));border-top:1px solid rgba(255,255,255,.045);backdrop-filter:blur(30px)}
+    .composer{width:min(900px,100%);margin:0 auto;display:flex;align-items:flex-end;gap:8px}
+    .input-wrap{flex:1;display:flex;align-items:flex-end;border-radius:18px;background:linear-gradient(145deg,rgba(24,44,66,.68),rgba(12,29,48,.68));border:1px solid rgba(255,255,255,.075);backdrop-filter:blur(24px);box-shadow:0 8px 30px rgba(0,0,0,.13),inset 0 1px 0 rgba(255,255,255,.055)}
+    #messageInput{width:100%;min-height:48px;max-height:150px;resize:none;border:0;outline:none;background:transparent;color:#fff;padding:13px 15px;line-height:1.45}
+    .send{width:50px;height:50px;min-width:50px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#36b9f7,#1579bf);color:#fff;cursor:pointer;box-shadow:0 10px 28px rgba(22,137,205,.27)}
+    .send:disabled{opacity:.45}
+    .modal-overlay{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,4,10,.62);backdrop-filter:blur(17px)}
+    .modal{width:min(500px,100%);max-height:92vh;overflow:auto;border-radius:25px}
+    .modal-head{height:65px;padding:0 19px;display:flex;align-items:center;border-bottom:1px solid var(--border)}
+    .modal-head h3{flex:1;margin:0;font-size:18px}
+    .modal-body{padding:23px}
+    .profile-avatar-wrap{position:relative;width:105px;height:105px;margin:0 auto 22px}
+    .profile-avatar{width:105px;height:105px}
+    .avatar-edit{position:absolute;right:-2px;bottom:3px;width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#39bafa,#1477bc);border:3px solid rgba(9,23,38,.9);cursor:pointer}
+    #avatarInput{display:none}
+    .profile-id{text-align:center;color:#758a9e;font-size:11px;margin-top:10px}
+    .modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}
+    #editMessageText{width:100%;min-height:130px;padding:14px;resize:vertical;border:1px solid rgba(255,255,255,.08);outline:none;border-radius:14px;color:white;background:rgba(255,255,255,.045)}
+    #toastContainer{position:fixed;top:max(16px,env(safe-area-inset-top));right:16px;z-index:9999;width:min(360px,calc(100vw - 32px));display:flex;flex-direction:column;gap:8px}
+    .toast{min-height:50px;padding:12px 14px;display:flex;align-items:center;gap:10px;border-radius:15px;background:linear-gradient(145deg,rgba(25,47,70,.84),rgba(10,26,42,.84));border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(30px);box-shadow:0 18px 55px rgba(0,0,0,.32);font-size:13px}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
+    .toast.success .dot{background:var(--success)} .toast.error .dot{background:var(--danger)}
+    @media(max-width:700px){
+      #app{display:block;position:relative}
+      .sidebar{position:absolute;inset:0;width:100%}
+      .chat-area{position:absolute;inset:0;transform:translateX(100%);transition:.25s;z-index:20}
+      #app.mobile-chat-open .sidebar{transform:translateX(-18%);opacity:.4;pointer-events:none}
+      #app.mobile-chat-open .chat-area{transform:translateX(0)}
+      .mobile-back{display:grid;margin-left:-5px}
+      .messages{padding-left:10px;padding-right:10px}
+      .bubble{max-width:88%}
+      .actions{opacity:1;pointer-events:auto}
+      .modal-overlay{padding:0;align-items:flex-end}
+      .modal{width:100%;border-radius:25px 25px 0 0}
+      .register-card{padding:28px 22px}
+    }
+  </style>
 </head>
 <body>
-<div class="container" id="app">
-    <h1>
-        ⚡ Blackbox·Mine
-        <small>оркестратор · v3.1</small>
-    </h1>
-
-    <div class="grid-2col">
-        <!-- Левая колонка: версия и тип -->
-        <div>
-            <div class="form-group">
-                <label for="mcVersion">Версия Minecraft</label>
-                <select id="mcVersion">
-                    <option value="1.21">1.21 (последняя)</option>
-                    <option value="1.20.6">1.20.6</option>
-                    <option value="1.20.4">1.20.4</option>
-                    <option value="1.19.4">1.19.4</option>
-                    <option value="1.18.2">1.18.2</option>
-                    <option value="1.17.1">1.17.1</option>
-                    <option value="1.16.5">1.16.5</option>
-                    <option value="1.15.2">1.15.2</option>
-                    <option value="1.14.4">1.14.4</option>
-                    <option value="1.12.2">1.12.2</option>
-                    <option value="1.11.2">1.11.2</option>
-                    <option value="1.10.2">1.10.2</option>
-                    <option value="1.9.4">1.9.4</option>
-                    <option value="1.8.9">1.8.9</option>
-                    <option value="1.7.10">1.7.10</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="serverType">Тип сервера</label>
-                <select id="serverType">
-                    <option value="vanilla">Vanilla (чистый)</option>
-                    <option value="paper">Paper (оптимизированный)</option>
-                    <option value="spigot">Spigot</option>
-                    <option value="forge">Forge (моды)</option>
-                    <option value="fabric">Fabric (моды)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="serverName">Название сервера (slug)</label>
-                <input type="text" id="serverName" value="my-survival-01" placeholder="только латиница, цифры, -">
-            </div>
-        </div>
-
-        <!-- Правая колонка: параметры -->
-        <div>
-            <div class="form-group">
-                <label for="ramAlloc">Выделяемая RAM (МБ)</label>
-                <input type="number" id="ramAlloc" value="2048" min="512" step="256">
-            </div>
-            <div class="inline-group">
-                <div class="form-group">
-                    <label for="serverPort">Порт</label>
-                    <input type="number" id="serverPort" value="25565" min="1024" max="65535">
-                </div>
-                <div class="form-group">
-                    <label for="maxPlayers">Макс. игроков</label>
-                    <input type="number" id="maxPlayers" value="20" min="1" max="500">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="gameMode">Режим игры</label>
-                <select id="gameMode">
-                    <option value="survival">Выживание</option>
-                    <option value="creative">Творческий</option>
-                    <option value="adventure">Приключение</option>
-                    <option value="spectator">Наблюдатель</option>
-                </select>
-            </div>
-            <div class="checkbox-group">
-                <label><input type="checkbox" id="enablePvp" checked> PvP</label>
-                <label><input type="checkbox" id="enableFlight" checked> Полёт</label>
-                <label><input type="checkbox" id="enableCommandBlocks" checked> Командные блоки</label>
-            </div>
-        </div>
-    </div>
-
-    <!-- GitHub репозиторий -->
-    <div class="repo-config">
-        <div class="flex-row">
-            <div class="form-group">
-                <label for="githubRepo">Репозиторий GitHub (owner/repo)</label>
-                <input type="text" id="githubRepo" value="yourname/mc-servers" placeholder="например: blackbox/minecraft-infra">
-            </div>
-            <div class="form-group">
-                <label for="githubToken">GitHub Token (classic)</label>
-                <input type="password" id="githubToken" placeholder="ghp_... или fine-grained">
-            </div>
-            <div class="form-group">
-                <label for="configBranch">Ветка</label>
-                <input type="text" id="configBranch" value="main">
-            </div>
-        </div>
-        <div style="font-size:0.8rem; color:#6d7f95; margin-top: 6px;">
-            🔐 Токен хранится только в sessionStorage, не передаётся на сторонние серверы.
-        </div>
-    </div>
-
-    <!-- Действия -->
-    <div class="actions">
-        <button class="btn btn-primary" id="deployBtn">🚀 Развернуть сервер</button>
-        <button class="btn btn-success" id="saveToGitBtn">💾 Сохранить конфиг в GitHub</button>
-        <button class="btn" id="previewBtn">📄 Показать server.properties</button>
-        <button class="btn btn-danger" id="clearLogBtn">🗑️ Очистить лог</button>
-        <span style="margin-left:auto; display:flex; align-items:center; gap:10px;">
-            <span class="status-indicator status-offline" id="statusLight"></span>
-            <span id="statusText" style="color:#8fa2b9;">неактивен</span>
-        </span>
-    </div>
-
-    <!-- Лог -->
-    <div class="log-area" id="logArea">
-        <div class="log-entry"><span class="time">[system]</span> Инициализация оркестратора Blackbox Research</div>
-        <div class="log-entry"><span class="time">[system]</span> Ожидание команд...</div>
-    </div>
+<div id="splash">
+  <div class="logo"><svg viewBox="0 0 24 24" width="46"><path d="M20.7 3.4 2.9 10.3c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.3c.2.6.1.8.8.8.5 0 .8-.2 1-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.2c.3-1.3-.5-1.9-1.8-1.4Z"/></svg></div>
+  <div class="splash-title">TisGram</div>
+  <div class="splash-sub">Приватне спілкування</div>
+  <div class="loader"></div>
 </div>
 
+<section id="registerScreen" class="hidden">
+  <form id="registerForm" class="register-card glass">
+    <div class="brand">
+      <div class="mini-logo"><svg viewBox="0 0 24 24"><path d="M20.7 3.4 2.9 10.3c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.3c.2.6.1.8.8.8.5 0 .8-.2 1-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.2c.3-1.3-.5-1.9-1.8-1.4Z"/></svg></div>
+      <div><h1>TisGram</h1><p>Messenger</p></div>
+    </div>
+    <h2>Створи профіль</h2>
+    <p class="desc">Email, телефон і пароль не потрібні. Зареєструйся один раз — сесія збережеться у браузері.</p>
+    <div class="field">
+      <label for="registerName">Ім'я</label>
+      <input id="registerName" type="text" required minlength="1" maxlength="40" placeholder="Наприклад, Vitalii" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="registerUsername">Username</label>
+      <input id="registerUsername" type="text" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" placeholder="vitalii" autocomplete="off">
+      <div class="hint">3–24 символи: латинські букви, цифри та _</div>
+    </div>
+    <button id="registerButton" class="primary register-submit" type="submit">Створити акаунт</button>
+  </form>
+</section>
+
+<main id="app" class="hidden">
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-head">
+        <div class="mini-logo" style="width:38px;height:38px;border-radius:12px"><svg viewBox="0 0 24 24" style="width:21px"><path d="M20.7 3.4 2.9 10.3c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.3c.2.6.1.8.8.8.5 0 .8-.2 1-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.2c.3-1.3-.5-1.9-1.8-1.4Z"/></svg></div>
+        <div class="sidebar-brand"><strong>TisGram</strong><div id="sidebarUsername" class="sidebar-user">@username</div></div>
+        <button id="profileButton" class="icon-btn" type="button">👤</button>
+      </div>
+      <div class="search">
+        <input id="userSearch" type="search" placeholder="Знайти користувача..." autocomplete="off">
+        <button id="clearSearch" class="clear" type="button">×</button>
+      </div>
+    </div>
+    <div id="listLabel" class="section-label">Чати</div>
+    <div id="sidebarList" class="list"></div>
+  </aside>
+
+  <section class="chat-area">
+    <div id="welcomeScreen" class="welcome">
+      <div class="welcome-card glass">
+        <div style="font-size:42px;margin-bottom:14px">💬</div>
+        <h2>TisGram</h2>
+        <p>Вибери чат або знайди користувача за username.</p>
+      </div>
+    </div>
+
+    <div id="activeChat" class="hidden">
+      <header class="chat-header">
+        <button id="mobileBackButton" class="icon-btn mobile-back" type="button">←</button>
+        <div id="activeChatAvatar"></div>
+        <div class="chat-head-info">
+          <div id="activeChatName"></div>
+          <div id="activeChatUsername"></div>
+        </div>
+      </header>
+      <div id="messages" class="messages"><div id="messagesInner" class="messages-inner"></div></div>
+      <div class="composer-shell">
+        <form id="messageForm" class="composer">
+          <div class="input-wrap"><textarea id="messageInput" maxlength="4000" rows="1" placeholder="Повідомлення..."></textarea></div>
+          <button id="sendButton" class="send" type="submit">➤</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="profileModal" class="modal-overlay hidden">
+  <div class="modal glass">
+    <div class="modal-head"><h3>Мій профіль</h3><button id="closeProfileModal" class="icon-btn" type="button">×</button></div>
+    <form id="profileForm" class="modal-body">
+      <div class="profile-avatar-wrap">
+        <div id="profileAvatarPreview"></div>
+        <label class="avatar-edit">✎<input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+      </div>
+      <div id="profileId" class="profile-id"></div>
+      <div class="field"><label for="profileName">Ім'я</label><input id="profileName" maxlength="40" required></div>
+      <div class="field"><label for="profileUsername">Username</label><input id="profileUsername" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" required></div>
+      <div class="field"><label for="profileBio">Про себе</label><textarea id="profileBio" maxlength="160" placeholder="Кілька слів про себе..."></textarea></div>
+      <div class="modal-actions"><button id="cancelProfile" class="secondary" type="button">Скасувати</button><button id="saveProfileButton" class="primary" type="submit">Зберегти</button></div>
+    </form>
+  </div>
+</div>
+
+<div id="editMessageModal" class="modal-overlay hidden">
+  <div class="modal glass">
+    <div class="modal-head"><h3>Редагувати повідомлення</h3><button id="closeEditModal" class="icon-btn" type="button">×</button></div>
+    <form id="editMessageForm" class="modal-body">
+      <textarea id="editMessageText" maxlength="4000" required></textarea>
+      <div class="modal-actions"><button id="cancelEditMessage" class="secondary" type="button">Скасувати</button><button class="primary" type="submit">Зберегти</button></div>
+    </form>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
 <script>
-    (function() {
-        "use strict";
+"use strict";
 
-        const logArea = document.getElementById('logArea');
-        const statusLight = document.getElementById('statusLight');
-        const statusText = document.getElementById('statusText');
+const SUPABASE_URL = "https://qxtakglepnrnewwynnij.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_W2Db_WneZp2gyi_MUtJ8tQ_dx29imBX";
 
-        // DOM-поля
-        const mcVersion = document.getElementById('mcVersion');
-        const serverType = document.getElementById('serverType');
-        const serverName = document.getElementById('serverName');
-        const ramAlloc = document.getElementById('ramAlloc');
-        const serverPort = document.getElementById('serverPort');
-        const maxPlayers = document.getElementById('maxPlayers');
-        const gameMode = document.getElementById('gameMode');
-        const enablePvp = document.getElementById('enablePvp');
-        const enableFlight = document.getElementById('enableFlight');
-        const enableCommandBlocks = document.getElementById('enableCommandBlocks');
-        const githubRepo = document.getElementById('githubRepo');
-        const githubToken = document.getElementById('githubToken');
-        const configBranch = document.getElementById('configBranch');
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
 
-        // Кнопки
-        const deployBtn = document.getElementById('deployBtn');
-        const saveToGitBtn = document.getElementById('saveToGitBtn');
-        const previewBtn = document.getElementById('previewBtn');
-        const clearLogBtn = document.getElementById('clearLogBtn');
+const state = {
+  user:null, profile:null, conversations:[], profiles:new Map(),
+  activeConversation:null, activeUser:null, messages:[],
+  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null
+};
 
-        // --- Вспомогательные функции ---
-        function getTimestamp() {
-            return new Date().toLocaleTimeString('ru-RU', { hour12: false });
-        }
+const $ = s => document.querySelector(s);
+const dom = {
+  splash:$("#splash"), registerScreen:$("#registerScreen"), registerForm:$("#registerForm"),
+  registerName:$("#registerName"), registerUsername:$("#registerUsername"), registerButton:$("#registerButton"),
+  app:$("#app"), sidebarUsername:$("#sidebarUsername"), sidebarList:$("#sidebarList"), listLabel:$("#listLabel"),
+  userSearch:$("#userSearch"), clearSearch:$("#clearSearch"), profileButton:$("#profileButton"),
+  welcomeScreen:$("#welcomeScreen"), activeChat:$("#activeChat"), activeChatAvatar:$("#activeChatAvatar"),
+  activeChatName:$("#activeChatName"), activeChatUsername:$("#activeChatUsername"), messages:$("#messages"),
+  messagesInner:$("#messagesInner"), messageForm:$("#messageForm"), messageInput:$("#messageInput"),
+  sendButton:$("#sendButton"), mobileBackButton:$("#mobileBackButton"), profileModal:$("#profileModal"),
+  closeProfileModal:$("#closeProfileModal"), cancelProfile:$("#cancelProfile"), profileForm:$("#profileForm"),
+  profileName:$("#profileName"), profileUsername:$("#profileUsername"), profileBio:$("#profileBio"),
+  profileId:$("#profileId"), profileAvatarPreview:$("#profileAvatarPreview"), avatarInput:$("#avatarInput"),
+  saveProfileButton:$("#saveProfileButton"), editMessageModal:$("#editMessageModal"), closeEditModal:$("#closeEditModal"),
+  cancelEditMessage:$("#cancelEditMessage"), editMessageForm:$("#editMessageForm"), editMessageText:$("#editMessageText"),
+  toastContainer:$("#toastContainer")
+};
 
-        function addLog(message, type = 'info') {
-            const entry = document.createElement('div');
-            entry.className = 'log-entry';
-            const time = getTimestamp();
-            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warn' ? '⚠️' : 'ℹ️';
-            entry.innerHTML = `<span class="time">[${time}]</span> ${prefix} ${message}`;
-            logArea.appendChild(entry);
-            logArea.scrollTop = logArea.scrollHeight;
-        }
+function showToast(message,type="normal"){
+  const el=document.createElement("div"); el.className=`toast ${type}`;
+  const dot=document.createElement("div"); dot.className="dot";
+  const text=document.createElement("div"); text.textContent=message;
+  el.append(dot,text); dom.toastContainer.appendChild(el);
+  setTimeout(()=>{el.style.opacity="0";setTimeout(()=>el.remove(),200)},3200);
+}
+function readableError(e){
+  console.error(e);
+  const m=String(e?.message||e?.error_description||e||"Невідома помилка");
+  if(m.includes("duplicate key")||m.includes("profiles_username")) return "Такий username вже зайнятий";
+  if(m.includes("Anonymous sign-ins are disabled")) return "У Supabase увімкни Allow anonymous sign-ins";
+  if(m.includes("Failed to fetch")||m.includes("Network")) return "Помилка: перевір підключення";
+  return m;
+}
+function normalizeUsername(v){return String(v||"").trim().replace(/^@+/,"")}
+function validUsername(v){return /^[A-Za-z0-9_]{3,24}$/.test(v)}
+function initials(v){const w=String(v||"?").trim().split(/\s+/).filter(Boolean);return (w.length>1?w[0][0]+w[1][0]:String(v||"?").slice(0,2)).toUpperCase()}
+function avatarFallback(p,extra=""){const d=document.createElement("div");d.className=`avatar avatar-fallback ${extra}`;d.textContent=initials(p?.display_name||p?.username);return d}
+function createAvatar(p,extra=""){
+  if(p?.avatar_url){
+    const img=document.createElement("img");img.className=`avatar ${extra}`;img.src=p.avatar_url;img.alt="";
+    img.onerror=()=>img.replaceWith(avatarFallback(p,extra));return img;
+  }
+  return avatarFallback(p,extra);
+}
+function formatChatTime(v){if(!v)return"";const d=new Date(v),n=new Date();if(d.toDateString()===n.toDateString())return d.toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"});return d.toLocaleDateString("uk-UA",{day:"2-digit",month:"2-digit"})}
+function formatMessageTime(v){return new Date(v).toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"})}
+function dateKey(v){const d=new Date(v);return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`}
+function dateLabel(v){const d=new Date(v),t=new Date(),y=new Date();y.setDate(t.getDate()-1);if(d.toDateString()===t.toDateString())return"Сьогодні";if(d.toDateString()===y.toDateString())return"Вчора";return d.toLocaleDateString("uk-UA",{day:"numeric",month:"long",year:d.getFullYear()!==t.getFullYear()?"numeric":undefined})}
+function scrollBottom(instant=false){requestAnimationFrame(()=>dom.messages.scrollTo({top:dom.messages.scrollHeight,behavior:instant?"auto":"smooth"}))}
+function autoResize(){dom.messageInput.style.height="auto";dom.messageInput.style.height=Math.min(dom.messageInput.scrollHeight,150)+"px"}
 
-        function setStatus(state, text) {
-            statusLight.className = 'status-indicator';
-            if (state === 'online') {
-                statusLight.classList.add('status-online');
-                statusText.textContent = text || 'онлайн';
-            } else if (state === 'pending') {
-                statusLight.classList.add('status-pending');
-                statusText.textContent = text || 'в процессе...';
-            } else {
-                statusLight.classList.add('status-offline');
-                statusText.textContent = text || 'офлайн';
-            }
-        }
+async function initialize(){
+  try{
+    const {data:{session},error}=await sb.auth.getSession();
+    if(error)throw error;
+    if(!session?.user){showRegistration();return}
+    state.user=session.user;
+    const p=await getMyProfile();
+    if(!p){showRegistration();return}
+    state.profile=p;
+    await openApplication();
+  }catch(e){showToast(readableError(e),"error");showRegistration()}
+}
+function showRegistration(){dom.app.classList.add("hidden");dom.registerScreen.classList.remove("hidden");dom.splash.classList.add("closed")}
+async function openApplication(){dom.registerScreen.classList.add("hidden");dom.app.classList.remove("hidden");dom.sidebarUsername.textContent="@"+state.profile.username;await loadConversations();subscribeRealtime();dom.splash.classList.add("closed")}
 
-        // --- Генерация server.properties ---
-        function generateServerProperties() {
-            const version = mcVersion.value;
-            const type = serverType.value;
-            const name = serverName.value.trim() || 'unnamed-server';
-            const ram = parseInt(ramAlloc.value) || 2048;
-            const port = parseInt(serverPort.value) || 25565;
-            const maxP = parseInt(maxPlayers.value) || 20;
-            const mode = gameMode.value;
-            const pvp = enablePvp.checked ? 'true' : 'false';
-            const flight = enableFlight.checked ? 'true' : 'false';
-            const cmdBlocks = enableCommandBlocks.checked ? 'true' : 'false';
+dom.registerForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const display_name=dom.registerName.value.trim();
+  const username=normalizeUsername(dom.registerUsername.value);
+  if(!display_name)return showToast("Вкажи ім'я","error");
+  if(!validUsername(username))return showToast("Некоректний username","error");
+  dom.registerButton.disabled=true;dom.registerButton.textContent="Створення...";
+  try{
+    if(!state.user){
+      const {data,error}=await sb.auth.signInAnonymously();
+      if(error)throw error;
+      state.user=data.user;
+    }
+    const {data,error}=await sb.from("profiles").insert({id:state.user.id,username,display_name,bio:""}).select().single();
+    if(error)throw error;
+    state.profile=data;
+    showToast("Акаунт створено","success");
+    await openApplication();
+  }catch(err){showToast(readableError(err),"error")}
+  finally{dom.registerButton.disabled=false;dom.registerButton.textContent="Створити акаунт"}
+});
 
-            // Формируем конфиг как объект
-            const props = {
-                '#Minecraft server properties': '',
-                'generated_by': 'Blackbox-Orchestrator v3.1',
-                'version': version,
-                'server_type': type,
-                'server_name': name,
-                'ram_mb': ram,
-                'server_port': port,
-                'max_players': maxP,
-                'gamemode': mode,
-                'pvp': pvp,
-                'allow_flight': flight,
-                'enable_command_block': cmdBlocks,
-                'motd': `§a${name} §6| §b${version} §7| §fBlackbox`,
-                'level_seed': Math.floor(Math.random() * 1000000000),
-                'view_distance': 10,
-                'simulation_distance': 8,
-                'spawn_protection': 16,
-                'max_tick_time': 60000,
-                'network_compression_threshold': 256,
-                'use_native_transport': 'true',
-                'enable_status': 'true',
-                'enable_query': 'false',
-                'enable_rcon': 'false',
-                'rcon_port': 25575,
-                'broadcast_rcon_to_ops': 'true',
-                'sync_chunk_writes': 'true',
-                'prevent_proxy_connections': 'false',
-                'hide_online_players': 'false',
-                'player_idle_timeout': 0,
-                'entity_broadcast_range_percentage': 100,
-                'function_permission_level': 2,
-                'op_permission_level': 4,
-                'level_type': 'default',
-                'generator_settings': '{}',
-                'allow_nether': 'true',
-                'allow_end': 'true',
-                'allow_animals': 'true',
-                'allow_monsters': 'true',
-                'hardcore': 'false',
-                'spawn_animals': 'true',
-                'spawn_monsters': 'true',
-                'spawn_npcs': 'true',
-                'spawn_peaceful_mobs': 'true',
-                'announce_player_achievements': 'true',
-                'enable_autosave': 'true',
-                'force_gamemode': 'false',
-                'max_build_height': 320,
-                'max_world_size': 29999984,
-                'seed': '',
-                'level_name': `world_${name}`,
-                'level_seed': Math.floor(Math.random() * 1000000000)
-            };
+async function getMyProfile(){
+  const {data,error}=await sb.from("profiles").select("*").eq("id",state.user.id).maybeSingle();
+  if(error)throw error;return data;
+}
 
-            // Сборка в строку
-            let lines = [];
-            for (const [key, val] of Object.entries(props)) {
-                if (key.startsWith('#')) {
-                    lines.push(key);
-                } else {
-                    lines.push(`${key}=${val}`);
-                }
-            }
-            return lines.join('\n');
-        }
+function openProfile(){
+  dom.profileName.value=state.profile.display_name||"";
+  dom.profileUsername.value=state.profile.username||"";
+  dom.profileBio.value=state.profile.bio||"";
+  dom.profileId.textContent="TisGram ID: "+state.user.id.slice(0,8);
+  dom.profileAvatarPreview.replaceChildren(createAvatar(state.profile,"profile-avatar"));
+  state.pendingAvatar=null;dom.avatarInput.value="";
+  dom.profileModal.classList.remove("hidden");
+}
+function closeProfile(){dom.profileModal.classList.add("hidden");state.pendingAvatar=null}
+dom.profileButton.onclick=openProfile;dom.closeProfileModal.onclick=closeProfile;dom.cancelProfile.onclick=closeProfile;
+dom.profileModal.addEventListener("click",e=>{if(e.target===dom.profileModal)closeProfile()});
 
-        // --- Сборка полного манифеста ---
-        function buildDeploymentManifest() {
-            const name = serverName.value.trim() || 'server-' + Date.now();
-            const version = mcVersion.value;
-            const type = serverType.value;
-            const ram = parseInt(ramAlloc.value) || 2048;
-            const port = parseInt(serverPort.value) || 25565;
-            const maxP = parseInt(maxPlayers.value) || 20;
-            const mode = gameMode.value;
+dom.avatarInput.addEventListener("change",async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  if(file.size>8*1024*1024)return showToast("Фото має бути менше 8 МБ","error");
+  try{
+    state.pendingAvatar=await compressImage(file);
+    const img=document.createElement("img");img.className="avatar profile-avatar";img.src=URL.createObjectURL(state.pendingAvatar);
+    dom.profileAvatarPreview.replaceChildren(img);
+  }catch{showToast("Не вдалося обробити фото","error")}
+});
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{
+      const scale=Math.min(1,600/Math.max(img.width,img.height)),c=document.createElement("canvas");
+      c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      c.toBlob(b=>{URL.revokeObjectURL(url);b?resolve(b):reject()},"image/webp",.84)
+    };img.onerror=reject;img.src=url;
+  });
+}
+async function uploadAvatar(){
+  if(!state.pendingAvatar)return state.profile.avatar_url;
+  const path=`${state.user.id}/avatar.webp`;
+  const {error}=await sb.storage.from("avatars").upload(path,state.pendingAvatar,{contentType:"image/webp",upsert:true});
+  if(error)throw error;
+  const {data}=sb.storage.from("avatars").getPublicUrl(path);
+  return data.publicUrl+"?v="+Date.now();
+}
+dom.profileForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const display_name=dom.profileName.value.trim(),username=normalizeUsername(dom.profileUsername.value),bio=dom.profileBio.value.trim();
+  if(!display_name)return showToast("Вкажи ім'я","error");
+  if(!validUsername(username))return showToast("Некоректний username","error");
+  dom.saveProfileButton.disabled=true;
+  try{
+    const avatar_url=await uploadAvatar();
+    const {data,error}=await sb.from("profiles").update({display_name,username,bio,avatar_url,updated_at:new Date().toISOString()}).eq("id",state.user.id).select().single();
+    if(error)throw error;
+    state.profile=data;state.profiles.set(state.user.id,data);dom.sidebarUsername.textContent="@"+data.username;closeProfile();showToast("Профіль оновлено","success");await loadConversations();
+  }catch(err){showToast(readableError(err),"error")}
+  finally{dom.saveProfileButton.disabled=false}
+});
 
-            return {
-                serverName: name,
-                minecraftVersion: version,
-                serverType: type,
-                ramMB: ram,
-                port: port,
-                maxPlayers: maxP,
-                gameMode: mode,
-                pvp: enablePvp.checked,
-                allowFlight: enableFlight.checked,
-                commandBlocks: enableCommandBlocks.checked,
-                properties: generateServerProperties(),
-                timestamp: new Date().toISOString(),
-                deployTarget: 'blackbox-orchestrator',
-                repository: githubRepo.value.trim() || 'unknown/repo',
-                branch: configBranch.value.trim() || 'main'
-            };
-        }
+async function loadConversations(){
+  try{
+    const uid=state.user.id;
+    const {data,error}=await sb.from("conversations").select("*").or(`user_a.eq.${uid},user_b.eq.${uid}`).order("updated_at",{ascending:false});
+    if(error)throw error;
+    state.conversations=data||[];
+    const ids=[...new Set(state.conversations.map(c=>c.user_a===uid?c.user_b:c.user_a))];
+    if(ids.length){
+      const {data:ps,error:pe}=await sb.from("profiles").select("*").in("id",ids);if(pe)throw pe;
+      (ps||[]).forEach(p=>state.profiles.set(p.id,p));
+    }
+    for(const c of state.conversations){
+      const {data:last}=await sb.from("messages").select("id,body,sender_id,created_at").eq("conversation_id",c.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
+      c.last_message=last||null;
+    }
+    state.conversations.sort((a,b)=>new Date(b.last_message?.created_at||b.updated_at)-new Date(a.last_message?.created_at||a.updated_at));
+    renderConversationList();
+  }catch(e){showToast(readableError(e),"error")}
+}
+function renderConversationList(){
+  dom.sidebarList.replaceChildren();dom.listLabel.textContent="Чати";
+  if(!state.conversations.length){const e=document.createElement("div");e.className="empty";e.innerHTML="<strong>Поки немає чатів</strong>Знайди людину через пошук зверху.";dom.sidebarList.appendChild(e);return}
+  for(const c of state.conversations){
+    const oid=c.user_a===state.user.id?c.user_b:c.user_a,p=state.profiles.get(oid);if(!p)continue;
+    const item=document.createElement("div");item.className="chat-item"+(state.activeConversation?.id===c.id?" active":"");
+    item.appendChild(createAvatar(p));
+    const info=document.createElement("div");info.className="chat-info";
+    const l=document.createElement("div");l.className="line1";
+    const n=document.createElement("div");n.className="chat-name";n.textContent=p.display_name;
+    const t=document.createElement("div");t.className="chat-time";t.textContent=formatChatTime(c.last_message?.created_at);
+    l.append(n,t);
+    const pr=document.createElement("div");pr.className="preview";pr.textContent=c.last_message?((c.last_message.sender_id===state.user.id?"Ви: ":"")+c.last_message.body):"@"+p.username;
+    info.append(l,pr);item.appendChild(info);item.onclick=()=>openConversation(c,p);dom.sidebarList.appendChild(item);
+  }
+}
 
-        // --- Эмуляция деплоя на удалённый сервер ---
-        function simulateDeploy(manifest) {
-            setStatus('pending', 'деплой...');
-            addLog(`Начат деплой сервера "${manifest.serverName}" (${manifest.minecraftVersion}, ${manifest.serverType})`, 'info');
+dom.userSearch.addEventListener("input",()=>{
+  const q=normalizeUsername(dom.userSearch.value);dom.clearSearch.classList.toggle("visible",!!q);
+  clearTimeout(state.searchTimeout);if(!q)return renderConversationList();
+  state.searchTimeout=setTimeout(()=>searchUsers(q),250);
+});
+dom.clearSearch.onclick=()=>{dom.userSearch.value="";dom.clearSearch.classList.remove("visible");renderConversationList()};
+async function searchUsers(q){
+  try{
+    dom.listLabel.textContent="Результати";
+    const {data,error}=await sb.from("profiles").select("*").neq("id",state.user.id).or(`username.ilike.%${q}%,display_name.ilike.%${q}%`).limit(30);
+    if(error)throw error;if(normalizeUsername(dom.userSearch.value)!==q)return;renderSearchResults(data||[]);
+  }catch(e){showToast(readableError(e),"error")}
+}
+function renderSearchResults(users){
+  dom.sidebarList.replaceChildren();
+  if(!users.length){const e=document.createElement("div");e.className="empty";e.innerHTML="<strong>Нічого не знайдено</strong>Спробуй інший username.";dom.sidebarList.appendChild(e);return}
+  users.forEach(p=>{
+    const item=document.createElement("div");item.className="chat-item";item.appendChild(createAvatar(p));
+    const info=document.createElement("div");info.className="chat-info";
+    const n=document.createElement("div");n.className="chat-name";n.textContent=p.display_name;
+    const u=document.createElement("div");u.className="search-username";u.textContent="@"+p.username;
+    info.append(n,u);item.appendChild(info);item.onclick=()=>startConversation(p);dom.sidebarList.appendChild(item);
+  });
+}
+async function startConversation(p){
+  try{
+    let c=state.conversations.find(x=>(x.user_a===state.user.id&&x.user_b===p.id)||(x.user_b===state.user.id&&x.user_a===p.id));
+    if(!c){
+      const {data,error}=await sb.from("conversations").insert({user_a:state.user.id,user_b:p.id}).select().single();
+      if(error){
+        if(error.code==="23505"){await loadConversations();c=state.conversations.find(x=>(x.user_a===state.user.id&&x.user_b===p.id)||(x.user_b===state.user.id&&x.user_a===p.id))}
+        else throw error;
+      } else {c=data;c.last_message=null;state.conversations.unshift(c)}
+    }
+    state.profiles.set(p.id,p);dom.userSearch.value="";dom.clearSearch.classList.remove("visible");renderConversationList();await openConversation(c,p);
+  }catch(e){showToast(readableError(e),"error")}
+}
+async function openConversation(c,p){
+  state.activeConversation=c;state.activeUser=p;dom.welcomeScreen.classList.add("hidden");dom.activeChat.classList.remove("hidden");
+  dom.activeChatName.textContent=p.display_name;dom.activeChatUsername.textContent="@"+p.username;dom.activeChatAvatar.replaceChildren(createAvatar(p,"header-avatar"));
+  dom.app.classList.add("mobile-chat-open");renderConversationList();await loadMessages();
+}
+async function loadMessages(){
+  try{
+    const {data,error}=await sb.from("messages").select("*").eq("conversation_id",state.activeConversation.id).order("created_at",{ascending:true}).limit(500);
+    if(error)throw error;state.messages=data||[];renderMessages();scrollBottom(true);
+  }catch(e){showToast(readableError(e),"error")}
+}
+function renderMessages(){
+  dom.messagesInner.replaceChildren();
+  if(!state.messages.length){const e=document.createElement("div");e.className="empty";e.innerHTML=`<strong>Новий чат</strong>Напиши перше повідомлення для ${state.activeUser.display_name}`;dom.messagesInner.appendChild(e);return}
+  let last=null;
+  for(const m of state.messages){
+    const k=dateKey(m.created_at);if(k!==last){const s=document.createElement("div");s.className="date-separator";s.textContent=dateLabel(m.created_at);dom.messagesInner.appendChild(s);last=k}
+    dom.messagesInner.appendChild(createMessage(m));
+  }
+}
+function createMessage(m){
+  const mine=m.sender_id===state.user.id,row=document.createElement("div");row.className="message-row"+(mine?" mine":"");
+  const bubble=document.createElement("div");bubble.className="bubble";
+  const text=document.createElement("div");text.className="message-text";text.textContent=m.body;
+  const meta=document.createElement("div");meta.className="meta";
+  if(m.updated_at&&new Date(m.updated_at).getTime()>new Date(m.created_at).getTime()+1000){const ed=document.createElement("span");ed.textContent="ред.";meta.appendChild(ed)}
+  const tm=document.createElement("span");tm.textContent=formatMessageTime(m.created_at);meta.appendChild(tm);bubble.append(text,meta);
+  if(mine){
+    const actions=document.createElement("div");actions.className="actions";
+    const edit=document.createElement("button");edit.className="msg-action";edit.type="button";edit.textContent="✎";edit.onclick=()=>openEdit(m);
+    const del=document.createElement("button");del.className="msg-action";del.type="button";del.textContent="×";del.onclick=()=>deleteMessage(m.id);
+    actions.append(edit,del);row.append(actions,bubble);
+  }else row.appendChild(bubble);
+  return row;
+}
 
-            return new Promise((resolve) => {
-                const delay = 1800 + Math.random() * 1200;
-                setTimeout(() => {
-                    const success = Math.random() > 0.08; // 92% успеха
-                    if (success) {
-                        const ip = `192.168.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
-                        const assignedPort = manifest.port;
-                        addLog(`✅ Сервер успешно развёрнут на ${ip}:${assignedPort} | RAM: ${manifest.ramMB}МБ`, 'success');
-                        addLog(`📁 Конфиг сохранён в /opt/minecraft/${manifest.serverName}/server.properties`, 'info');
-                        setStatus('online', `активен (${ip})`);
-                        resolve({ success: true, ip, port: assignedPort });
-                    } else {
-                        addLog(`❌ Ошибка деплоя: таймаут соединения с узлом #${Math.floor(Math.random()*5)+1}`, 'error');
-                        setStatus('offline', 'ошибка деплоя');
-                        resolve({ success: false, error: 'deploy_timeout' });
-                    }
-                }, delay);
-            });
-        }
+dom.messageForm.addEventListener("submit",e=>{e.preventDefault();sendMessage()});
+dom.messageInput.addEventListener("input",autoResize);
+dom.messageInput.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}});
+async function sendMessage(){
+  if(!state.activeConversation)return;
+  const body=dom.messageInput.value.trim();if(!body)return;
+  dom.sendButton.disabled=true;const old=dom.messageInput.value;dom.messageInput.value="";autoResize();
+  try{
+    const {data,error}=await sb.from("messages").insert({conversation_id:state.activeConversation.id,sender_id:state.user.id,body}).select().single();
+    if(error)throw error;
+    if(!state.messages.some(x=>x.id===data.id)){state.messages.push(data);renderMessages();scrollBottom()}
+    updateConversationPreview(data);
+  }catch(e){dom.messageInput.value=old;autoResize();showToast(readableError(e),"error")}
+  finally{dom.sendButton.disabled=false;dom.messageInput.focus()}
+}
 
-        // --- Сохранение в GitHub через API ---
-        async function saveToGitHub(manifest) {
-            const repo = githubRepo.value.trim();
-            const token = githubToken.value.trim();
-            const branch = configBranch.value.trim() || 'main';
+function openEdit(m){state.editingMessageId=m.id;dom.editMessageText.value=m.body;dom.editMessageModal.classList.remove("hidden")}
+function closeEdit(){dom.editMessageModal.classList.add("hidden");state.editingMessageId=null}
+dom.closeEditModal.onclick=closeEdit;dom.cancelEditMessage.onclick=closeEdit;dom.editMessageModal.addEventListener("click",e=>{if(e.target===dom.editMessageModal)closeEdit()});
+dom.editMessageForm.addEventListener("submit",async e=>{
+  e.preventDefault();const body=dom.editMessageText.value.trim();if(!body||!state.editingMessageId)return;
+  try{
+    const {data,error}=await sb.from("messages").update({body,updated_at:new Date().toISOString()}).eq("id",state.editingMessageId).select().single();
+    if(error)throw error;const i=state.messages.findIndex(x=>x.id===data.id);if(i!==-1)state.messages[i]=data;renderMessages();closeEdit();showToast("Повідомлення змінено","success");await loadConversations();
+  }catch(err){showToast(readableError(err),"error")}
+});
+async function deleteMessage(id){
+  if(!confirm("Видалити це повідомлення?"))return;
+  try{const {error}=await sb.from("messages").delete().eq("id",id);if(error)throw error;state.messages=state.messages.filter(x=>x.id!==id);renderMessages();showToast("Повідомлення видалено","success");await loadConversations()}
+  catch(e){showToast(readableError(e),"error")}
+}
 
-            if (!repo || !token) {
-                addLog('⚠️ Не указан репозиторий или токен GitHub', 'warn');
-                return false;
-            }
+function subscribeRealtime(){
+  if(state.realtimeChannel)sb.removeChannel(state.realtimeChannel);
+  state.realtimeChannel=sb.channel("tisgram-messages-"+state.user.id)
+    .on("postgres_changes",{event:"*",schema:"public",table:"messages"},async payload=>{
+      if(payload.eventType==="INSERT"){
+        const m=payload.new;
+        if(state.activeConversation&&m.conversation_id===state.activeConversation.id&&!state.messages.some(x=>x.id===m.id)){state.messages.push(m);renderMessages();scrollBottom()}
+        updateConversationPreview(m);
+      }
+      if(payload.eventType==="UPDATE"){
+        const m=payload.new,i=state.messages.findIndex(x=>x.id===m.id);if(i!==-1){state.messages[i]=m;renderMessages()}
+      }
+      if(payload.eventType==="DELETE"){state.messages=state.messages.filter(x=>x.id!==payload.old?.id);renderMessages();await loadConversations()}
+    }).subscribe();
+}
+function updateConversationPreview(m){
+  const c=state.conversations.find(x=>x.id===m.conversation_id);if(!c){loadConversations();return}
+  c.last_message=m;state.conversations=[c,...state.conversations.filter(x=>x.id!==c.id)];renderConversationList();
+}
 
-            const path = `servers/${manifest.serverName}/server.properties`;
-            const content = btoa(unescape(encodeURIComponent(manifest.properties))); // Base64
-            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+dom.mobileBackButton.onclick=()=>dom.app.classList.remove("mobile-chat-open");
+sb.auth.onAuthStateChange((event,session)=>{if(session?.user&&!state.user)state.user=session.user});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!dom.editMessageModal.classList.contains("hidden"))closeEdit();else if(!dom.profileModal.classList.contains("hidden"))closeProfile()}});
 
-            try {
-                addLog(`⏳ Отправка конфига в ${repo}:${branch} ...`, 'info');
-                // Сначала пробуем получить файл (для получения sha)
-                let sha = null;
-                try {
-                    const getResp = await fetch(url, {
-                        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
-                    });
-                    if (getResp.ok) {
-                        const data = await getResp.json();
-                        sha = data.sha;
-                    }
-                } catch (e) { /* файл не существует */ }
-
-                const payload = {
-                    message: `Обновление конфига для ${manifest.serverName} от ${new Date().toISOString()}`,
-                    content: content,
-                    branch: branch,
-                    sha: sha || undefined
-                };
-
-                const method = sha ? 'PUT' : 'PUT';
-                const resp = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/vnd.github+json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (resp.ok) {
-                    addLog(`✅ Конфигурация сохранена в GitHub: ${repo}/${path}`, 'success');
-                    return true;
-                } else {
-                    const errText = await resp.text();
-                    addLog(`❌ Ошибка GitHub: ${resp.status} ${errText.substring(0, 120)}`, 'error');
-                    return false;
-                }
-            } catch (err) {
-                addLog(`❌ Исключение при сохранении в GitHub: ${err.message}`, 'error');
-                return false;
-            }
-        }
-
-        // --- Обработчики ---
-
-        // Деплой
-        deployBtn.addEventListener('click', async function() {
-            const manifest = buildDeploymentManifest();
-            addLog(`🚀 Запуск деплоя для "${manifest.serverName}" (версия ${manifest.minecraftVersion})`, 'info');
-            const result = await simulateDeploy(manifest);
-            if (result.success) {
-                // Пробуем сохранить в GitHub автоматически, если есть токен
-                if (githubToken.value.trim() && githubRepo.value.trim()) {
-                    await saveToGitHub(manifest);
-                }
-            }
-        });
-
-        // Сохранить в GitHub вручную
-        saveToGitBtn.addEventListener('click', async function() {
-            const manifest = buildDeploymentManifest();
-            await saveToGitHub(manifest);
-        });
-
-        // Превью server.properties
-        previewBtn.addEventListener('click', function() {
-            const props = generateServerProperties();
-            addLog(`📄 server.properties:\n${props}`, 'info');
-        });
-
-        // Очистка лога
-        clearLogBtn.addEventListener('click', function() {
-            logArea.innerHTML = '';
-            addLog('Лог очищен', 'info');
-        });
-
-        // Восстановление токена из sessionStorage
-        if (sessionStorage.getItem('github_token')) {
-            githubToken.value = sessionStorage.getItem('github_token');
-        }
-        // Сохраняем токен при вводе
-        githubToken.addEventListener('change', function() {
-            if (this.value) {
-                sessionStorage.setItem('github_token', this.value);
-            } else {
-                sessionStorage.removeItem('github_token');
-            }
-        });
-
-        // Стартовое сообщение
-        addLog('🟢 Оркестратор готов. Используйте "Развернуть сервер" для запуска.', 'success');
-        setStatus('offline', 'ожидание команды');
-
-        // Экспорт для консоли (отладка)
-        window.__blackbox = { buildDeploymentManifest, generateServerProperties, saveToGitHub };
-
-        console.log('[Blackbox] Minecraft Orchestrator loaded. Use __blackbox for internals.');
-    })();
+initialize();
 </script>
 </body>
 </html>
