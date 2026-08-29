@@ -217,6 +217,62 @@
     .user-profile-card h3{margin:0;font-size:20px}.user-profile-card p{margin:5px 0;color:var(--muted);font-size:12px}
     @media(max-width:420px){.shop-grid{grid-template-columns:1fr 1fr}.nft-card{padding:12px}.nft-art{font-size:45px}}
 
+  
+    /* ===== TisGram 2.1: Profiles + Chat Settings ===== */
+    .profile-modal-upgraded{width:min(560px,100%)}
+    .profile-hero{
+      position:relative;overflow:hidden;margin:-23px -23px 20px;padding:30px 20px 22px;text-align:center;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      background:
+        radial-gradient(circle at 50% -20%,rgba(61,184,247,.28),transparent 42%),
+        radial-gradient(circle at 90% 80%,rgba(109,79,220,.15),transparent 38%),
+        linear-gradient(160deg,rgba(19,43,67,.72),rgba(7,20,34,.36))
+    }
+    .profile-hero:after{
+      content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;
+      background-image:radial-gradient(rgba(255,255,255,.35) .55px,transparent .55px);background-size:18px 18px
+    }
+    .profile-hero .profile-avatar-wrap{margin:0 auto 14px;position:relative;z-index:1}
+    .profile-hero .profile-avatar{border:3px solid rgba(255,255,255,.14);box-shadow:0 16px 45px rgba(0,0,0,.33),0 0 0 7px rgba(42,174,243,.055)}
+    .profile-hero-name{position:relative;z-index:1;font-size:22px;font-weight:900;letter-spacing:-.5px}
+    .profile-hero-user{position:relative;z-index:1;margin-top:4px;color:#94cfee;font-size:12px}
+    .profile-id-chip{display:inline-flex;margin-top:9px;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);color:#8fa2b5;font-size:10px}
+    .profile-section{padding:14px;border-radius:18px;background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.055);margin-bottom:12px}
+    .profile-section-title{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#6f8399;font-weight:850;margin-bottom:12px}
+    .profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 18px}
+    .profile-stat{padding:12px 8px;text-align:center;border-radius:15px;background:rgba(255,255,255,.038);border:1px solid rgba(255,255,255,.055)}
+    .profile-stat strong{display:block;font-size:17px}.profile-stat span{display:block;margin-top:3px;color:#71869b;font-size:9px}
+    .public-profile-cover{
+      position:relative;overflow:hidden;margin:-23px -23px 0;padding:36px 20px 24px;text-align:center;
+      background:radial-gradient(circle at 50% -10%,rgba(46,177,241,.30),transparent 42%),
+                 radial-gradient(circle at 85% 90%,rgba(114,77,224,.17),transparent 38%),
+                 linear-gradient(160deg,rgba(18,42,66,.82),rgba(6,17,30,.65));
+      border-bottom:1px solid rgba(255,255,255,.07)
+    }
+    .public-profile-cover .big-avatar{width:100px;height:100px;margin:0 auto 13px;border:3px solid rgba(255,255,255,.14);box-shadow:0 18px 45px rgba(0,0,0,.36),0 0 0 7px rgba(42,174,243,.05)}
+    .public-profile-name{font-size:23px;font-weight:900;letter-spacing:-.5px}
+    .public-profile-user{margin-top:4px;color:#9bd8f7;font-size:12px}
+    .public-profile-bio{margin:15px auto 0;max-width:360px;color:#a9bacb;font-size:12px;line-height:1.55}
+    .public-profile-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}
+    .profile-action-btn{height:43px;border-radius:13px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.065);color:#d9e8f5;cursor:pointer;font-weight:750}
+    .profile-action-btn.blue{background:linear-gradient(135deg,rgba(42,174,243,.22),rgba(20,112,179,.18));border-color:rgba(66,184,245,.14);color:#aee1fb}
+    .chat-menu-btn{margin-left:2px}
+    .chat-settings-card{padding:6px}
+    .settings-profile{display:flex;align-items:center;gap:12px;padding:12px 10px 16px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px}
+    .settings-profile .avatar{width:48px;height:48px;min-width:48px}
+    .settings-profile-info{min-width:0;flex:1}.settings-profile-info strong{display:block;font-size:14px}.settings-profile-info span{display:block;margin-top:3px;color:var(--muted);font-size:11px}
+    .setting-row{width:100%;display:flex;align-items:center;gap:12px;padding:13px 11px;border-radius:14px;background:transparent;color:#d9e7f3;cursor:pointer;text-align:left;transition:.18s}
+    .setting-row:hover{background:rgba(255,255,255,.05)}
+    .setting-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);font-size:16px}
+    .setting-info{flex:1}.setting-info strong{display:block;font-size:12px}.setting-info span{display:block;margin-top:3px;color:#75899e;font-size:10px}
+    .setting-row.danger{color:#ff9ba1}.setting-row.danger .setting-icon{background:rgba(255,91,101,.08)}
+    .switch{width:42px;height:24px;border-radius:999px;background:rgba(255,255,255,.10);padding:3px;transition:.2s;pointer-events:none}
+    .switch:after{content:"";display:block;width:18px;height:18px;border-radius:50%;background:#a8b7c5;transition:.2s}
+    .switch.on{background:rgba(42,174,243,.34)}.switch.on:after{transform:translateX(18px);background:#eaf8ff}
+    .muted-badge{margin-left:5px;font-size:10px;opacity:.7}
+    .settings-divider{height:1px;background:rgba(255,255,255,.055);margin:6px 10px}
+    .confirm-box{padding:4px 0}.confirm-box p{margin:0 0 16px;color:#94a7ba;font-size:12px;line-height:1.55}
+
   </style>
 </head>
 <body>
@@ -285,6 +341,7 @@
           <div id="activeChatName"></div>
           <div id="activeChatUsername"></div>
         </div>
+        <button id="chatSettingsButton" class="icon-btn chat-menu-btn" type="button" title="Налаштування чату">⋯</button>
       </header>
       <div id="messages" class="messages"><div id="messagesInner" class="messages-inner"></div></div>
       <div class="composer-shell">
@@ -304,17 +361,24 @@
 </main>
 
 <div id="profileModal" class="modal-overlay hidden">
-  <div class="modal glass">
+  <div class="modal glass profile-modal-upgraded">
     <div class="modal-head"><h3>Мій профіль</h3><button id="closeProfileModal" class="icon-btn" type="button">×</button></div>
     <form id="profileForm" class="modal-body">
-      <div class="profile-avatar-wrap">
-        <div id="profileAvatarPreview"></div>
-        <label class="avatar-edit">✎<input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+      <div class="profile-hero">
+        <div class="profile-avatar-wrap">
+          <div id="profileAvatarPreview"></div>
+          <label class="avatar-edit">✎<input id="avatarInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+        </div>
+        <div id="profileHeroName" class="profile-hero-name"></div>
+        <div id="profileHeroUsername" class="profile-hero-user"></div>
+        <div id="profileId" class="profile-id-chip"></div>
       </div>
-      <div id="profileId" class="profile-id"></div>
-      <div class="field"><label for="profileName">Ім'я</label><input id="profileName" maxlength="40" required></div>
-      <div class="field"><label for="profileUsername">Username</label><input id="profileUsername" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" required></div>
-      <div class="field"><label for="profileBio">Про себе</label><textarea id="profileBio" maxlength="160" placeholder="Кілька слів про себе..."></textarea></div>
+      <div class="profile-section">
+        <div class="profile-section-title">Основне</div>
+        <div class="field"><label for="profileName">Ім'я</label><input id="profileName" maxlength="40" required></div>
+        <div class="field"><label for="profileUsername">Username</label><input id="profileUsername" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" required></div>
+        <div class="field" style="margin-bottom:0"><label for="profileBio">Про себе</label><textarea id="profileBio" maxlength="160" placeholder="Кілька слів про себе..."></textarea></div>
+      </div>
       <div class="profile-gifts">
         <div class="profile-gifts-title"><strong>Мої подарунки</strong><span id="myGiftCount" class="gift-count">0</span></div>
         <div id="myGiftStrip" class="gift-strip"><span class="hint">Подарунків ще немає</span></div>
@@ -370,6 +434,50 @@
   </div>
 </div>
 
+
+<div id="chatSettingsModal" class="modal-overlay hidden">
+  <div class="modal glass" style="width:min(430px,100%)">
+    <div class="modal-head"><h3>Налаштування чату</h3><button id="closeChatSettings" class="icon-btn" type="button">×</button></div>
+    <div class="modal-body chat-settings-card">
+      <div id="chatSettingsProfile" class="settings-profile"></div>
+      <button id="viewProfileFromSettings" class="setting-row" type="button">
+        <span class="setting-icon">👤</span>
+        <span class="setting-info"><strong>Переглянути профіль</strong><span>Інформація та NFT Gifts</span></span>
+        <span>›</span>
+      </button>
+      <button id="muteChatButton" class="setting-row" type="button">
+        <span class="setting-icon">🔕</span>
+        <span class="setting-info"><strong>Вимкнути сповіщення</strong><span>Налаштування збережеться для цього чату</span></span>
+        <span id="muteSwitch" class="switch"></span>
+      </button>
+      <div class="settings-divider"></div>
+      <button id="clearChatButton" class="setting-row danger" type="button">
+        <span class="setting-icon">🧹</span>
+        <span class="setting-info"><strong>Очистити чат для мене</strong><span>Старі повідомлення зникнуть тільки у тебе</span></span>
+        <span>›</span>
+      </button>
+      <button id="hideChatButton" class="setting-row danger" type="button">
+        <span class="setting-icon">🗑️</span>
+        <span class="setting-info"><strong>Прибрати чат зі списку</strong><span>Його можна буде відкрити знову через пошук</span></span>
+        <span>›</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="confirmActionModal" class="modal-overlay hidden">
+  <div class="modal glass" style="width:min(390px,100%)">
+    <div class="modal-head"><h3 id="confirmActionTitle">Підтвердження</h3><button id="closeConfirmAction" class="icon-btn" type="button">×</button></div>
+    <div class="modal-body confirm-box">
+      <p id="confirmActionText"></p>
+      <div class="modal-actions">
+        <button id="cancelConfirmAction" class="secondary" type="button">Скасувати</button>
+        <button id="doConfirmAction" class="primary" type="button">Підтвердити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="toastContainer"></div>
 
 <script>
@@ -385,7 +493,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 const state = {
   user:null, profile:null, conversations:[], profiles:new Map(),
   activeConversation:null, activeUser:null, messages:[],
-  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null, pendingMessagePhoto:null, selectedGift:null
+  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null, pendingMessagePhoto:null, selectedGift:null, chatSettings:new Map(), confirmAction:null
 };
 
 const $ = s => document.querySelector(s);
@@ -411,7 +519,13 @@ const dom = {
   myGiftStrip:$("#myGiftStrip"), myGiftCount:$("#myGiftCount"), messagePhotoInput:$("#messagePhotoInput"),
   photoPreviewBar:$("#photoPreviewBar"), photoPreviewImg:$("#photoPreviewImg"), photoPreviewName:$("#photoPreviewName"),
   removePhotoButton:$("#removePhotoButton"), userProfileModal:$("#userProfileModal"), closeUserProfile:$("#closeUserProfile"),
-  viewUserProfile:$("#viewUserProfile")
+  viewUserProfile:$("#viewUserProfile"),
+  profileHeroName:$("#profileHeroName"), profileHeroUsername:$("#profileHeroUsername"),
+  chatSettingsButton:$("#chatSettingsButton"), chatSettingsModal:$("#chatSettingsModal"), closeChatSettings:$("#closeChatSettings"),
+  chatSettingsProfile:$("#chatSettingsProfile"), viewProfileFromSettings:$("#viewProfileFromSettings"),
+  muteChatButton:$("#muteChatButton"), muteSwitch:$("#muteSwitch"), clearChatButton:$("#clearChatButton"), hideChatButton:$("#hideChatButton"),
+  confirmActionModal:$("#confirmActionModal"), confirmActionTitle:$("#confirmActionTitle"), confirmActionText:$("#confirmActionText"),
+  closeConfirmAction:$("#closeConfirmAction"), cancelConfirmAction:$("#cancelConfirmAction"), doConfirmAction:$("#doConfirmAction")
 };
 
 function showToast(message,type="normal"){
@@ -874,6 +988,214 @@ createMessage=function(m){
 const _openProfile=openProfile;
 openProfile=function(){_openProfile();renderMyGiftStrip()};
 dom.profileButton.onclick=openProfile;
+
+
+/* ===================== TISGRAM 2.1 PROFILE / CHAT SETTINGS ===================== */
+
+async function fetchChatSetting(conversationId){
+  if(!conversationId)return {muted:false,hidden:false,cleared_at:null};
+  const cached=state.chatSettings.get(conversationId);
+  if(cached)return cached;
+  const {data,error}=await sb.from("chat_settings").select("*").eq("user_id",state.user.id).eq("conversation_id",conversationId).maybeSingle();
+  if(error)throw error;
+  const setting=data||{user_id:state.user.id,conversation_id:conversationId,muted:false,hidden:false,cleared_at:null};
+  state.chatSettings.set(conversationId,setting);
+  return setting;
+}
+
+async function saveChatSetting(conversationId,patch){
+  const current=await fetchChatSetting(conversationId);
+  const payload={user_id:state.user.id,conversation_id:conversationId,muted:false,hidden:false,cleared_at:null,...current,...patch,updated_at:new Date().toISOString()};
+  const {data,error}=await sb.from("chat_settings").upsert(payload,{onConflict:"user_id,conversation_id"}).select().single();
+  if(error)throw error;
+  state.chatSettings.set(conversationId,data);
+  return data;
+}
+
+const _loadConversations21=loadConversations;
+loadConversations=async function(){
+  try{
+    const uid=state.user.id;
+    const {data,error}=await sb.from("conversations").select("*").or(`user_a.eq.${uid},user_b.eq.${uid}`).order("updated_at",{ascending:false});
+    if(error)throw error;
+    const all=data||[];
+
+    const {data:settings,error:se}=await sb.from("chat_settings").select("*").eq("user_id",uid);
+    if(se)throw se;
+    state.chatSettings.clear();
+    (settings||[]).forEach(s=>state.chatSettings.set(s.conversation_id,s));
+
+    state.conversations=all.filter(c=>!state.chatSettings.get(c.id)?.hidden);
+
+    const ids=[...new Set(state.conversations.map(c=>c.user_a===uid?c.user_b:c.user_a))];
+    if(ids.length){
+      const {data:ps,error:pe}=await sb.from("profiles").select("*").in("id",ids);if(pe)throw pe;
+      (ps||[]).forEach(p=>state.profiles.set(p.id,p));
+    }
+
+    for(const c of state.conversations){
+      const setting=state.chatSettings.get(c.id);
+      let q=sb.from("messages").select("id,body,sender_id,created_at,media_url").eq("conversation_id",c.id);
+      if(setting?.cleared_at)q=q.gt("created_at",setting.cleared_at);
+      const {data:last}=await q.order("created_at",{ascending:false}).limit(1).maybeSingle();
+      c.last_message=last||null;c._muted=!!setting?.muted;
+    }
+    state.conversations.sort((a,b)=>new Date(b.last_message?.created_at||b.updated_at)-new Date(a.last_message?.created_at||a.updated_at));
+    renderConversationList();
+  }catch(e){showToast(readableError(e),"error")}
+};
+
+const _renderConversationList21=renderConversationList;
+renderConversationList=function(){
+  _renderConversationList21();
+  const items=[...dom.sidebarList.querySelectorAll(".chat-item")];
+  items.forEach((item,index)=>{
+    const c=state.conversations[index];if(!c||!c._muted)return;
+    const name=item.querySelector(".chat-name");if(name){const b=document.createElement("span");b.className="muted-badge";b.textContent="🔕";name.appendChild(b)}
+  });
+};
+
+loadMessages=async function(){
+  try{
+    const setting=await fetchChatSetting(state.activeConversation.id);
+    let q=sb.from("messages").select("*").eq("conversation_id",state.activeConversation.id);
+    if(setting?.cleared_at)q=q.gt("created_at",setting.cleared_at);
+    const {data,error}=await q.order("created_at",{ascending:true}).limit(500);
+    if(error)throw error;
+    state.messages=data||[];renderMessages();scrollBottom(true);
+  }catch(e){showToast(readableError(e),"error")}
+};
+
+startConversation=async function(p){
+  try{
+    const uid=state.user.id;
+    const {data:existing,error:ee}=await sb.from("conversations").select("*")
+      .or(`and(user_a.eq.${uid},user_b.eq.${p.id}),and(user_a.eq.${p.id},user_b.eq.${uid})`)
+      .limit(1).maybeSingle();
+    if(ee)throw ee;
+    let c=existing;
+    if(!c){
+      const {data,error}=await sb.from("conversations").insert({user_a:uid,user_b:p.id}).select().single();
+      if(error)throw error;c=data;
+    }else{
+      const setting=await fetchChatSetting(c.id);
+      if(setting.hidden)await saveChatSetting(c.id,{hidden:false});
+    }
+    state.profiles.set(p.id,p);
+    dom.userSearch.value="";dom.clearSearch.classList.remove("visible");
+    await loadConversations();
+    const fresh=state.conversations.find(x=>x.id===c.id)||c;
+    await openConversation(fresh,p);
+  }catch(e){showToast(readableError(e),"error")}
+};
+
+function closeChatSettingsModal(){dom.chatSettingsModal.classList.add("hidden")}
+async function openChatSettingsModal(){
+  if(!state.activeConversation||!state.activeUser)return;
+  try{
+    const setting=await fetchChatSetting(state.activeConversation.id);
+    dom.chatSettingsProfile.replaceChildren();
+    dom.chatSettingsProfile.appendChild(createAvatar(state.activeUser));
+    const info=document.createElement("div");info.className="settings-profile-info";
+    const strong=document.createElement("strong");strong.textContent=state.activeUser.display_name;
+    const span=document.createElement("span");span.textContent="@"+state.activeUser.username;
+    info.append(strong,span);dom.chatSettingsProfile.appendChild(info);
+    dom.muteSwitch.classList.toggle("on",!!setting.muted);
+    dom.chatSettingsModal.classList.remove("hidden");
+  }catch(e){showToast(readableError(e),"error")}
+}
+dom.chatSettingsButton.onclick=openChatSettingsModal;
+dom.closeChatSettings.onclick=closeChatSettingsModal;
+dom.chatSettingsModal.addEventListener("click",e=>{if(e.target===dom.chatSettingsModal)closeChatSettingsModal()});
+dom.viewProfileFromSettings.onclick=()=>{closeChatSettingsModal();if(state.activeUser)openUserProfile(state.activeUser)};
+dom.muteChatButton.onclick=async()=>{
+  try{
+    const s=await fetchChatSetting(state.activeConversation.id);
+    const updated=await saveChatSetting(state.activeConversation.id,{muted:!s.muted});
+    dom.muteSwitch.classList.toggle("on",updated.muted);
+    showToast(updated.muted?"Сповіщення вимкнено":"Сповіщення увімкнено","success");
+    await loadConversations();
+  }catch(e){showToast(readableError(e),"error")}
+};
+
+function askConfirm(title,text,action,label="Підтвердити"){
+  state.confirmAction=action;dom.confirmActionTitle.textContent=title;dom.confirmActionText.textContent=text;dom.doConfirmAction.textContent=label;dom.confirmActionModal.classList.remove("hidden")
+}
+function closeConfirm(){dom.confirmActionModal.classList.add("hidden");state.confirmAction=null}
+dom.closeConfirmAction.onclick=closeConfirm;dom.cancelConfirmAction.onclick=closeConfirm;
+dom.confirmActionModal.addEventListener("click",e=>{if(e.target===dom.confirmActionModal)closeConfirm()});
+dom.doConfirmAction.onclick=async()=>{
+  const action=state.confirmAction;if(!action)return;
+  dom.doConfirmAction.disabled=true;
+  try{await action();closeConfirm()}catch(e){showToast(readableError(e),"error")}
+  finally{dom.doConfirmAction.disabled=false}
+};
+
+dom.clearChatButton.onclick=()=>{
+  closeChatSettingsModal();
+  askConfirm("Очистити чат?","Повідомлення до цього моменту зникнуть тільки у твоєму TisGram. У співрозмовника вони залишаться.",async()=>{
+    await saveChatSetting(state.activeConversation.id,{cleared_at:new Date().toISOString()});
+    state.messages=[];renderMessages();await loadConversations();showToast("Чат очищено для тебе","success");
+  },"Очистити");
+};
+dom.hideChatButton.onclick=()=>{
+  closeChatSettingsModal();
+  askConfirm("Прибрати чат?","Чат зникне з твого списку. Його можна відкрити знову, знайшовши користувача через пошук.",async()=>{
+    await saveChatSetting(state.activeConversation.id,{hidden:true});
+    dom.activeChat.classList.add("hidden");dom.welcomeScreen.classList.remove("hidden");dom.app.classList.remove("mobile-chat-open");
+    state.activeConversation=null;state.activeUser=null;await loadConversations();showToast("Чат прибрано зі списку","success");
+  },"Прибрати");
+};
+
+/* Better own profile hero */
+const _openProfile21=openProfile;
+openProfile=function(){
+  _openProfile21();
+  dom.profileHeroName.textContent=state.profile.display_name||"";
+  dom.profileHeroUsername.textContent="@"+(state.profile.username||"");
+  renderMyGiftStrip();
+};
+dom.profileButton.onclick=openProfile;
+dom.profileName.addEventListener("input",()=>dom.profileHeroName.textContent=dom.profileName.value.trim()||"TisGram");
+dom.profileUsername.addEventListener("input",()=>dom.profileHeroUsername.textContent="@"+normalizeUsername(dom.profileUsername.value));
+
+/* Better public profile */
+openUserProfile=async function(p){
+  try{
+    const {data:gifts,error}=await sb.from("user_gifts").select("*").eq("owner_id",p.id).order("created_at",{ascending:false});if(error)throw error;
+    dom.viewUserProfile.replaceChildren();
+
+    const cover=document.createElement("div");cover.className="public-profile-cover";
+    cover.appendChild(createAvatar(p,"big-avatar"));
+    const name=document.createElement("div");name.className="public-profile-name";name.textContent=p.display_name;
+    const user=document.createElement("div");user.className="public-profile-user";user.textContent="@"+p.username;
+    const bio=document.createElement("div");bio.className="public-profile-bio";bio.textContent=p.bio||"Користувач поки нічого про себе не написав.";
+    cover.append(name,user,bio);dom.viewUserProfile.appendChild(cover);
+
+    const stats=document.createElement("div");stats.className="profile-stats";
+    stats.innerHTML=`<div class="profile-stat"><strong>${(gifts||[]).length}</strong><span>NFT GIFTS</span></div>
+      <div class="profile-stat"><strong>${p.username.length}</strong><span>USERNAME</span></div>
+      <div class="profile-stat"><strong>✓</strong><span>TISGRAM</span></div>`;
+    dom.viewUserProfile.appendChild(stats);
+
+    const actions=document.createElement("div");actions.className="public-profile-actions";
+    const msg=document.createElement("button");msg.className="profile-action-btn blue";msg.type="button";msg.textContent="💬 Написати";
+    msg.onclick=()=>{dom.userProfileModal.classList.add("hidden");startConversation(p)};
+    const copy=document.createElement("button");copy.className="profile-action-btn";copy.type="button";copy.textContent="⧉ Копіювати @";
+    copy.onclick=async()=>{try{await navigator.clipboard.writeText("@"+p.username);showToast("Username скопійовано","success")}catch{showToast("@"+p.username)}};
+    actions.append(msg,copy);dom.viewUserProfile.appendChild(actions);
+
+    const title=document.createElement("div");title.className="profile-gifts-title";title.innerHTML=`<strong>NFT Gifts</strong><span class="gift-count">${(gifts||[]).length} шт.</span>`;
+    dom.viewUserProfile.appendChild(title);
+    const strip=document.createElement("div");strip.className="gift-strip";
+    if(!(gifts||[]).length){const s=document.createElement("span");s.className="hint";s.textContent="Подарунків ще немає";strip.appendChild(s)}
+    else{const counts={};gifts.forEach(g=>counts[g.gift_id]=(counts[g.gift_id]||0)+1);Object.entries(counts).forEach(([id,q])=>{const n=nftById(id);if(!n)return;const d=document.createElement("div");d.className="gift-mini";d.innerHTML=`<div class="emoji">${n.emoji}</div><div class="qty">${q>1?"×"+q:n.name}</div>`;strip.appendChild(d)})}
+    dom.viewUserProfile.appendChild(strip);
+    dom.userProfileModal.classList.remove("hidden");
+  }catch(e){showToast(readableError(e),"error")}
+};
+dom.activeChatAvatar.onclick=()=>state.activeUser&&openUserProfile(state.activeUser);
+dom.activeChatName.onclick=()=>state.activeUser&&openUserProfile(state.activeUser);
 
 initialize();
 </script>
