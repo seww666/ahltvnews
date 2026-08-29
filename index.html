@@ -460,14 +460,14 @@
       </div>
 
       <div id="loginPane">
-        <div class="field"><label>Нік</label><input class="input" id="loginUsername" autocomplete="username" placeholder="Наприклад, Sewa199"></div>
+        <div class="field"><label>Нік</label><input class="input" id="loginUsername" autocomplete="username" placeholder="Свій нік в кс"></div>
         <div class="field"><label>Пароль</label><input class="input" id="loginPassword" type="password" autocomplete="current-password" placeholder="Ваш пароль"></div>
         <button class="btn btn-primary" id="loginBtn"><i data-lucide="log-in"></i>Увійти</button>
         <button class="btn btn-ghost" id="guestBtn" style="margin-top:9px"><i data-lucide="ghost"></i>Продовжити як гість</button>
       </div>
 
       <div id="registerPane" class="hidden">
-        <div class="field"><label>Нік</label><input class="input" id="regUsername" autocomplete="username" maxlength="24" placeholder="Вигадайте нік"></div>
+        <div class="field"><label>Нік</label><input class="input" id="regUsername" autocomplete="username" maxlength="24" placeholder="Свій нік в кс"></div>
         <div class="field"><label>Пароль</label><input class="input" id="regPassword" type="password" autocomplete="new-password" minlength="6" placeholder="Мінімум 6 символів"></div>
         <button class="btn btn-primary" id="registerBtn"><i data-lucide="user-plus"></i>Створити акаунт</button>
         <p style="color:var(--muted);font-size:10px;line-height:1.55;margin:10px 2px 0">Сайт сам використовує технічну адресу всередині Supabase. Користувач її не вводить і не бачить.</p>
@@ -762,7 +762,18 @@
     await loadProfile();
     renderSession();
     closeModal("profileModal");
-    toast("Вхід виконано");
+
+    if(state.profile?.role === "admin"){
+      toast("Вхід адміністратора виконано");
+      setTimeout(async()=>{
+        $("siteTitleInput").value=state.settings.title||"";
+        $("siteSubtitleInput").value=state.settings.subtitle||"";
+        openModal("adminModal");
+        await loadAdminDashboard();
+      },180);
+    }else{
+      toast("Вхід виконано");
+    }
   }
 
   async function logout(){
