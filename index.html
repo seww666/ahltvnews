@@ -157,6 +157,66 @@
       .modal{width:100%;border-radius:25px 25px 0 0}
       .register-card{padding:28px 22px}
     }
+  
+    /* ===== TisGram 2.0: premium glass + gifts + media ===== */
+    .sidebar-head .top-actions{display:flex;gap:5px}
+    .premium-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:999px;
+      background:linear-gradient(135deg,rgba(55,186,244,.18),rgba(116,89,255,.14));
+      border:1px solid rgba(104,195,255,.18);color:#a8dcff;font-size:10px;font-weight:800}
+    .chat-item{margin:2px 0}
+    .sidebar{background:
+      radial-gradient(circle at 10% 0%,rgba(38,170,239,.10),transparent 30%),
+      linear-gradient(160deg,rgba(11,26,43,.84),rgba(5,14,26,.77))}
+    .chat-header{box-shadow:0 12px 35px rgba(0,0,0,.10),inset 0 1px 0 rgba(255,255,255,.04)}
+    .input-wrap{transition:border-color .2s,box-shadow .2s,transform .2s}
+    .input-wrap:focus-within{border-color:rgba(69,187,247,.35);box-shadow:0 0 0 4px rgba(42,174,243,.045),0 10px 35px rgba(0,0,0,.15)}
+    .media-btn{width:50px;height:50px;min-width:50px;border-radius:50%;display:grid;place-items:center;
+      background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.075);color:#a8bed1;cursor:pointer;
+      backdrop-filter:blur(18px);transition:.2s}
+    .media-btn:hover{background:rgba(255,255,255,.09);color:#fff;transform:translateY(-1px)}
+    #messagePhotoInput{display:none}
+    .message-photo{display:block;max-width:min(360px,72vw);max-height:430px;object-fit:cover;border-radius:13px;
+      margin-bottom:5px;border:1px solid rgba(255,255,255,.09);cursor:pointer}
+    .photo-preview-bar{width:min(900px,100%);margin:0 auto 8px;display:flex;align-items:center;gap:10px;padding:9px 11px;
+      border-radius:16px;background:rgba(15,31,50,.78);border:1px solid var(--border);backdrop-filter:blur(22px)}
+    .photo-preview-bar img{width:54px;height:54px;object-fit:cover;border-radius:12px}
+    .photo-preview-bar .photo-name{flex:1;min-width:0;font-size:12px;color:#b7c7d7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .profile-gifts{margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07)}
+    .profile-gifts-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+    .profile-gifts-title strong{font-size:14px}
+    .gift-count{font-size:11px;color:var(--muted)}
+    .gift-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+    .gift-mini{min-width:66px;height:72px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.07)}
+    .gift-mini .emoji{font-size:28px}.gift-mini .qty{font-size:9px;color:#8fa2b6;margin-top:3px}
+    .shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+    .nft-card{position:relative;overflow:hidden;border-radius:20px;padding:16px;min-height:174px;
+      background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+      border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:.2s}
+    .nft-card:hover{transform:translateY(-2px);border-color:rgba(72,186,246,.2)}
+    .nft-card:before{content:"";position:absolute;width:110px;height:110px;border-radius:50%;right:-35px;top:-40px;
+      background:radial-gradient(circle,rgba(53,179,246,.16),transparent 70%)}
+    .nft-art{height:72px;display:grid;place-items:center;font-size:52px;filter:drop-shadow(0 8px 15px rgba(0,0,0,.25))}
+    .nft-name{font-size:13px;font-weight:850;margin-top:6px}
+    .nft-rarity{font-size:9px;color:#8fa3b8;margin-top:2px;text-transform:uppercase;letter-spacing:.7px}
+    .nft-buy{width:100%;height:35px;margin-top:10px;border-radius:11px;cursor:pointer;color:#fff;font-weight:800;font-size:11px;
+      background:linear-gradient(135deg,#269fdc,#176fae);box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+    .nft-buy.free{background:linear-gradient(135deg,#31b986,#1b8865)}
+    .shop-balance{padding:12px 14px;margin-bottom:14px;border-radius:16px;background:rgba(42,174,243,.075);
+      border:1px solid rgba(64,180,240,.12);font-size:12px;color:#b7dfff}
+    .gift-target{margin-top:10px}
+    .owned-card{display:flex;align-items:center;gap:11px;padding:10px;border-radius:15px;background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.055);margin-bottom:8px}
+    .owned-card .art{font-size:32px}.owned-card .info{flex:1}.owned-card strong{display:block;font-size:12px}.owned-card small{color:var(--muted)}
+    .owned-card button{height:34px;padding:0 11px;border-radius:10px;background:rgba(42,174,243,.12);color:#9edcff;cursor:pointer}
+    .shop-tabs{display:flex;gap:7px;margin-bottom:14px}
+    .shop-tab{flex:1;height:38px;border-radius:12px;background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;border:1px solid transparent}
+    .shop-tab.active{background:rgba(42,174,243,.11);color:#bce7ff;border-color:rgba(42,174,243,.15)}
+    .user-profile-card{text-align:center;padding:4px 0 18px}
+    .user-profile-card .big-avatar{width:88px;height:88px;margin:0 auto 12px}
+    .user-profile-card h3{margin:0;font-size:20px}.user-profile-card p{margin:5px 0;color:var(--muted);font-size:12px}
+    @media(max-width:420px){.shop-grid{grid-template-columns:1fr 1fr}.nft-card{padding:12px}.nft-art{font-size:45px}}
+
   </style>
 </head>
 <body>
@@ -194,7 +254,10 @@
       <div class="sidebar-head">
         <div class="mini-logo" style="width:38px;height:38px;border-radius:12px"><svg viewBox="0 0 24 24" style="width:21px"><path d="M20.7 3.4 2.9 10.3c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.3c.2.6.1.8.8.8.5 0 .8-.2 1-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.2c.3-1.3-.5-1.9-1.8-1.4Z"/></svg></div>
         <div class="sidebar-brand"><strong>TisGram</strong><div id="sidebarUsername" class="sidebar-user">@username</div></div>
-        <button id="profileButton" class="icon-btn" type="button">👤</button>
+        <div class="top-actions">
+          <button id="shopButton" class="icon-btn" type="button" title="NFT Gifts">🎁</button>
+          <button id="profileButton" class="icon-btn" type="button" title="Профіль">👤</button>
+        </div>
       </div>
       <div class="search">
         <input id="userSearch" type="search" placeholder="Знайти користувача..." autocomplete="off">
@@ -225,7 +288,13 @@
       </header>
       <div id="messages" class="messages"><div id="messagesInner" class="messages-inner"></div></div>
       <div class="composer-shell">
+        <div id="photoPreviewBar" class="photo-preview-bar hidden">
+          <img id="photoPreviewImg" alt="">
+          <div id="photoPreviewName" class="photo-name"></div>
+          <button id="removePhotoButton" class="icon-btn" type="button">×</button>
+        </div>
         <form id="messageForm" class="composer">
+          <label class="media-btn" title="Надіслати фото">📷<input id="messagePhotoInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>
           <div class="input-wrap"><textarea id="messageInput" maxlength="4000" rows="1" placeholder="Повідомлення..."></textarea></div>
           <button id="sendButton" class="send" type="submit">➤</button>
         </form>
@@ -246,6 +315,10 @@
       <div class="field"><label for="profileName">Ім'я</label><input id="profileName" maxlength="40" required></div>
       <div class="field"><label for="profileUsername">Username</label><input id="profileUsername" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" required></div>
       <div class="field"><label for="profileBio">Про себе</label><textarea id="profileBio" maxlength="160" placeholder="Кілька слів про себе..."></textarea></div>
+      <div class="profile-gifts">
+        <div class="profile-gifts-title"><strong>Мої подарунки</strong><span id="myGiftCount" class="gift-count">0</span></div>
+        <div id="myGiftStrip" class="gift-strip"><span class="hint">Подарунків ще немає</span></div>
+      </div>
       <div class="modal-actions"><button id="cancelProfile" class="secondary" type="button">Скасувати</button><button id="saveProfileButton" class="primary" type="submit">Зберегти</button></div>
     </form>
   </div>
@@ -258,6 +331,42 @@
       <textarea id="editMessageText" maxlength="4000" required></textarea>
       <div class="modal-actions"><button id="cancelEditMessage" class="secondary" type="button">Скасувати</button><button class="primary" type="submit">Зберегти</button></div>
     </form>
+  </div>
+</div>
+
+
+<div id="shopModal" class="modal-overlay hidden">
+  <div class="modal glass" style="width:min(620px,100%)">
+    <div class="modal-head"><h3>TisGram Gifts</h3><button id="closeShopModal" class="icon-btn" type="button">×</button></div>
+    <div class="modal-body">
+      <div id="shopBalance" class="shop-balance"></div>
+      <div class="shop-tabs">
+        <button id="catalogTab" class="shop-tab active" type="button">Магазин</button>
+        <button id="ownedTab" class="shop-tab" type="button">Мої NFT</button>
+      </div>
+      <div id="shopCatalog" class="shop-grid"></div>
+      <div id="ownedGifts" class="hidden"></div>
+    </div>
+  </div>
+</div>
+
+<div id="giftModal" class="modal-overlay hidden">
+  <div class="modal glass">
+    <div class="modal-head"><h3>Подарувати NFT</h3><button id="closeGiftModal" class="icon-btn" type="button">×</button></div>
+    <form id="giftForm" class="modal-body">
+      <div id="giftSelectedInfo" class="shop-balance"></div>
+      <div class="field gift-target"><label for="giftUsername">Username отримувача</label><input id="giftUsername" placeholder="username" required autocomplete="off"></div>
+      <div class="modal-actions"><button id="cancelGift" class="secondary" type="button">Скасувати</button><button class="primary" type="submit">Подарувати</button></div>
+    </form>
+  </div>
+</div>
+
+<div id="userProfileModal" class="modal-overlay hidden">
+  <div class="modal glass">
+    <div class="modal-head"><h3>Профіль</h3><button id="closeUserProfile" class="icon-btn" type="button">×</button></div>
+    <div class="modal-body">
+      <div id="viewUserProfile"></div>
+    </div>
   </div>
 </div>
 
@@ -276,7 +385,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 const state = {
   user:null, profile:null, conversations:[], profiles:new Map(),
   activeConversation:null, activeUser:null, messages:[],
-  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null
+  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null, pendingMessagePhoto:null, selectedGift:null
 };
 
 const $ = s => document.querySelector(s);
@@ -294,7 +403,15 @@ const dom = {
   profileId:$("#profileId"), profileAvatarPreview:$("#profileAvatarPreview"), avatarInput:$("#avatarInput"),
   saveProfileButton:$("#saveProfileButton"), editMessageModal:$("#editMessageModal"), closeEditModal:$("#closeEditModal"),
   cancelEditMessage:$("#cancelEditMessage"), editMessageForm:$("#editMessageForm"), editMessageText:$("#editMessageText"),
-  toastContainer:$("#toastContainer")
+  toastContainer:$("#toastContainer"),
+  shopButton:$("#shopButton"), shopModal:$("#shopModal"), closeShopModal:$("#closeShopModal"),
+  shopBalance:$("#shopBalance"), shopCatalog:$("#shopCatalog"), ownedGifts:$("#ownedGifts"),
+  catalogTab:$("#catalogTab"), ownedTab:$("#ownedTab"), giftModal:$("#giftModal"), closeGiftModal:$("#closeGiftModal"),
+  cancelGift:$("#cancelGift"), giftForm:$("#giftForm"), giftUsername:$("#giftUsername"), giftSelectedInfo:$("#giftSelectedInfo"),
+  myGiftStrip:$("#myGiftStrip"), myGiftCount:$("#myGiftCount"), messagePhotoInput:$("#messagePhotoInput"),
+  photoPreviewBar:$("#photoPreviewBar"), photoPreviewImg:$("#photoPreviewImg"), photoPreviewName:$("#photoPreviewName"),
+  removePhotoButton:$("#removePhotoButton"), userProfileModal:$("#userProfileModal"), closeUserProfile:$("#closeUserProfile"),
+  viewUserProfile:$("#viewUserProfile")
 };
 
 function showToast(message,type="normal"){
@@ -439,7 +556,7 @@ async function loadConversations(){
       (ps||[]).forEach(p=>state.profiles.set(p.id,p));
     }
     for(const c of state.conversations){
-      const {data:last}=await sb.from("messages").select("id,body,sender_id,created_at").eq("conversation_id",c.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
+      const {data:last}=await sb.from("messages").select("id,body,sender_id,created_at,media_url").eq("conversation_id",c.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
       c.last_message=last||null;
     }
     state.conversations.sort((a,b)=>new Date(b.last_message?.created_at||b.updated_at)-new Date(a.last_message?.created_at||a.updated_at));
@@ -458,7 +575,7 @@ function renderConversationList(){
     const n=document.createElement("div");n.className="chat-name";n.textContent=p.display_name;
     const t=document.createElement("div");t.className="chat-time";t.textContent=formatChatTime(c.last_message?.created_at);
     l.append(n,t);
-    const pr=document.createElement("div");pr.className="preview";pr.textContent=c.last_message?((c.last_message.sender_id===state.user.id?"Ви: ":"")+c.last_message.body):"@"+p.username;
+    const pr=document.createElement("div");pr.className="preview";pr.textContent=c.last_message?((c.last_message.sender_id===state.user.id?"Ви: ":"")+(c.last_message.body||"📷 Фото")):"@"+p.username;
     info.append(l,pr);item.appendChild(info);item.onclick=()=>openConversation(c,p);dom.sidebarList.appendChild(item);
   }
 }
@@ -591,6 +708,172 @@ function updateConversationPreview(m){
 dom.mobileBackButton.onclick=()=>dom.app.classList.remove("mobile-chat-open");
 sb.auth.onAuthStateChange((event,session)=>{if(session?.user&&!state.user)state.user=session.user});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!dom.editMessageModal.classList.contains("hidden"))closeEdit();else if(!dom.profileModal.classList.contains("hidden"))closeProfile()}});
+
+
+/* ===================== TISGRAM GIFTS / NFT ===================== */
+const NFT_CATALOG = [
+  {id:"blue_star",name:"Blue Star",emoji:"💎",price:120,rarity:"Rare"},
+  {id:"gold_crown",name:"Golden Crown",emoji:"👑",price:250,rarity:"Epic"},
+  {id:"neon_heart",name:"Neon Heart",emoji:"💙",price:80,rarity:"Uncommon"},
+  {id:"rocket",name:"Tis Rocket",emoji:"🚀",price:180,rarity:"Rare"},
+  {id:"black_cat",name:"Midnight Cat",emoji:"🐈‍⬛",price:95,rarity:"Uncommon"},
+  {id:"ice_cube",name:"Ice Cube",emoji:"🧊",price:60,rarity:"Common"},
+  {id:"dragon",name:"Cyber Dragon",emoji:"🐉",price:420,rarity:"Legendary"},
+  {id:"trophy",name:"Champion",emoji:"🏆",price:300,rarity:"Epic"}
+];
+function isSewa(){return String(state.profile?.username||"").toLowerCase()==="sewa1488"}
+function nftById(id){return NFT_CATALOG.find(x=>x.id===id)}
+async function ensureWallet(){
+  const {data,error}=await sb.from("wallets").select("*").eq("user_id",state.user.id).maybeSingle();
+  if(error)throw error;
+  if(data)return data;
+  const {data:created,error:ce}=await sb.from("wallets").insert({user_id:state.user.id,balance:1000}).select().single();
+  if(ce)throw ce;return created;
+}
+async function loadMyGifts(){
+  const {data,error}=await sb.from("user_gifts").select("*").eq("owner_id",state.user.id).order("created_at",{ascending:false});
+  if(error)throw error;return data||[];
+}
+async function renderMyGiftStrip(){
+  if(!dom.myGiftStrip)return;
+  try{
+    const gifts=await loadMyGifts();dom.myGiftCount.textContent=gifts.length+" шт.";
+    dom.myGiftStrip.replaceChildren();
+    if(!gifts.length){const s=document.createElement("span");s.className="hint";s.textContent="Подарунків ще немає";dom.myGiftStrip.appendChild(s);return}
+    const counts={};gifts.forEach(g=>counts[g.gift_id]=(counts[g.gift_id]||0)+1);
+    Object.entries(counts).forEach(([id,qty])=>{const n=nftById(id);if(!n)return;const d=document.createElement("div");d.className="gift-mini";d.innerHTML=`<div class="emoji">${n.emoji}</div><div class="qty">${qty>1?"×"+qty:n.name}</div>`;dom.myGiftStrip.appendChild(d)})
+  }catch(e){console.error(e)}
+}
+async function openShop(){
+  dom.shopModal.classList.remove("hidden");dom.catalogTab.classList.add("active");dom.ownedTab.classList.remove("active");
+  dom.shopCatalog.classList.remove("hidden");dom.ownedGifts.classList.add("hidden");
+  try{
+    const wallet=await ensureWallet();
+    dom.shopBalance.textContent=isSewa()?"Спецдоступ @sewa1488 — усі NFT Gifts безкоштовні":"Баланс: "+wallet.balance+" TisCoins";
+    renderCatalog();
+  }catch(e){showToast(readableError(e),"error")}
+}
+function closeShop(){dom.shopModal.classList.add("hidden")}
+function renderCatalog(){
+  dom.shopCatalog.replaceChildren();
+  NFT_CATALOG.forEach(n=>{
+    const c=document.createElement("div");c.className="nft-card";
+    const free=isSewa();
+    c.innerHTML=`<div class="nft-art">${n.emoji}</div><div class="nft-name">${n.name}</div><div class="nft-rarity">${n.rarity}</div>`;
+    const b=document.createElement("button");b.type="button";b.className="nft-buy"+(free?" free":"");b.textContent=free?"Отримати безкоштовно":n.price+" TisCoins";
+    b.onclick=()=>buyGift(n);c.appendChild(b);dom.shopCatalog.appendChild(c);
+  });
+}
+async function buyGift(n){
+  try{
+    const wallet=await ensureWallet();
+    if(!isSewa()&&wallet.balance<n.price)return showToast("Недостатньо TisCoins","error");
+    if(!isSewa()){
+      const {error:we}=await sb.from("wallets").update({balance:wallet.balance-n.price}).eq("user_id",state.user.id);if(we)throw we;
+    }
+    const {error}=await sb.from("user_gifts").insert({owner_id:state.user.id,gift_id:n.id,received_from:state.user.id});if(error)throw error;
+    showToast(n.name+" додано у профіль","success");await openShop();await renderMyGiftStrip();
+  }catch(e){showToast(readableError(e),"error")}
+}
+async function renderOwned(){
+  try{
+    const gifts=await loadMyGifts();dom.ownedGifts.replaceChildren();
+    if(!gifts.length){const e=document.createElement("div");e.className="empty";e.innerHTML="<strong>NFT ще немає</strong>Отримай подарунок у магазині.";dom.ownedGifts.appendChild(e);return}
+    gifts.forEach(g=>{const n=nftById(g.gift_id);if(!n)return;const row=document.createElement("div");row.className="owned-card";
+      row.innerHTML=`<div class="art">${n.emoji}</div><div class="info"><strong>${n.name}</strong><small>${n.rarity}</small></div>`;
+      const btn=document.createElement("button");btn.type="button";btn.textContent="Подарувати";btn.onclick=()=>openGift(g,n);row.appendChild(btn);dom.ownedGifts.appendChild(row)})
+  }catch(e){showToast(readableError(e),"error")}
+}
+function openGift(g,n){state.selectedGift={record:g,nft:n};dom.giftSelectedInfo.textContent=`${n.emoji} ${n.name} — подарунок буде передано іншому користувачу`;dom.giftUsername.value="";dom.giftModal.classList.remove("hidden")}
+function closeGift(){dom.giftModal.classList.add("hidden");state.selectedGift=null}
+dom.shopButton.onclick=openShop;dom.closeShopModal.onclick=closeShop;dom.shopModal.addEventListener("click",e=>{if(e.target===dom.shopModal)closeShop()});
+dom.catalogTab.onclick=()=>{dom.catalogTab.classList.add("active");dom.ownedTab.classList.remove("active");dom.shopCatalog.classList.remove("hidden");dom.ownedGifts.classList.add("hidden");renderCatalog()};
+dom.ownedTab.onclick=async()=>{dom.ownedTab.classList.add("active");dom.catalogTab.classList.remove("active");dom.ownedGifts.classList.remove("hidden");dom.shopCatalog.classList.add("hidden");await renderOwned()};
+dom.closeGiftModal.onclick=closeGift;dom.cancelGift.onclick=closeGift;dom.giftModal.addEventListener("click",e=>{if(e.target===dom.giftModal)closeGift()});
+dom.giftForm.addEventListener("submit",async e=>{
+  e.preventDefault();if(!state.selectedGift)return;
+  try{
+    const username=normalizeUsername(dom.giftUsername.value);
+    const {data:p,error:pe}=await sb.from("profiles").select("id,username").ilike("username",username).maybeSingle();if(pe)throw pe;
+    if(!p)return showToast("Користувача не знайдено","error");
+    if(p.id===state.user.id)return showToast("Вкажи іншого користувача","error");
+    const {error}=await sb.from("user_gifts").update({owner_id:p.id,received_from:state.user.id,gifted_at:new Date().toISOString()}).eq("id",state.selectedGift.record.id).eq("owner_id",state.user.id);
+    if(error)throw error;
+    showToast(`Подарунок відправлено @${p.username}`,"success");closeGift();await renderOwned();await renderMyGiftStrip();
+  }catch(err){showToast(readableError(err),"error")}
+});
+
+/* ===================== USER PROFILE VIEW ===================== */
+async function openUserProfile(p){
+  try{
+    const {data:gifts,error}=await sb.from("user_gifts").select("*").eq("owner_id",p.id).order("created_at",{ascending:false});if(error)throw error;
+    dom.viewUserProfile.replaceChildren();
+    const card=document.createElement("div");card.className="user-profile-card";
+    const av=createAvatar(p,"big-avatar");card.appendChild(av);
+    const h=document.createElement("h3");h.textContent=p.display_name;const u=document.createElement("p");u.textContent="@"+p.username;
+    const bio=document.createElement("p");bio.textContent=p.bio||"Без опису";card.append(h,u,bio);dom.viewUserProfile.appendChild(card);
+    const title=document.createElement("div");title.className="profile-gifts-title";title.innerHTML=`<strong>NFT Gifts</strong><span class="gift-count">${(gifts||[]).length} шт.</span>`;dom.viewUserProfile.appendChild(title);
+    const strip=document.createElement("div");strip.className="gift-strip";
+    if(!(gifts||[]).length){const s=document.createElement("span");s.className="hint";s.textContent="Подарунків ще немає";strip.appendChild(s)}
+    else{const counts={};gifts.forEach(g=>counts[g.gift_id]=(counts[g.gift_id]||0)+1);Object.entries(counts).forEach(([id,q])=>{const n=nftById(id);if(!n)return;const d=document.createElement("div");d.className="gift-mini";d.innerHTML=`<div class="emoji">${n.emoji}</div><div class="qty">${q>1?"×"+q:n.name}</div>`;strip.appendChild(d)})}
+    dom.viewUserProfile.appendChild(strip);dom.userProfileModal.classList.remove("hidden");
+  }catch(e){showToast(readableError(e),"error")}
+}
+dom.closeUserProfile.onclick=()=>dom.userProfileModal.classList.add("hidden");
+dom.userProfileModal.addEventListener("click",e=>{if(e.target===dom.userProfileModal)dom.userProfileModal.classList.add("hidden")});
+dom.activeChatAvatar.style.cursor="pointer";dom.activeChatAvatar.onclick=()=>state.activeUser&&openUserProfile(state.activeUser);
+dom.activeChatName.style.cursor="pointer";dom.activeChatName.onclick=()=>state.activeUser&&openUserProfile(state.activeUser);
+
+/* ===================== PHOTO MESSAGES ===================== */
+dom.messagePhotoInput.addEventListener("change",e=>{
+  const f=e.target.files?.[0];if(!f)return;
+  if(f.size>10*1024*1024){dom.messagePhotoInput.value="";return showToast("Фото має бути до 10 МБ","error")}
+  state.pendingMessagePhoto=f;dom.photoPreviewImg.src=URL.createObjectURL(f);dom.photoPreviewName.textContent=f.name;dom.photoPreviewBar.classList.remove("hidden")
+});
+function clearPendingPhoto(){state.pendingMessagePhoto=null;dom.messagePhotoInput.value="";dom.photoPreviewImg.src="";dom.photoPreviewBar.classList.add("hidden")}
+dom.removePhotoButton.onclick=clearPendingPhoto;
+async function uploadMessagePhoto(file){
+  const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+  const path=`${state.user.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  const {error}=await sb.storage.from("chat-media").upload(path,file,{contentType:file.type||"image/jpeg",upsert:false});if(error)throw error;
+  const {data}=sb.storage.from("chat-media").getPublicUrl(path);return data.publicUrl;
+}
+
+/* Patch sendMessage with media support */
+sendMessage = async function(){
+  if(!state.activeConversation)return;
+  const body=dom.messageInput.value.trim(),photo=state.pendingMessagePhoto;
+  if(!body&&!photo)return;
+  dom.sendButton.disabled=true;const old=dom.messageInput.value;dom.messageInput.value="";autoResize();
+  try{
+    let media_url=null;if(photo)media_url=await uploadMessagePhoto(photo);
+    const {data,error}=await sb.from("messages").insert({conversation_id:state.activeConversation.id,sender_id:state.user.id,body:body||"",media_url}).select().single();
+    if(error)throw error;clearPendingPhoto();
+    if(!state.messages.some(x=>x.id===data.id)){state.messages.push(data);renderMessages();scrollBottom()}
+    updateConversationPreview(data);
+  }catch(e){dom.messageInput.value=old;autoResize();showToast(readableError(e),"error")}
+  finally{dom.sendButton.disabled=false;dom.messageInput.focus()}
+};
+
+/* Patch message renderer for photos */
+const _baseCreateMessage=createMessage;
+createMessage=function(m){
+  const row=_baseCreateMessage(m);
+  if(m.media_url){
+    const bubble=row.querySelector(".bubble"),text=bubble?.querySelector(".message-text");
+    if(bubble&&text){
+      const img=document.createElement("img");img.className="message-photo";img.src=m.media_url;img.alt="Фото";
+      img.onclick=()=>window.open(m.media_url,"_blank","noopener");bubble.insertBefore(img,text);
+      if(!m.body)text.remove();
+    }
+  }
+  return row;
+};
+
+/* Patch profile opening to show gifts */
+const _openProfile=openProfile;
+openProfile=function(){_openProfile();renderMyGiftStrip()};
+dom.profileButton.onclick=openProfile;
 
 initialize();
 </script>
