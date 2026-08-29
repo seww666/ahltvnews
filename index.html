@@ -274,7 +274,7 @@
     .confirm-box{padding:4px 0}.confirm-box p{margin:0 0 16px;color:#94a7ba;font-size:12px;line-height:1.55}
 
   
-    /* ===== TisGram 2.2 BLACK PURPLE MOTION ===== */
+    /* ===== TisGram 2.3 BLACK PURPLE MOTION ===== */
     :root{
       --bg:#05030a;
       --panel:rgba(15,10,25,.72);
@@ -397,6 +397,37 @@
     .call-note{margin-top:18px;color:#6f647d;font-size:10px;line-height:1.5}
     .hidden-by-call{display:none!important}
 
+
+    /* ===== Interpool ===== */
+    .interpool-modal{width:min(920px,100%);max-height:92vh}
+    .interpool-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+    .interpool-titlebox{flex:1}
+    .interpool-titlebox h4{margin:0;font-size:17px}
+    .interpool-titlebox p{margin:4px 0 0;color:var(--muted);font-size:11px}
+    .interpool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .interpool-card{overflow:hidden;border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border:1px solid rgba(193,150,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);transition:.25s}
+    .interpool-card:hover{transform:translateY(-3px);border-color:rgba(174,109,255,.18);box-shadow:0 16px 40px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.04)}
+    .interpool-photo{width:100%;aspect-ratio:4/3;object-fit:cover;background:#0b0810;display:block}
+    .interpool-content{padding:13px}
+    .interpool-name{font-size:14px;font-weight:900}
+    .interpool-reason{margin-top:7px;color:#9f93ae;font-size:11px;line-height:1.5;white-space:pre-wrap}
+    .interpool-meta{margin-top:10px;color:#6e627e;font-size:9px}
+    .interpool-actions{display:flex;gap:7px;margin-top:10px}
+    .interpool-actions button{flex:1;height:34px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,.05);color:#d8c9ea;border:1px solid rgba(255,255,255,.05)}
+    .interpool-actions button.danger{color:#ff9bad;background:rgba(255,94,128,.07)}
+    .interpool-empty{padding:50px 20px;text-align:center;color:var(--muted);grid-column:1/-1}
+    .interpool-admin{margin-bottom:18px;padding:14px;border-radius:18px;background:rgba(146,70,230,.07);border:1px solid rgba(176,111,255,.11)}
+    .interpool-admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .interpool-admin-head strong{font-size:13px}
+    .interpool-admin-head span{font-size:10px;color:#b995e6}
+    .interpool-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .interpool-form-grid .field.full{grid-column:1/-1}
+    .interpool-preview{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.05)}
+    .interpool-preview img{width:64px;height:64px;object-fit:cover;border-radius:12px;background:#0b0810}
+    .interpool-preview .hint{flex:1}
+    @media(max-width:760px){.interpool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.interpool-form-grid{grid-template-columns:1fr}}
+    @media(max-width:480px){.interpool-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -435,6 +466,7 @@
         <div class="mini-logo" style="width:38px;height:38px;border-radius:12px"><svg viewBox="0 0 24 24" style="width:21px"><path d="M20.7 3.4 2.9 10.3c-1.2.5-1.2 1.2-.2 1.5l4.6 1.4 1.7 5.3c.2.6.1.8.8.8.5 0 .8-.2 1-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.2c.3-1.3-.5-1.9-1.8-1.4Z"/></svg></div>
         <div class="sidebar-brand"><strong>TisGram</strong><div id="sidebarUsername" class="sidebar-user">@username</div></div>
         <div class="top-actions">
+          <button id="interpoolButton" class="icon-btn" type="button" title="Interpool">🕵️</button>
           <button id="shopButton" class="icon-btn" type="button" title="NFT Gifts">🎁</button>
           <button id="profileButton" class="icon-btn" type="button" title="Профіль">👤</button>
         </div>
@@ -465,7 +497,6 @@
           <div id="activeChatName"></div>
           <div id="activeChatUsername"></div>
         </div>
-        <button id="audioCallButton" class="icon-btn call-btn" type="button" title="Аудіодзвінок">📞</button>
         <button id="chatSettingsButton" class="icon-btn chat-menu-btn" type="button" title="Налаштування чату">⋯</button>
       </header>
       <div id="messages" class="messages"><div id="messagesInner" class="messages-inner"></div></div>
@@ -604,22 +635,35 @@
 </div>
 
 
-<div id="callModal" class="modal-overlay hidden">
-  <div class="modal glass call-overlay-card">
-    <div id="callAvatarWrap" class="call-avatar-wrap ringing"><div id="callAvatar"></div></div>
-    <div id="callTitle" class="call-title">Дзвінок</div>
-    <div id="callStatus" class="call-status">З'єднання…</div>
-    <div id="callTimer" class="call-timer hidden">00:00</div>
-    <div class="call-actions">
-      <button id="declineCallButton" class="call-action end hidden" type="button" title="Відхилити">✕</button>
-      <button id="acceptCallButton" class="call-action accept hidden" type="button" title="Прийняти">✓</button>
-      <button id="muteMicButton" class="call-action neutral hidden" type="button" title="Мікрофон">🎙️</button>
-      <button id="endCallButton" class="call-action end hidden" type="button" title="Завершити">📵</button>
+
+
+<div id="interpoolModal" class="modal-overlay hidden">
+  <div class="modal glass interpool-modal">
+    <div class="modal-head"><h3>Interpool</h3><button id="closeInterpool" class="icon-btn" type="button">×</button></div>
+    <div class="modal-body">
+      <div class="interpool-toolbar">
+        <div class="interpool-titlebox">
+          <h4>Interpool Registry</h4>
+          <p>Внутрішній каталог TisGram</p>
+        </div>
+        <button id="refreshInterpool" class="secondary" type="button">Оновити</button>
+      </div>
+
+      <form id="interpoolAdminForm" class="interpool-admin hidden">
+        <div class="interpool-admin-head"><strong>Додати запис</strong><span>Доступ: @sewa1488</span></div>
+        <div class="interpool-form-grid">
+          <div class="field"><label for="interpoolName">Ім'я</label><input id="interpoolName" maxlength="80" required placeholder="Ім'я"></div>
+          <div class="field"><label for="interpoolPhoto">Фото</label><input id="interpoolPhoto" type="file" accept="image/png,image/jpeg,image/webp" required></div>
+          <div class="field full"><label for="interpoolReason">Причина</label><textarea id="interpoolReason" maxlength="600" required placeholder="Напиши причину..."></textarea></div>
+          <div id="interpoolPreview" class="interpool-preview hidden full"><img id="interpoolPreviewImg" alt=""><div class="hint">Попередній перегляд фото</div></div>
+        </div>
+        <div class="modal-actions"><button id="addInterpoolButton" class="primary" type="submit">Додати в Interpool</button></div>
+      </form>
+
+      <div id="interpoolGrid" class="interpool-grid"></div>
     </div>
-    <div class="call-note">Аудіо передається напряму між браузерами через WebRTC. Для мікрофона сайт має бути відкритий через HTTPS або localhost.</div>
   </div>
 </div>
-<audio id="remoteAudio" autoplay playsinline></audio>
 
 <div id="toastContainer"></div>
 
@@ -636,7 +680,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 const state = {
   user:null, profile:null, conversations:[], profiles:new Map(),
   activeConversation:null, activeUser:null, messages:[],
-  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null, pendingMessagePhoto:null, selectedGift:null, chatSettings:new Map(), confirmAction:null, callPeer:null, callStream:null, callRemoteStream:null, callInbox:null, callTarget:null, incomingOffer:null, callStartedAt:null, callTimerInterval:null, micMuted:false
+  realtimeChannel:null, searchTimeout:null, editingMessageId:null, pendingAvatar:null, pendingMessagePhoto:null, selectedGift:null, chatSettings:new Map(), confirmAction:null, interpoolPreviewUrl:null
 };
 
 const $ = s => document.querySelector(s);
@@ -669,10 +713,10 @@ const dom = {
   muteChatButton:$("#muteChatButton"), muteSwitch:$("#muteSwitch"), clearChatButton:$("#clearChatButton"), hideChatButton:$("#hideChatButton"),
   confirmActionModal:$("#confirmActionModal"), confirmActionTitle:$("#confirmActionTitle"), confirmActionText:$("#confirmActionText"),
   closeConfirmAction:$("#closeConfirmAction"), cancelConfirmAction:$("#cancelConfirmAction"), doConfirmAction:$("#doConfirmAction"),
-  audioCallButton:$("#audioCallButton"), callModal:$("#callModal"), callAvatarWrap:$("#callAvatarWrap"),
-  callAvatar:$("#callAvatar"), callTitle:$("#callTitle"), callStatus:$("#callStatus"), callTimer:$("#callTimer"),
-  declineCallButton:$("#declineCallButton"), acceptCallButton:$("#acceptCallButton"), muteMicButton:$("#muteMicButton"),
-  endCallButton:$("#endCallButton"), remoteAudio:$("#remoteAudio")
+  interpoolButton:$("#interpoolButton"), interpoolModal:$("#interpoolModal"), closeInterpool:$("#closeInterpool"),
+  refreshInterpool:$("#refreshInterpool"), interpoolAdminForm:$("#interpoolAdminForm"), interpoolName:$("#interpoolName"),
+  interpoolPhoto:$("#interpoolPhoto"), interpoolReason:$("#interpoolReason"), interpoolPreview:$("#interpoolPreview"),
+  interpoolPreviewImg:$("#interpoolPreviewImg"), interpoolGrid:$("#interpoolGrid"), addInterpoolButton:$("#addInterpoolButton")
 };
 
 function showToast(message,type="normal"){
@@ -1345,180 +1389,134 @@ dom.activeChatAvatar.onclick=()=>state.activeUser&&openUserProfile(state.activeU
 dom.activeChatName.onclick=()=>state.activeUser&&openUserProfile(state.activeUser);
 
 
-/* ===================== TISGRAM 2.2 AUDIO CALLS ===================== */
-const RTC_CONFIG={iceServers:[
-  {urls:"stun:stun.l.google.com:19302"},
-  {urls:"stun:stun1.l.google.com:19302"}
-]};
 
-function callInboxName(uid){return "tisgram-call-inbox-"+uid}
 
-function setCallUi(mode,person,status){
-  dom.callModal.classList.remove("hidden");
-  dom.callAvatar.replaceChildren(createAvatar(person||state.activeUser||state.profile,""));
-  dom.callTitle.textContent=person?.display_name||"TisGram Call";
-  dom.callStatus.textContent=status||"З'єднання…";
-  dom.callTimer.classList.add("hidden");
-  dom.acceptCallButton.classList.toggle("hidden",mode!=="incoming");
-  dom.declineCallButton.classList.toggle("hidden",mode!=="incoming");
-  dom.muteMicButton.classList.toggle("hidden",mode!=="active");
-  dom.endCallButton.classList.toggle("hidden",mode==="incoming");
-  dom.callAvatarWrap.classList.toggle("ringing",mode!=="active");
+/* ===================== TISGRAM 2.3 INTERPOOL ===================== */
+function isInterpoolAdmin(){
+  return String(state.profile?.username||"").toLowerCase()==="sewa1488";
 }
 
-function startCallTimer(){
-  state.callStartedAt=Date.now();
-  dom.callTimer.classList.remove("hidden");
-  clearInterval(state.callTimerInterval);
-  state.callTimerInterval=setInterval(()=>{
-    const s=Math.floor((Date.now()-state.callStartedAt)/1000);
-    dom.callTimer.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
-  },1000)
+function closeInterpoolModal(){
+  dom.interpoolModal.classList.add("hidden");
 }
 
-async function sendCallSignal(targetId,event,payload={}){
-  return new Promise((resolve,reject)=>{
-    const ch=sb.channel(callInboxName(targetId),{config:{broadcast:{ack:true}}});
-    let settled=false;
-    ch.subscribe(async status=>{
-      if(status==="SUBSCRIBED"&&!settled){
-        settled=true;
-        try{
-          await ch.send({type:"broadcast",event,payload:{...payload,from:state.user.id}});
-          setTimeout(()=>sb.removeChannel(ch),250);
-          resolve();
-        }catch(e){sb.removeChannel(ch);reject(e)}
-      }
-      if(status==="CHANNEL_ERROR"&&!settled){settled=true;sb.removeChannel(ch);reject(new Error("Realtime channel error"))}
-    });
-  });
+async function openInterpool(){
+  dom.interpoolAdminForm.classList.toggle("hidden",!isInterpoolAdmin());
+  dom.interpoolModal.classList.remove("hidden");
+  await loadInterpool();
 }
 
-async function setupCallInbox(){
-  if(state.callInbox)sb.removeChannel(state.callInbox);
-  state.callInbox=sb.channel(callInboxName(state.user.id));
-  ["call-offer","call-answer","call-ice","call-hangup","call-decline","call-busy"].forEach(ev=>{
-    state.callInbox.on("broadcast",{event:ev},({payload})=>handleCallSignal(ev,payload));
-  });
-  state.callInbox.subscribe();
-}
-
-async function getProfileById(id){
-  const cached=state.profiles.get(id);if(cached)return cached;
-  const {data,error}=await sb.from("profiles").select("*").eq("id",id).maybeSingle();
-  if(error)throw error;if(data)state.profiles.set(id,data);return data;
-}
-
-async function createPeer(targetId){
-  const pc=new RTCPeerConnection(RTC_CONFIG);
-  state.callPeer=pc;state.callTarget=targetId;
-  state.callRemoteStream=new MediaStream();dom.remoteAudio.srcObject=state.callRemoteStream;
-  pc.ontrack=e=>e.streams[0].getTracks().forEach(t=>state.callRemoteStream.addTrack(t));
-  pc.onicecandidate=e=>{if(e.candidate&&state.callTarget)sendCallSignal(state.callTarget,"call-ice",{candidate:e.candidate.toJSON()}).catch(console.error)};
-  pc.onconnectionstatechange=()=>{
-    if(pc.connectionState==="connected"){
-      dom.callStatus.textContent="З'єднано";setCallUi("active",state.activeUser||state.callTargetProfile,"З'єднано");startCallTimer()
-    }
-    if(["failed","disconnected","closed"].includes(pc.connectionState)&&!dom.callModal.classList.contains("hidden")){
-      if(pc.connectionState==="failed")showToast("Не вдалося встановити дзвінок","error");
-    }
-  };
-  const stream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});
-  state.callStream=stream;stream.getTracks().forEach(t=>pc.addTrack(t,stream));
-  return pc;
-}
-
-async function startAudioCall(){
-  if(!state.activeUser||!state.activeConversation)return;
-  if(state.callPeer||state.incomingOffer)return showToast("Уже є активний дзвінок","error");
+async function loadInterpool(){
   try{
-    setCallUi("outgoing",state.activeUser,"Виклик…");
-    const pc=await createPeer(state.activeUser.id);
-    const offer=await pc.createOffer();await pc.setLocalDescription(offer);
-    await sendCallSignal(state.activeUser.id,"call-offer",{offer,conversation_id:state.activeConversation.id});
+    dom.interpoolGrid.replaceChildren();
+    const loading=document.createElement("div");
+    loading.className="interpool-empty";loading.textContent="Завантаження...";
+    dom.interpoolGrid.appendChild(loading);
+
+    const {data,error}=await sb.from("interpool_entries").select("*").order("created_at",{ascending:false});
+    if(error)throw error;
+
+    dom.interpoolGrid.replaceChildren();
+
+    if(!(data||[]).length){
+      const empty=document.createElement("div");
+      empty.className="interpool-empty";
+      empty.innerHTML="<strong>Interpool поки порожній</strong><div style='margin-top:6px'>Записи ще не додані.</div>";
+      dom.interpoolGrid.appendChild(empty);
+      return;
+    }
+
+    for(const entry of data){
+      const card=document.createElement("article");card.className="interpool-card";
+
+      const img=document.createElement("img");
+      img.className="interpool-photo";img.src=entry.photo_url;img.alt="";
+      img.onerror=()=>{img.style.display="none"};
+
+      const content=document.createElement("div");content.className="interpool-content";
+      const name=document.createElement("div");name.className="interpool-name";name.textContent=entry.name;
+      const reason=document.createElement("div");reason.className="interpool-reason";reason.textContent=entry.reason;
+      const meta=document.createElement("div");meta.className="interpool-meta";
+      meta.textContent=new Date(entry.created_at).toLocaleString("uk-UA",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+
+      content.append(name,reason,meta);
+
+      if(isInterpoolAdmin()){
+        const actions=document.createElement("div");actions.className="interpool-actions";
+        const del=document.createElement("button");del.type="button";del.className="danger";del.textContent="Видалити";
+        del.onclick=()=>deleteInterpoolEntry(entry);
+        actions.appendChild(del);content.appendChild(actions);
+      }
+
+      card.append(img,content);dom.interpoolGrid.appendChild(card);
+    }
   }catch(e){
-    cleanupCall(false);showToast(e?.name==="NotAllowedError"?"Дозволь доступ до мікрофона":readableError(e),"error")
+    dom.interpoolGrid.replaceChildren();
+    showToast(readableError(e),"error");
   }
 }
 
-async function handleCallSignal(event,payload){
+async function uploadInterpoolPhoto(file){
+  const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+  const path=`${state.user.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  const {error}=await sb.storage.from("interpool-media").upload(path,file,{contentType:file.type||"image/jpeg",upsert:false});
+  if(error)throw error;
+  const {data}=sb.storage.from("interpool-media").getPublicUrl(path);
+  return {url:data.publicUrl,path};
+}
+
+dom.interpoolPhoto.addEventListener("change",()=>{
+  const file=dom.interpoolPhoto.files?.[0];
+  if(!file){dom.interpoolPreview.classList.add("hidden");return}
+  if(file.size>8*1024*1024){dom.interpoolPhoto.value="";return showToast("Фото має бути до 8 МБ","error")}
+  if(state.interpoolPreviewUrl)URL.revokeObjectURL(state.interpoolPreviewUrl);
+  state.interpoolPreviewUrl=URL.createObjectURL(file);
+  dom.interpoolPreviewImg.src=state.interpoolPreviewUrl;
+  dom.interpoolPreview.classList.remove("hidden");
+});
+
+dom.interpoolAdminForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!isInterpoolAdmin())return showToast("Немає доступу","error");
+  const name=dom.interpoolName.value.trim();
+  const reason=dom.interpoolReason.value.trim();
+  const file=dom.interpoolPhoto.files?.[0];
+  if(!name||!reason||!file)return showToast("Заповни ім'я, причину і фото","error");
+
+  dom.addInterpoolButton.disabled=true;dom.addInterpoolButton.textContent="Додавання...";
   try{
-    if(event==="call-offer"){
-      if(state.callPeer||state.incomingOffer){
-        await sendCallSignal(payload.from,"call-busy",{});return;
-      }
-      const person=await getProfileById(payload.from);if(!person)return;
-      state.callTarget=payload.from;state.callTargetProfile=person;state.incomingOffer=payload.offer;
-      setCallUi("incoming",person,"Вхідний аудіодзвінок");
-      return;
-    }
-    if(event==="call-answer"&&state.callPeer){
-      await state.callPeer.setRemoteDescription(new RTCSessionDescription(payload.answer));
-      dom.callStatus.textContent="З'єднання…";return;
-    }
-    if(event==="call-ice"&&state.callPeer&&payload.candidate){
-      try{await state.callPeer.addIceCandidate(new RTCIceCandidate(payload.candidate))}catch(e){console.warn(e)}
-      return;
-    }
-    if(event==="call-hangup"){showToast("Дзвінок завершено");cleanupCall();return}
-    if(event==="call-decline"){showToast("Дзвінок відхилено");cleanupCall();return}
-    if(event==="call-busy"){showToast("Користувач зараз зайнятий","error");cleanupCall();return}
-  }catch(e){console.error("call signal",e);showToast("Помилка дзвінка","error");cleanupCall()}
-}
+    const uploaded=await uploadInterpoolPhoto(file);
+    const {error}=await sb.from("interpool_entries").insert({
+      name,reason,photo_url:uploaded.url,photo_path:uploaded.path,created_by:state.user.id
+    });
+    if(error)throw error;
 
-async function acceptIncomingCall(){
-  if(!state.incomingOffer||!state.callTarget)return;
+    dom.interpoolAdminForm.reset();
+    dom.interpoolPreview.classList.add("hidden");
+    if(state.interpoolPreviewUrl)URL.revokeObjectURL(state.interpoolPreviewUrl);
+    state.interpoolPreviewUrl=null;
+    showToast("Запис додано в Interpool","success");
+    await loadInterpool();
+  }catch(err){showToast(readableError(err),"error")}
+  finally{dom.addInterpoolButton.disabled=false;dom.addInterpoolButton.textContent="Додати в Interpool"}
+});
+
+async function deleteInterpoolEntry(entry){
+  if(!isInterpoolAdmin())return;
+  if(!confirm(`Видалити ${entry.name} з Interpool?`))return;
   try{
-    const pc=await createPeer(state.callTarget);
-    await pc.setRemoteDescription(new RTCSessionDescription(state.incomingOffer));
-    const answer=await pc.createAnswer();await pc.setLocalDescription(answer);
-    await sendCallSignal(state.callTarget,"call-answer",{answer});
-    state.incomingOffer=null;setCallUi("active",state.callTargetProfile,"З'єднання…")
-  }catch(e){showToast(e?.name==="NotAllowedError"?"Дозволь доступ до мікрофона":readableError(e),"error");cleanupCall()}
+    const {error}=await sb.from("interpool_entries").delete().eq("id",entry.id);
+    if(error)throw error;
+    if(entry.photo_path)await sb.storage.from("interpool-media").remove([entry.photo_path]);
+    showToast("Запис видалено","success");
+    await loadInterpool();
+  }catch(e){showToast(readableError(e),"error")}
 }
 
-async function declineIncomingCall(){
-  if(state.callTarget)await sendCallSignal(state.callTarget,"call-decline",{}).catch(()=>{});
-  cleanupCall()
-}
-
-async function endActiveCall(){
-  const target=state.callTarget;
-  cleanupCall();
-  if(target)await sendCallSignal(target,"call-hangup",{}).catch(()=>{})
-}
-
-function cleanupCall(hide=true){
-  clearInterval(state.callTimerInterval);state.callTimerInterval=null;
-  try{state.callPeer?.close()}catch{}
-  state.callPeer=null;
-  state.callStream?.getTracks().forEach(t=>t.stop());state.callStream=null;
-  state.callRemoteStream?.getTracks().forEach(t=>t.stop());state.callRemoteStream=null;
-  dom.remoteAudio.srcObject=null;
-  state.callTarget=null;state.incomingOffer=null;state.callStartedAt=null;state.micMuted=false;state.callTargetProfile=null;
-  if(hide!==false)dom.callModal.classList.add("hidden");
-}
-
-dom.audioCallButton.onclick=startAudioCall;
-dom.acceptCallButton.onclick=acceptIncomingCall;
-dom.declineCallButton.onclick=declineIncomingCall;
-dom.endCallButton.onclick=endActiveCall;
-dom.muteMicButton.onclick=()=>{
-  if(!state.callStream)return;
-  state.micMuted=!state.micMuted;
-  state.callStream.getAudioTracks().forEach(t=>t.enabled=!state.micMuted);
-  dom.muteMicButton.textContent=state.micMuted?"🔇":"🎙️";
-  dom.callStatus.textContent=state.micMuted?"Мікрофон вимкнено":"З'єднано"
-};
-
-const _openApplication22=openApplication;
-openApplication=async function(){
-  await _openApplication22();
-  await setupCallInbox();
-};
-
-/* UI bug guards */
-window.addEventListener("beforeunload",()=>{try{state.callStream?.getTracks().forEach(t=>t.stop())}catch{}});
+dom.interpoolButton.onclick=openInterpool;
+dom.closeInterpool.onclick=closeInterpoolModal;
+dom.refreshInterpool.onclick=loadInterpool;
+dom.interpoolModal.addEventListener("click",e=>{if(e.target===dom.interpoolModal)closeInterpoolModal()});
 
 initialize();
 </script>
