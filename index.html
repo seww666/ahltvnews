@@ -439,6 +439,249 @@
     @media(prefers-reduced-motion:reduce){
       *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
     }
+
+    /* =========================================================
+       DESIGN REFRESH v10 — editorial esports, less "AI-glass"
+       Existing functionality is intentionally untouched.
+       ========================================================= */
+
+    :root{
+      --bg:#09090b;
+      --bg-2:#0d0d10;
+      --surface:#111114;
+      --surface-strong:#151518;
+      --surface-soft:#17171b;
+      --line:rgba(255,255,255,.085);
+      --line-purple:rgba(142,84,255,.34);
+      --text:#f4f4f5;
+      --muted:#9a9aa3;
+      --muted-2:#686871;
+      --purple:#8750f7;
+      --purple-2:#a478ff;
+      --purple-3:#6132bf;
+      --shadow:0 16px 44px rgba(0,0,0,.34);
+      --radius:18px;
+    }
+
+    body{
+      background:
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px),
+        #09090b;
+      background-size:32px 32px;
+      letter-spacing:-.01em;
+    }
+
+    .noise{opacity:.08}
+    .app{width:min(100%,720px)}
+
+    .topbar{
+      padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+      background:rgba(9,9,11,.90);
+      border-bottom:1px solid rgba(255,255,255,.07);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+
+    .topbar.is-scrolled{
+      background:rgba(9,9,11,.97);
+      box-shadow:0 10px 30px rgba(0,0,0,.28);
+    }
+
+    .brand{gap:10px}
+    .brand-mark{
+      width:39px;height:39px;border-radius:11px;
+      background:#151518;
+      border:1px solid rgba(255,255,255,.11);
+      box-shadow:none;color:#fff;
+    }
+
+    .brand-title{font-size:13px;font-weight:800;letter-spacing:-.3px}
+    .brand-sub{color:#707078;font-size:9px}
+
+    .icon-btn,.lang-btn,.ahltv-top-btn,.admin-top-btn{
+      height:39px;border-radius:11px;background:#121215;
+      border:1px solid rgba(255,255,255,.08);box-shadow:none;
+    }
+    .icon-btn,.lang-btn{width:39px}
+    .ahltv-top-btn:hover,.icon-btn:hover,.lang-btn:hover{
+      background:#18181c;border-color:rgba(255,255,255,.14);
+    }
+    .admin-top-btn{
+      color:#d9c8ff;background:#15121c;border-color:rgba(135,80,247,.28);
+    }
+
+    main{padding:14px 12px 0}
+
+    .hero{
+      min-height:260px;padding:24px 20px 20px;border-radius:20px;
+      border:1px solid rgba(255,255,255,.085);
+      background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008)),#101013;
+      box-shadow:0 18px 48px rgba(0,0,0,.28);
+      isolation:isolate;
+    }
+
+    .hero:before{
+      content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+      background:var(--purple);opacity:.92;z-index:2;
+    }
+
+    .hero:after{
+      width:260px;height:260px;right:-130px;bottom:-155px;
+      background:rgba(135,80,247,.08);filter:blur(24px);
+    }
+
+    .eyebrow{
+      position:relative;z-index:4;font-size:9px;letter-spacing:.15em;color:#8d8d98;
+    }
+    .eyebrow .dot{width:5px;height:5px;background:#9d72ff;box-shadow:none}
+
+    .hero h1{
+      max-width:440px;margin:15px 0 10px;font-family:"Manrope",system-ui,sans-serif;
+      font-size:clamp(29px,7.8vw,44px);line-height:.98;font-weight:800;
+      letter-spacing:-1.8px;position:relative;z-index:4;
+    }
+
+    .hero p{
+      max-width:430px;color:#9b9ba4;font-size:12px;line-height:1.62;
+      position:relative;z-index:4;
+    }
+
+    .hero-row{margin-top:20px;position:relative;z-index:4}
+    .avatar-mini{border-radius:8px;background:#17131f;border-color:rgba(135,80,247,.24)}
+    .live-badge{
+      padding:7px 9px;border-radius:8px;background:#111914;
+      border-color:rgba(113,223,170,.12);letter-spacing:.08em;
+    }
+    .live-badge:before{box-shadow:none}
+
+    .hero-3d{
+      position:absolute;right:8px;top:22px;width:195px;height:190px;
+      z-index:1;pointer-events:none;opacity:.96;
+    }
+    .scene-3d{
+      width:100%;height:100%;display:grid;place-items:center;perspective:760px;
+      transform-style:preserve-3d;transition:transform .32s cubic-bezier(.2,.8,.2,1);
+    }
+    .cube-3d{
+      position:relative;width:88px;height:88px;transform-style:preserve-3d;
+      transform:rotateX(-18deg) rotateY(32deg);
+      animation:cubeFloat 7s ease-in-out infinite;
+    }
+    .cube-face{
+      position:absolute;inset:0;display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,.13);background:rgba(21,21,25,.90);
+      backface-visibility:hidden;font-size:10px;font-weight:800;
+      letter-spacing:.12em;color:#d7d7dc;
+    }
+    .cube-face span{transform:translateZ(1px)}
+    .cube-front{transform:translateZ(44px)}
+    .cube-back{transform:rotateY(180deg) translateZ(44px)}
+    .cube-right{transform:rotateY(90deg) translateZ(44px);background:#17131f;color:#aa87ff}
+    .cube-left{transform:rotateY(-90deg) translateZ(44px)}
+    .cube-top{transform:rotateX(90deg) translateZ(44px);background:#1b1722}
+    .cube-bottom{transform:rotateX(-90deg) translateZ(44px);background:#0b0b0d}
+    .cube-front:after{
+      content:"";position:absolute;left:10px;right:10px;bottom:10px;height:2px;
+      background:#8750f7;opacity:.9;
+    }
+    .cube-shadow{
+      position:absolute;width:98px;height:25px;border-radius:50%;
+      background:rgba(0,0,0,.42);filter:blur(10px);transform:translateY(71px);
+    }
+
+    @keyframes cubeFloat{
+      0%,100%{transform:rotateX(-18deg) rotateY(32deg) translateY(0)}
+      50%{transform:rotateX(-14deg) rotateY(40deg) translateY(-7px)}
+    }
+
+    .section-head{margin:24px 2px 11px}
+    .section-head h2{font-size:16px;font-weight:800;letter-spacing:-.35px}
+
+    .chip{
+      padding:8px 11px;border-radius:9px;background:#101013;
+      border-color:rgba(255,255,255,.075);font-size:10px;font-weight:700;
+    }
+    .chip.active{
+      color:#fff;background:#1b1624;border-color:rgba(135,80,247,.28);
+    }
+
+    .news-list{gap:11px}
+    .news-card{
+      border-radius:17px;background:#111114;border-color:rgba(255,255,255,.075);
+      box-shadow:0 10px 30px rgba(0,0,0,.22);
+    }
+    .news-card:hover{border-color:rgba(255,255,255,.13)}
+    .news-cover{aspect-ratio:1.85/1}
+    .category{
+      left:10px;top:10px;padding:6px 8px;border-radius:7px;
+      background:rgba(9,9,11,.82);border-color:rgba(255,255,255,.10);
+      font-size:8px;backdrop-filter:blur(8px);
+    }
+    .news-body{padding:14px}
+    .news-title{
+      font-family:"Manrope",system-ui,sans-serif;font-size:17px;line-height:1.24;
+      letter-spacing:-.55px;font-weight:800;
+    }
+    .news-desc{font-size:11px;line-height:1.62;margin:8px 0 12px;color:#92929b}
+    .meta-author{font-weight:650;color:#a9a9b1}
+    .meta-author i{background:#8b5cf6}
+
+    .bottom-nav{
+      width:min(calc(100% - 22px),510px);padding:5px;border-radius:16px;
+      background:rgba(15,15,18,.95);border-color:rgba(255,255,255,.08);
+      backdrop-filter:blur(16px);box-shadow:0 12px 38px rgba(0,0,0,.44);
+    }
+    .nav-btn{min-height:47px;border-radius:11px;font-size:8px}
+    .nav-btn.active{background:#1a1622;color:#e8dcff}
+
+    .sheet{
+      border-radius:22px 22px 0 0;background:#111114;
+      border-color:rgba(255,255,255,.085);
+      box-shadow:0 -18px 58px rgba(0,0,0,.52);
+    }
+
+    .input,.textarea,.select{
+      border-radius:11px;background:#0e0e11;border-color:rgba(255,255,255,.085);
+    }
+    .input:focus,.textarea:focus,.select:focus{
+      border-color:rgba(135,80,247,.52);
+      box-shadow:0 0 0 3px rgba(135,80,247,.08);background:#101014;
+    }
+
+    .btn{border-radius:11px}
+    .btn-primary{background:#7542dc;box-shadow:none}
+    .btn-primary:hover{background:#8250e8}
+
+    .admin-card,.profile-card{border-radius:14px;background:#0e0e11}
+    .stat{border-radius:12px;background:#15121b;border-color:rgba(135,80,247,.13)}
+    .file-box{border-radius:12px;background:#0f0d13}
+    .toast{border-radius:11px;background:rgba(18,18,21,.97);backdrop-filter:blur(12px)}
+
+    @media(max-width:560px){
+      .hero{min-height:250px;padding-right:18px}
+      .hero h1{max-width:78%}
+      .hero p{max-width:72%}
+      .hero-3d{
+        right:-15px;top:37px;transform:scale(.78);
+        transform-origin:center right;opacity:.78;
+      }
+    }
+
+    @media(max-width:390px){
+      .hero h1{max-width:100%;font-size:29px}
+      .hero p{max-width:100%;padding-right:82px}
+      .hero-3d{
+        top:83px;right:-38px;transform:scale(.60);opacity:.62;
+      }
+      .live-badge{font-size:8px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .cube-3d{animation:none!important}
+      .scene-3d{transition:none!important}
+    }
+
   </style>
 </head>
 <body>
@@ -468,7 +711,20 @@
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="heroPanel">
+      <div class="hero-3d" aria-hidden="true">
+        <div class="scene-3d" id="scene3d">
+          <div class="cube-3d">
+            <div class="cube-face cube-front"><span>AHLTV</span></div>
+            <div class="cube-face cube-back"><span>UMP</span></div>
+            <div class="cube-face cube-right"><span>NEWS</span></div>
+            <div class="cube-face cube-left"><span>LIVE</span></div>
+            <div class="cube-face cube-top"></div>
+            <div class="cube-face cube-bottom"></div>
+          </div>
+          <div class="cube-shadow"></div>
+        </div>
+      </div>
       <div class="eyebrow"><span class="dot"></span> AHLTV × UMP NEWSROOM</div>
       <h1><span data-i18n="hero_1">Головне зі сцени.</span><br><span data-i18n="hero_2">Без зайвого шуму.</span></h1>
       <p data-i18n="hero_desc">Матчі, трансфери, турніри, склади та важливі оновлення AHLTV & UMP в одному стрічковому форматі.</p>
@@ -801,9 +1057,32 @@
     if(!qsa(".modal-shell.open").length) document.body.classList.remove("modal-open");
   }
 
+  function initHero3D(){
+    const panel=$("heroPanel");
+    const scene=$("scene3d");
+    if(!panel || !scene || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf=0;
+    panel.addEventListener("pointermove",(e)=>{
+      if(innerWidth < 700) return;
+      cancelAnimationFrame(raf);
+      raf=requestAnimationFrame(()=>{
+        const r=panel.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5;
+        const y=(e.clientY-r.top)/r.height-.5;
+        scene.style.transform=`rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`;
+      });
+    });
+
+    panel.addEventListener("pointerleave",()=>{
+      scene.style.transform="";
+    });
+  }
+
   async function init(){
     icons();
     bindUI();
+    initHero3D();
     applyLanguage();
     await ensureSession();
     await Promise.all([loadSettings(), loadNews()]);
