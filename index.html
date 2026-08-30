@@ -1177,6 +1177,95 @@
       #refreshBtn{display:none}
     }
 
+
+    /* v12 — avatars, views, editor */
+    .profile-avatar-wrap{
+      position:relative;
+      width:58px;
+      height:58px;
+      flex:0 0 auto;
+    }
+
+    .profile-avatar-xl,
+    .profile-top-avatar,
+    .avatar-mini{
+      overflow:hidden;
+    }
+
+    .profile-avatar-xl img,
+    .profile-top-avatar img,
+    .avatar-mini img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .avatar-edit-btn{
+      position:absolute;
+      right:-4px;
+      bottom:-4px;
+      width:25px;
+      height:25px;
+      display:grid;
+      place-items:center;
+      border-radius:8px;
+      border:2px solid #151519;
+      background:#7542dc;
+      color:white;
+      padding:0;
+      box-shadow:0 6px 16px rgba(0,0,0,.35);
+    }
+
+    .avatar-edit-btn svg{
+      width:12px;
+      height:12px;
+    }
+
+    .news-meta-right{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .news-views{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      color:var(--muted-2);
+      font-size:10px;
+    }
+
+    .news-views svg{
+      width:12px;
+      height:12px;
+    }
+
+    .admin-news-actions{
+      display:flex;
+      gap:6px;
+      flex:0 0 auto;
+    }
+
+    .mini-btn.edit{
+      color:#cdb9ff;
+      border-color:rgba(135,80,247,.18);
+      background:rgba(135,80,247,.06);
+    }
+
+    .mini-btn.delete{
+      color:#ef9aa9;
+      border-color:rgba(255,93,116,.13);
+      background:rgba(255,93,116,.045);
+    }
+
+    .compression-note{
+      font-size:8px;
+      color:var(--muted-2);
+      margin-top:7px;
+      line-height:1.5;
+    }
+
   </style>
 </head>
 <body>
@@ -1356,7 +1445,13 @@
 
     <div id="signedProfile" class="profile-content hidden">
       <div class="signed-profile-head">
-        <div class="profile-avatar-xl" id="profileAvatar">U</div>
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar-xl" id="profileAvatar">U</div>
+          <button class="avatar-edit-btn" id="avatarEditBtn" type="button" aria-label="Змінити аватар">
+            <i data-lucide="camera"></i>
+          </button>
+          <input id="avatarInput" class="hidden" type="file" accept="image/jpeg,image/png,image/webp">
+        </div>
         <div class="signed-profile-main">
           <div class="signed-profile-name-row">
             <h3 id="profileName">Користувач</h3>
@@ -1408,6 +1503,53 @@
   </div>
 </div>
 
+
+<!-- Edit News -->
+<div class="modal-shell" id="editNewsModal">
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="sheet-head">
+      <div><h3>Редагувати новину</h3><p>Зміни збережуться одразу в Supabase</p></div>
+      <button class="close-btn" data-close="editNewsModal"><i data-lucide="x"></i></button>
+    </div>
+
+    <input type="hidden" id="editNewsId">
+
+    <div class="field">
+      <label>Заголовок</label>
+      <input class="input" id="editNewsTitle" maxlength="120" placeholder="Заголовок новини">
+    </div>
+
+    <div class="field">
+      <label>Категорія</label>
+      <select class="select" id="editNewsCategory">
+        <option>AHLTV</option>
+        <option>UMP</option>
+        <option>Transfers</option>
+        <option>Matches</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Опис</label>
+      <textarea class="textarea" id="editNewsDesc" placeholder="Опис новини"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Нове фото <span style="font-weight:500;color:var(--muted)">(необов'язково)</span></label>
+      <div class="file-box">
+        <input id="editNewsImage" type="file" accept="image/jpeg,image/png,image/webp">
+        <div class="file-info"><i data-lucide="image-plus"></i><b>Замінити фото</b><br>JPG, PNG або WebP</div>
+      </div>
+      <img class="preview-image" id="editNewsPreview" alt="">
+    </div>
+
+    <button class="btn btn-primary" id="saveEditNewsBtn">
+      <i data-lucide="save"></i><span>Зберегти зміни</span>
+    </button>
+  </div>
+</div>
+
 <!-- Hidden Admin -->
 <div class="modal-shell" id="adminModal">
   <div class="sheet">
@@ -1446,7 +1588,7 @@
               <input id="newsImageInput" type="file" accept="image/jpeg,image/png,image/webp">
               <div class="file-info"><i data-lucide="image-plus"></i><b data-i18n="choose_photo">Обрати фото</b><br>JPG, PNG або WebP</div>
             </div>
-            <img class="preview-image" id="newsPreview" alt="">
+            <img class="preview-image" id="newsPreview" alt=""><div class="compression-note">Фото автоматично стискається перед завантаженням, щоб сайт працював швидше.</div>
           </div>
           <button class="btn btn-primary" id="publishNewsBtn"><i data-lucide="send"></i><span data-i18n="publish">Опублікувати</span></button>
         </div>
@@ -1735,6 +1877,19 @@
 
     $("newsImageInput").addEventListener("change",previewNewsImage);
     $("publishNewsBtn").addEventListener("click",publishNews);
+
+    $("avatarEditBtn").addEventListener("click",()=> $("avatarInput").click());
+    $("avatarInput").addEventListener("change",uploadAvatar);
+
+    $("editNewsImage").addEventListener("change",()=>{
+      const file=$("editNewsImage").files[0];
+      const preview=$("editNewsPreview");
+      if(!file){ preview.style.display="none"; return; }
+      preview.src=URL.createObjectURL(file);
+      preview.style.display="block";
+    });
+
+    $("saveEditNewsBtn").addEventListener("click",saveEditedNews);
     $("newsDescInput").addEventListener("keydown",e=>{
       if((e.ctrlKey || e.metaKey) && e.key==="Enter") publishNews();
     });
@@ -1867,11 +2022,20 @@
 
   async function loadProfile(){
     if(!state.user || state.user.is_anonymous){ state.profile=null; return; }
-    const {data,error}=await sb.from("profiles").select("id,username,role,created_at,last_seen_at").eq("id",state.user.id).maybeSingle();
+    const {data,error}=await sb.from("profiles").select("id,username,role,avatar_url,created_at,last_seen_at").eq("id",state.user.id).maybeSingle();
     if(error) console.error(error);
     state.profile=data||null;
     if(state.profile){
       await sb.from("profiles").update({last_seen_at:new Date().toISOString()}).eq("id",state.user.id);
+    }
+  }
+
+  function renderAvatar(el,url,initial){
+    if(!el) return;
+    if(url){
+      el.innerHTML=`<img src="${escapeHtml(url)}" alt="">`;
+    }else{
+      el.textContent=initial;
     }
   }
 
@@ -1881,15 +2045,15 @@
     const first=(username[0]||"G").toUpperCase();
 
     $("heroUser").textContent=username;
-    $("heroAvatar").textContent=first;
-    $("profileAvatar").textContent=first;
+    renderAvatar($("heroAvatar"),state.profile?.avatar_url,first);
+    renderAvatar($("profileAvatar"),state.profile?.avatar_url,first);
     $("profileName").textContent=username;
     $("profileRole").textContent=state.profile?.role==="admin" ? t("admin") : (isGuest ? t("guest") : t("member"));
 
     const topAvatar=$("profileTopAvatar");
     const topName=$("profileTopName");
     const topRole=$("profileTopRole");
-    if(topAvatar) topAvatar.textContent=first;
+    if(topAvatar) renderAvatar(topAvatar,state.profile?.avatar_url,first);
     if(topName) topName.textContent=username;
     if(topRole) topRole.textContent=state.profile?.role==="admin" ? "Admin" : (isGuest ? "Guest" : "Member");
 
@@ -1940,7 +2104,7 @@
 
   async function loadNews(){
     $("newsList").innerHTML='<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
-    const {data,error}=await sb.from("news").select("id,title,description,image_url,category,author,created_at").order("created_at",{ascending:false});
+    const {data,error}=await sb.from("news").select("id,title,description,image_url,category,author,view_count,created_at").order("created_at",{ascending:false});
     if(error){
       console.error(error);
       $("newsList").innerHTML='<div class="empty"><strong>Не вдалося завантажити</strong>Перевір таблицю news та RLS.</div>';
@@ -1972,7 +2136,10 @@
           <p class="news-desc">${escapeHtml(n.description || "")}</p>
           <div class="news-meta">
             <div class="meta-author"><i></i>${escapeHtml(n.author || "Newsroom")}</div>
-            <time>${formatDate(n.created_at)}</time>
+            <div class="news-meta-right">
+              <span class="news-views"><i data-lucide="eye"></i>${Number(n.view_count||0)}</span>
+              <time>${formatDate(n.created_at)}</time>
+            </div>
           </div>
         </div>
       </article>
@@ -1987,6 +2154,7 @@
       observer.observe(card);
       card.addEventListener("click",()=>openArticle(card.dataset.id));
     });
+    icons();
   }
 
   function placeholderImage(title="News"){
@@ -1994,14 +2162,29 @@
     return `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='675'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23100c18'/%3E%3Cstop offset='1' stop-color='%23220f3e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='675' fill='url(%23g)'/%3E%3Ccircle cx='1000' cy='70' r='260' fill='%238f4cff' opacity='.18'/%3E%3Ctext x='70' y='560' fill='%23f4edff' font-family='Arial' font-size='46' font-weight='700'%3E${safe}%3C/text%3E%3C/svg%3E`;
   }
 
-  function openArticle(id){
+  async function openArticle(id){
     const n=state.news.find(x=>String(x.id)===String(id));
     if(!n) return;
+
     $("articleImage").src=n.image_url||placeholderImage(n.title);
     $("articleTitle").textContent=n.title||"";
     $("articleDesc").textContent=n.description||"";
-    $("articleMeta").innerHTML=`<span>${escapeHtml(n.category||"AHLTV")}</span><span>•</span><span>${formatDate(n.created_at)}</span><span>•</span><span>${escapeHtml(n.author||"Newsroom")}</span>`;
+    $("articleMeta").innerHTML=`<span>${escapeHtml(n.category||"AHLTV")}</span><span>•</span><span>${formatDate(n.created_at)}</span><span>•</span><span>${escapeHtml(n.author||"Newsroom")}</span><span>•</span><span>${Number(n.view_count||0)} views</span>`;
     openModal("articleModal");
+
+    const viewKey=`viewed_news_${n.id}`;
+    if(!sessionStorage.getItem(viewKey)){
+      sessionStorage.setItem(viewKey,"1");
+
+      const {data,error}=await sb.rpc("increment_news_view",{news_id:n.id});
+      if(!error){
+        n.view_count=Number(data ?? (Number(n.view_count||0)+1));
+        $("articleMeta").innerHTML=`<span>${escapeHtml(n.category||"AHLTV")}</span><span>•</span><span>${formatDate(n.created_at)}</span><span>•</span><span>${escapeHtml(n.author||"Newsroom")}</span><span>•</span><span>${Number(n.view_count||0)} views</span>`;
+        renderNews();
+      }else{
+        console.warn("View counter:",error);
+      }
+    }
   }
 
   async function tryOpenAdmin(){
@@ -2020,7 +2203,7 @@
 
     const [{data:users,error:userErr},{data:news,error:newsErr}] = await Promise.all([
       sb.from("admin_profiles").select("id,username,role,created_at,last_seen_at").order("created_at",{ascending:false}),
-      sb.from("news").select("id,title,category,created_at").order("created_at",{ascending:false})
+      sb.from("news").select("id,title,description,image_url,category,view_count,created_at").order("created_at",{ascending:false})
     ]);
 
     if(!userErr){
@@ -2038,10 +2221,17 @@
     if(!newsErr){
       $("adminNewsList").innerHTML=(news||[]).map(n=>`
         <div class="admin-news-row">
-          <div><strong>${escapeHtml(n.title)}</strong><small>${escapeHtml(n.category||"AHLTV")} · ${formatDate(n.created_at)}</small></div>
-          <button class="mini-btn" data-delete-news="${n.id}" aria-label="Видалити"><i data-lucide="trash-2"></i></button>
+          <div>
+            <strong>${escapeHtml(n.title)}</strong>
+            <small>${escapeHtml(n.category||"AHLTV")} · ${Number(n.view_count||0)} views · ${formatDate(n.created_at)}</small>
+          </div>
+          <div class="admin-news-actions">
+            <button class="mini-btn edit" data-edit-news="${n.id}" aria-label="Редагувати"><i data-lucide="pencil"></i></button>
+            <button class="mini-btn delete" data-delete-news="${n.id}" aria-label="Видалити"><i data-lucide="trash-2"></i></button>
+          </div>
         </div>
       `).join("") || '<div style="color:var(--muted);font-size:10px">Новин немає</div>';
+      qsa("[data-edit-news]").forEach(btn=>btn.addEventListener("click",()=>openEditNews(btn.dataset.editNews)));
       qsa("[data-delete-news]").forEach(btn=>btn.addEventListener("click",()=>deleteNews(btn.dataset.deleteNews)));
       icons();
     }
@@ -2054,7 +2244,46 @@
     preview.style.display="block";
   }
 
-  async function uploadImage(bucket,file,prefix){
+  async function compressImage(file,options={}){
+    const maxWidth=options.maxWidth || 1600;
+    const maxHeight=options.maxHeight || 1600;
+    const quality=options.quality ?? .82;
+
+    if(!file || !["image/jpeg","image/png","image/webp"].includes(file.type)) return file;
+
+    const bitmap=await createImageBitmap(file);
+    let width=bitmap.width;
+    let height=bitmap.height;
+
+    const scale=Math.min(1,maxWidth/width,maxHeight/height);
+    width=Math.max(1,Math.round(width*scale));
+    height=Math.max(1,Math.round(height*scale));
+
+    const canvas=document.createElement("canvas");
+    canvas.width=width;
+    canvas.height=height;
+
+    const ctx=canvas.getContext("2d",{alpha:false});
+    ctx.drawImage(bitmap,0,0,width,height);
+    bitmap.close?.();
+
+    const blob=await new Promise((resolve)=>{
+      canvas.toBlob(resolve,"image/webp",quality);
+    });
+
+    if(!blob) return file;
+
+    // Do not replace the original if compression somehow made it larger.
+    if(blob.size >= file.size && file.size < 2*1024*1024) return file;
+
+    return new File(
+      [blob],
+      (file.name.replace(/\.[^.]+$/,"") || "image") + ".webp",
+      {type:"image/webp",lastModified:Date.now()}
+    );
+  }
+
+  async function uploadImage(bucket,file,prefix,options={}){
     if(!file) return null;
 
     const allowedTypes=["image/jpeg","image/png","image/webp"];
@@ -2062,8 +2291,15 @@
       throw new Error("Підтримуються тільки JPG, PNG або WebP");
     }
 
-    if(file.size>8*1024*1024){
-      throw new Error("Фото завелике. Максимум 8 MB.");
+    if(file.size>12*1024*1024){
+      throw new Error("Фото завелике. Максимум 12 MB.");
+    }
+
+    let uploadFile=file;
+    try{
+      uploadFile=await compressImage(file,options);
+    }catch(e){
+      console.warn("Image compression skipped:",e);
     }
 
     const extMap={
@@ -2072,20 +2308,20 @@
       "image/webp":"webp"
     };
 
-    const ext=extMap[file.type] || "jpg";
+    const ext=extMap[uploadFile.type] || "webp";
     const safeId=(crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`);
     const path=`${prefix}/${state.user.id}/${safeId}.${ext}`;
 
     const {data,error}=await sb.storage
       .from(bucket)
-      .upload(path,file,{
+      .upload(path,uploadFile,{
         cacheControl:"3600",
         upsert:false,
-        contentType:file.type
+        contentType:uploadFile.type
       });
 
     if(error){
-      console.error("Storage upload error:", error);
+      console.error("Storage upload error:",error);
 
       if(/bucket not found/i.test(error.message||"")){
         throw new Error(`Storage bucket "${bucket}" не створений`);
@@ -2102,6 +2338,106 @@
     }
 
     return publicData.publicUrl;
+  }
+
+  async function uploadAvatar(){
+    const input=$("avatarInput");
+    const file=input?.files?.[0];
+    if(!file || !state.user || state.user.is_anonymous) return;
+
+    toast("Завантажую аватар...");
+
+    try{
+      const avatar_url=await uploadImage("avatars",file,"avatars",{
+        maxWidth:512,
+        maxHeight:512,
+        quality:.84
+      });
+
+      const {error}=await sb
+        .from("profiles")
+        .update({avatar_url,last_seen_at:new Date().toISOString()})
+        .eq("id",state.user.id);
+
+      if(error) throw error;
+
+      state.profile={...(state.profile||{}),avatar_url};
+      renderSession();
+      toast("Аватар оновлено");
+    }catch(e){
+      console.error("Avatar upload:",e);
+      toast(e?.message || "Не вдалося завантажити аватар","err");
+    }finally{
+      if(input) input.value="";
+    }
+  }
+
+  function openEditNews(id){
+    const n=state.news.find(x=>String(x.id)===String(id));
+    if(!n) return;
+
+    $("editNewsId").value=n.id;
+    $("editNewsTitle").value=n.title||"";
+    $("editNewsCategory").value=n.category||"AHLTV";
+    $("editNewsDesc").value=n.description||"";
+    $("editNewsImage").value="";
+    $("editNewsPreview").style.display="none";
+
+    closeModal("adminModal");
+    openModal("editNewsModal");
+  }
+
+  async function saveEditedNews(){
+    if(state.profile?.role!=="admin") return;
+
+    const id=$("editNewsId").value;
+    const title=$("editNewsTitle").value.trim();
+    const description=$("editNewsDesc").value.trim();
+    const category=$("editNewsCategory").value;
+    const file=$("editNewsImage").files[0];
+    const btn=$("saveEditNewsBtn");
+
+    if(!title){ toast("Напиши заголовок","err"); return; }
+    if(!description){ toast("Напиши опис","err"); return; }
+
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Зберігаю...';
+
+    try{
+      const current=state.news.find(x=>String(x.id)===String(id));
+      let image_url=current?.image_url || null;
+
+      if(file){
+        image_url=await uploadImage("news-images",file,"news",{
+          maxWidth:1600,
+          maxHeight:1600,
+          quality:.82
+        });
+      }
+
+      const {data,error}=await sb
+        .from("news")
+        .update({title,description,category,image_url})
+        .eq("id",id)
+        .select("id,title,description,image_url,category,author,view_count,created_at")
+        .single();
+
+      if(error) throw error;
+
+      state.news=state.news.map(n=>String(n.id)===String(id) ? data : n);
+      renderNews();
+      closeModal("editNewsModal");
+      openModal("adminModal");
+      await loadAdminDashboard();
+      toast("Новину оновлено");
+    }catch(e){
+      console.error("Edit news:",e);
+      toast(e?.message || "Не вдалося зберегти зміни","err");
+    }finally{
+      btn.disabled=false;
+      btn.innerHTML='<i data-lucide="save"></i><span>Зберегти зміни</span>';
+      icons();
+    }
   }
 
   async function publishNews(){
@@ -2142,7 +2478,7 @@
       let image_url=null;
 
       if(file){
-        image_url=await uploadImage("news-images",file,"news");
+        image_url=await uploadImage("news-images",file,"news",{maxWidth:1600,maxHeight:1600,quality:.82});
       }
 
       const payload={
@@ -2157,7 +2493,7 @@
       const {data,error}=await sb
         .from("news")
         .insert(payload)
-        .select("id,title,description,image_url,category,author,created_at")
+        .select("id,title,description,image_url,category,author,view_count,created_at")
         .single();
 
       if(error) throw error;
@@ -2230,7 +2566,7 @@
       // 1. Upload logo only if a new file was selected.
       if(file){
         try{
-          logo_url=await uploadImage("site-assets",file,"logo");
+          logo_url=await uploadImage("site-assets",file,"logo",{maxWidth:800,maxHeight:800,quality:.85});
         }catch(uploadError){
           console.error("Logo upload error:",uploadError);
           throw new Error(uploadError?.message || "Не вдалося завантажити логотип у Storage");
