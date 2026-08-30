@@ -682,6 +682,501 @@
       .scene-3d{transition:none!important}
     }
 
+
+    /* =========================================================
+       v11 — TOPBAR + PROFILE REFINEMENT
+       ========================================================= */
+
+    .topbar{
+      padding:calc(8px + env(safe-area-inset-top)) 10px 8px;
+      background:rgba(9,9,11,.94);
+    }
+
+    .topbar-inner{
+      width:min(100%,720px);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      min-width:0;
+    }
+
+    .brand{
+      min-width:0;
+      flex:1 1 auto;
+    }
+
+    .brand-mark{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .brand-mark:after{
+      content:"";
+      position:absolute;
+      left:7px;right:7px;bottom:6px;
+      height:2px;
+      background:#8750f7;
+      opacity:.85;
+    }
+
+    .brand-copy{
+      display:grid;
+      min-width:0;
+      gap:0;
+    }
+
+    .brand-kicker{
+      font-size:7px;
+      line-height:1;
+      font-weight:800;
+      color:#7254a9;
+      letter-spacing:.14em;
+      margin-bottom:3px;
+    }
+
+    .brand-title{
+      font-size:12px;
+      line-height:1.05;
+    }
+
+    .brand-sub{
+      margin-top:3px;
+      font-size:8px;
+    }
+
+    .top-actions{
+      gap:6px;
+      flex:0 0 auto;
+    }
+
+    .profile-top-btn{
+      height:40px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:0 9px 0 5px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.085);
+      background:#121215;
+      color:#f2eef7;
+      transition:.2s var(--ease);
+      min-width:0;
+    }
+
+    .profile-top-btn:hover{
+      background:#18181c;
+      border-color:rgba(255,255,255,.13);
+    }
+
+    .profile-top-btn:active{
+      transform:scale(.97);
+    }
+
+    .profile-top-avatar{
+      width:30px;height:30px;
+      border-radius:9px;
+      display:grid;place-items:center;
+      background:#1d1727;
+      border:1px solid rgba(135,80,247,.2);
+      color:#d7c5ff;
+      font-size:10px;
+      font-weight:900;
+    }
+
+    .profile-top-copy{
+      display:grid;
+      min-width:0;
+      text-align:left;
+      line-height:1.05;
+    }
+
+    .profile-top-copy b{
+      font-size:9px;
+      max-width:78px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .profile-top-copy small{
+      margin-top:3px;
+      font-size:7px;
+      color:#74747d;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .profile-top-btn>svg{
+      width:13px;height:13px;
+      color:#77717f;
+    }
+
+    .ahltv-top-btn,
+    .lang-btn,
+    .admin-top-btn,
+    .icon-btn{
+      height:40px;
+    }
+
+    .icon-btn,.lang-btn{width:40px}
+
+    /* Profile sheet */
+    .profile-sheet{
+      padding-top:0;
+      overflow:hidden auto;
+      background:#0f0f12;
+    }
+
+    .profile-sheet>.handle{
+      position:absolute;
+      z-index:5;
+      top:9px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(255,255,255,.24);
+    }
+
+    .profile-cover{
+      position:relative;
+      margin:0 -16px;
+      height:112px;
+      overflow:hidden;
+      background:#121216;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+
+    .profile-cover-grid{
+      position:absolute;inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size:24px 24px;
+      opacity:.55;
+    }
+
+    .profile-cover-glow{
+      position:absolute;
+      width:210px;height:210px;
+      border-radius:50%;
+      right:-70px;top:-125px;
+      background:rgba(135,80,247,.20);
+      filter:blur(18px);
+    }
+
+    .profile-cover-top{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:23px 16px 0;
+    }
+
+    .profile-cover-tag{
+      font-size:8px;
+      color:#8a8096;
+      font-weight:800;
+      letter-spacing:.14em;
+    }
+
+    .profile-close{
+      background:rgba(12,12,15,.72);
+      backdrop-filter:blur(8px);
+    }
+
+    .profile-content{
+      position:relative;
+      margin-top:-36px;
+      z-index:3;
+      padding-bottom:5px;
+    }
+
+    .guest-profile-head,
+    .signed-profile-head{
+      display:flex;
+      align-items:center;
+      gap:13px;
+      padding:14px;
+      margin-bottom:13px;
+      border-radius:16px;
+      background:#151519;
+      border:1px solid rgba(255,255,255,.085);
+      box-shadow:0 12px 28px rgba(0,0,0,.22);
+    }
+
+    .guest-avatar{
+      width:50px;height:50px;
+      display:grid;place-items:center;
+      border-radius:15px;
+      background:#1b1623;
+      border:1px solid rgba(135,80,247,.18);
+      color:#cbb4ff;
+    }
+
+    .guest-avatar svg{width:23px;height:23px}
+
+    .guest-profile-head h3,
+    .signed-profile-head h3{
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.35px;
+    }
+
+    .guest-profile-head p,
+    .signed-profile-head p{
+      margin:4px 0 0;
+      color:#7f7f88;
+      font-size:9px;
+    }
+
+    .auth-tabs{
+      border:1px solid rgba(255,255,255,.06);
+      background:#0c0c0f;
+      padding:4px;
+      border-radius:12px;
+    }
+
+    .auth-tab{
+      border-radius:9px;
+      padding:10px 8px;
+    }
+
+    .auth-tab.active{
+      background:#1b1623;
+      box-shadow:inset 0 0 0 1px rgba(135,80,247,.13);
+    }
+
+    .input-icon-wrap{
+      position:relative;
+    }
+
+    .input-icon-wrap>svg{
+      position:absolute;
+      z-index:2;
+      width:15px;height:15px;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#66616d;
+      pointer-events:none;
+    }
+
+    .input-icon-wrap .input{
+      padding-left:37px;
+    }
+
+    .profile-main-btn{
+      margin-top:3px;
+      min-height:44px;
+    }
+
+    .profile-hint{
+      color:#6f6f78;
+      font-size:9px;
+      line-height:1.55;
+      margin:10px 2px 0;
+    }
+
+    .signed-profile-head{
+      align-items:flex-start;
+    }
+
+    .profile-avatar-xl{
+      width:58px;height:58px;
+      flex:0 0 auto;
+      border-radius:18px;
+      display:grid;place-items:center;
+      background:#20182c;
+      border:1px solid rgba(135,80,247,.24);
+      color:#d8c5ff;
+      font-size:18px;
+      font-weight:900;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .signed-profile-main{
+      min-width:0;
+      flex:1;
+      padding-top:4px;
+    }
+
+    .signed-profile-name-row{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .signed-profile-name-row h3{
+      max-width:180px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .role-badge{
+      padding:4px 6px;
+      border-radius:6px;
+      background:#17121f;
+      border:1px solid rgba(135,80,247,.2);
+      color:#ab8be8;
+      font-size:7px;
+      font-weight:900;
+      letter-spacing:.09em;
+    }
+
+    .role-badge.admin{
+      background:#22172e;
+      border-color:rgba(135,80,247,.32);
+      color:#d8c0ff;
+    }
+
+    .profile-info-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin:0 0 10px;
+    }
+
+    .profile-info-card{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      min-width:0;
+      padding:11px;
+      border-radius:13px;
+      background:#111114;
+      border:1px solid rgba(255,255,255,.07);
+    }
+
+    .profile-info-icon{
+      width:32px;height:32px;
+      flex:0 0 auto;
+      display:grid;place-items:center;
+      border-radius:9px;
+      background:#18141f;
+      color:#9c78e6;
+    }
+
+    .profile-info-icon svg{width:15px;height:15px}
+
+    .profile-info-card span{
+      display:block;
+      color:#666670;
+      font-size:7px;
+      font-weight:800;
+      letter-spacing:.08em;
+    }
+
+    .profile-info-card b{
+      display:block;
+      margin-top:3px;
+      font-size:9px;
+      color:#d7d7dd;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .profile-action-list{
+      display:grid;
+      gap:7px;
+    }
+
+    .profile-action{
+      width:100%;
+      display:grid;
+      grid-template-columns:38px 1fr 16px;
+      align-items:center;
+      gap:10px;
+      text-align:left;
+      padding:9px 10px;
+      border-radius:13px;
+      border:1px solid rgba(255,255,255,.07);
+      background:#111114;
+      color:#e9e9ed;
+      transition:.2s var(--ease);
+    }
+
+    .profile-action:hover{
+      background:#151519;
+      border-color:rgba(255,255,255,.11);
+    }
+
+    .profile-action:active{transform:scale(.987)}
+
+    .profile-action-icon{
+      width:34px;height:34px;
+      border-radius:10px;
+      display:grid;place-items:center;
+      background:#18181c;
+      color:#9b82ce;
+    }
+
+    .profile-action-icon svg{width:15px;height:15px}
+
+    .profile-action b{
+      display:block;
+      font-size:10px;
+    }
+
+    .profile-action small{
+      display:block;
+      margin-top:2px;
+      font-size:8px;
+      color:#6c6c75;
+    }
+
+    .profile-action>svg{
+      width:14px;height:14px;
+      color:#55515a;
+    }
+
+    .profile-action.danger{
+      color:#efb2bd;
+      border-color:rgba(255,93,116,.10);
+    }
+
+    .profile-action.danger .profile-action-icon{
+      background:rgba(255,93,116,.07);
+      color:#d97788;
+    }
+
+    @media(max-width:620px){
+      .topbar-inner{gap:7px}
+      .profile-top-copy{display:none}
+      .profile-top-btn{width:40px;padding:4px;justify-content:center}
+      .profile-top-btn>svg{display:none}
+      .profile-top-avatar{width:30px;height:30px}
+    }
+
+    @media(max-width:460px){
+      .brand-kicker{display:none}
+      .brand-sub{display:none}
+      .brand-title{font-size:11px;max-width:128px}
+      .brand-mark{width:38px;height:38px}
+      .ahltv-top-btn,.lang-btn,.admin-top-btn,.icon-btn,.profile-top-btn{
+        width:38px;height:38px;padding:0;
+      }
+      .ahltv-top-btn span,.admin-top-btn span{display:none}
+      .top-actions{gap:5px}
+    }
+
+    @media(max-width:365px){
+      .brand-title{max-width:92px}
+      .refreshBtn{display:none}
+    }
+
+
+    @media(max-width:365px){
+      #refreshBtn{display:none}
+    }
+
   </style>
 </head>
 <body>
@@ -689,24 +1184,34 @@
 
 <div class="app">
   <header class="topbar" id="topbar">
-    <div class="brand" id="brandSecret">
-      <div class="brand-mark" id="brandMark">A</div>
-      <div class="brand-copy">
-        <div class="brand-title" id="brandTitle">News AHLTV & UMP</div>
-        <div class="brand-sub" id="brandSub">by sewa/vadim777</div>
+    <div class="topbar-inner">
+      <div class="brand" id="brandSecret">
+        <div class="brand-mark" id="brandMark">A</div>
+        <div class="brand-copy">
+          <div class="brand-kicker">AHLTV × UMP</div>
+          <div class="brand-title" id="brandTitle">News AHLTV & UMP</div>
+          <div class="brand-sub" id="brandSub">by sewa/vadim777</div>
+        </div>
       </div>
-    </div>
 
-    <div class="top-actions">
-      <a class="ahltv-top-btn" id="ahltvTopBtn" href="https://ahltvtier7.lovable.app/" aria-label="AHLTV">
-        <i data-lucide="external-link"></i><span>AHLTV</span>
-      </a>
-      <button class="lang-btn" id="langBtn" aria-label="Language">
-        <span id="langCode">UA</span>
-      </button>
-      <button class="admin-top-btn hidden" id="adminTopBtn" aria-label="Admin"><i data-lucide="shield"></i><span>Admin</span></button>
-      <button class="icon-btn" id="refreshBtn" aria-label="Оновити"><i data-lucide="rotate-cw"></i></button>
-      <button class="icon-btn" id="profileBtn" aria-label="Профіль"><i data-lucide="user-round"></i></button>
+      <div class="top-actions">
+        <a class="ahltv-top-btn" id="ahltvTopBtn" href="https://ahltvtier7.lovable.app/" aria-label="AHLTV">
+          <i data-lucide="external-link"></i><span>AHLTV</span>
+        </a>
+        <button class="lang-btn" id="langBtn" aria-label="Language">
+          <span id="langCode">UA</span>
+        </button>
+        <button class="admin-top-btn hidden" id="adminTopBtn" aria-label="Admin"><i data-lucide="shield"></i><span>Admin</span></button>
+        <button class="icon-btn" id="refreshBtn" aria-label="Оновити"><i data-lucide="rotate-cw"></i></button>
+        <button class="profile-top-btn" id="profileBtn" aria-label="Профіль">
+          <span class="profile-top-avatar" id="profileTopAvatar">G</span>
+          <span class="profile-top-copy">
+            <b id="profileTopName">Гість</b>
+            <small id="profileTopRole">Profile</small>
+          </span>
+          <i data-lucide="chevron-down"></i>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -783,44 +1288,107 @@
 
 <!-- Profile / Auth -->
 <div class="modal-shell" id="profileModal">
-  <div class="sheet">
+  <div class="sheet profile-sheet">
     <div class="handle"></div>
-    <div class="sheet-head">
-      <div><h3 data-i18n="profile">Профіль</h3><p data-i18n="login_sub">Вхід без видимої електронної пошти</p></div>
-      <button class="close-btn" data-close="profileModal"><i data-lucide="x"></i></button>
+
+    <div class="profile-cover">
+      <div class="profile-cover-grid"></div>
+      <div class="profile-cover-glow"></div>
+      <div class="profile-cover-top">
+        <span class="profile-cover-tag">AHLTV × UMP ACCOUNT</span>
+        <button class="close-btn profile-close" data-close="profileModal"><i data-lucide="x"></i></button>
+      </div>
     </div>
 
-    <div id="guestAuth">
+    <div id="guestAuth" class="profile-content">
+      <div class="guest-profile-head">
+        <div class="guest-avatar"><i data-lucide="user-round"></i></div>
+        <div>
+          <h3 data-i18n="profile">Профіль</h3>
+          <p data-i18n="login_sub">Вхід без видимої електронної пошти</p>
+        </div>
+      </div>
+
       <div class="auth-tabs">
         <button class="auth-tab active" data-auth-tab="login" data-i18n="login">Увійти</button>
         <button class="auth-tab" data-auth-tab="register" data-i18n="register">Реєстрація</button>
       </div>
 
       <div id="loginPane">
-        <div class="field"><label data-i18n="nickname">Нік</label><input class="input" id="loginUsername" autocomplete="username" placeholder="Свій нік в кс" data-i18n-placeholder="nick_placeholder"></div>
-        <div class="field"><label data-i18n="password">Пароль</label><input class="input" id="loginPassword" type="password" autocomplete="current-password" placeholder="Ваш пароль" data-i18n-placeholder="password_placeholder"></div>
-        <button class="btn btn-primary" id="loginBtn"><i data-lucide="log-in"></i><span data-i18n="login">Увійти</span></button>
+        <div class="field">
+          <label data-i18n="nickname">Нік</label>
+          <div class="input-icon-wrap">
+            <i data-lucide="at-sign"></i>
+            <input class="input" id="loginUsername" autocomplete="username" placeholder="Свій нік в кс" data-i18n-placeholder="nick_placeholder">
+          </div>
+        </div>
+        <div class="field">
+          <label data-i18n="password">Пароль</label>
+          <div class="input-icon-wrap">
+            <i data-lucide="lock-keyhole"></i>
+            <input class="input" id="loginPassword" type="password" autocomplete="current-password" placeholder="Ваш пароль" data-i18n-placeholder="password_placeholder">
+          </div>
+        </div>
+
+        <button class="btn btn-primary profile-main-btn" id="loginBtn"><i data-lucide="log-in"></i><span data-i18n="login">Увійти</span></button>
         <button class="btn btn-ghost" id="guestBtn" style="margin-top:9px"><i data-lucide="ghost"></i><span data-i18n="continue_guest">Продовжити як гість</span></button>
       </div>
 
       <div id="registerPane" class="hidden">
-        <div class="field"><label data-i18n="nickname">Нік</label><input class="input" id="regUsername" autocomplete="username" maxlength="24" placeholder="Свій нік в кс" data-i18n-placeholder="nick_placeholder"></div>
-        <div class="field"><label data-i18n="password">Пароль</label><input class="input" id="regPassword" type="password" autocomplete="new-password" minlength="6" placeholder="Мінімум 6 символів" data-i18n-placeholder="password_min"></div>
-        <button class="btn btn-primary" id="registerBtn"><i data-lucide="user-plus"></i><span data-i18n="create_account">Створити акаунт</span></button>
-        <p style="color:var(--muted);font-size:10px;line-height:1.55;margin:10px 2px 0">Сайт сам використовує технічну адресу всередині Supabase. Користувач її не вводить і не бачить.</p>
+        <div class="field">
+          <label data-i18n="nickname">Нік</label>
+          <div class="input-icon-wrap">
+            <i data-lucide="gamepad-2"></i>
+            <input class="input" id="regUsername" autocomplete="username" maxlength="24" placeholder="Свій нік в кс" data-i18n-placeholder="nick_placeholder">
+          </div>
+        </div>
+        <div class="field">
+          <label data-i18n="password">Пароль</label>
+          <div class="input-icon-wrap">
+            <i data-lucide="key-round"></i>
+            <input class="input" id="regPassword" type="password" autocomplete="new-password" minlength="6" placeholder="Мінімум 6 символів" data-i18n-placeholder="password_min">
+          </div>
+        </div>
+        <button class="btn btn-primary profile-main-btn" id="registerBtn"><i data-lucide="user-plus"></i><span data-i18n="create_account">Створити акаунт</span></button>
+        <p class="profile-hint">Сайт використовує технічну адресу всередині Supabase. Користувач її не вводить і не бачить.</p>
       </div>
     </div>
 
-    <div id="signedProfile" class="hidden">
-      <div class="profile-card">
-        <div class="profile-line">
-          <div class="profile-avatar" id="profileAvatar">U</div>
-          <div><strong id="profileName">Користувач</strong><small id="profileRole">Member</small></div>
+    <div id="signedProfile" class="profile-content hidden">
+      <div class="signed-profile-head">
+        <div class="profile-avatar-xl" id="profileAvatar">U</div>
+        <div class="signed-profile-main">
+          <div class="signed-profile-name-row">
+            <h3 id="profileName">Користувач</h3>
+            <span class="role-badge" id="profileRoleBadge">MEMBER</span>
+          </div>
+          <p id="profileRole">Member</p>
         </div>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-ghost" id="copyIdBtn"><i data-lucide="copy"></i>ID</button>
-        <button class="btn btn-danger" id="logoutBtn"><i data-lucide="log-out"></i>Вийти</button>
+
+      <div class="profile-info-grid">
+        <div class="profile-info-card">
+          <div class="profile-info-icon"><i data-lucide="fingerprint"></i></div>
+          <div><span>ID</span><b id="profileShortId">—</b></div>
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-icon"><i data-lucide="shield-check"></i></div>
+          <div><span>STATUS</span><b id="profileStatus">ACTIVE</b></div>
+        </div>
+      </div>
+
+      <div class="profile-action-list">
+        <button class="profile-action" id="copyIdBtn">
+          <span class="profile-action-icon"><i data-lucide="copy"></i></span>
+          <span><b>Copy user ID</b><small>Скопіювати ID профілю</small></span>
+          <i data-lucide="chevron-right"></i>
+        </button>
+
+        <button class="profile-action danger" id="logoutBtn">
+          <span class="profile-action-icon"><i data-lucide="log-out"></i></span>
+          <span><b>Sign out</b><small>Вийти з поточного акаунта</small></span>
+          <i data-lucide="chevron-right"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -1317,6 +1885,24 @@
     $("profileAvatar").textContent=first;
     $("profileName").textContent=username;
     $("profileRole").textContent=state.profile?.role==="admin" ? t("admin") : (isGuest ? t("guest") : t("member"));
+
+    const topAvatar=$("profileTopAvatar");
+    const topName=$("profileTopName");
+    const topRole=$("profileTopRole");
+    if(topAvatar) topAvatar.textContent=first;
+    if(topName) topName.textContent=username;
+    if(topRole) topRole.textContent=state.profile?.role==="admin" ? "Admin" : (isGuest ? "Guest" : "Member");
+
+    const shortId=$("profileShortId");
+    const roleBadge=$("profileRoleBadge");
+    const status=$("profileStatus");
+    if(shortId) shortId.textContent=state.user?.id ? state.user.id.slice(0,8).toUpperCase() : "—";
+    if(status) status.textContent=state.user ? "ACTIVE" : "OFFLINE";
+    if(roleBadge){
+      const isAdm=state.profile?.role==="admin";
+      roleBadge.textContent=isAdm ? "ADMIN" : (isGuest ? "GUEST" : "MEMBER");
+      roleBadge.classList.toggle("admin",isAdm);
+    }
 
     $("guestAuth").classList.toggle("hidden",!isGuest);
     $("signedProfile").classList.toggle("hidden",isGuest);
