@@ -3720,6 +3720,26 @@
       }
     }
 
+
+    /* v26 boot/logo hotfix */
+    .brand-mark.has-logo:after{
+      display:none!important;
+    }
+
+    .brand-mark.has-logo{
+      padding:0!important;
+      overflow:hidden!important;
+      background:#111115!important;
+    }
+
+    .brand-mark.has-logo img{
+      display:block!important;
+      width:100%!important;
+      height:100%!important;
+      object-fit:cover!important;
+      border-radius:inherit!important;
+    }
+
   </style>
 </head>
 <body>
@@ -4639,6 +4659,23 @@
     applyRotation();
   }
 
+  function withTimeout(promise,ms,label="Запит"){
+    return Promise.race([
+      Promise.resolve(promise),
+      new Promise((_,reject)=>{
+        setTimeout(()=>reject(new Error(`${label}: timeout`)),ms);
+      })
+    ]);
+  }
+
+  function scheduleBootNewsRetry(delay=1000){
+    setTimeout(()=>{
+      if(!state.news.length){
+        loadNews({silent:true,force:true}).catch(()=>{});
+      }
+    },delay);
+  }
+
   async function init(){
     icons();
     bindUI();
@@ -4646,20 +4683,38 @@
     initHero3D();
     applyLanguage();
 
-    await ensureSession();
-
-    await Promise.allSettled([
-      loadSettings(),
-      loadNews({silent:false})
+    // Public content must NEVER wait for Supabase Auth.
+    // News and site settings start loading immediately.
+    const publicBoot=Promise.allSettled([
+      loadSettings({boot:true}),
+      loadNews({silent:false,force:true})
     ]);
 
-    renderSession();
+    // Auth runs in parallel. Even if anonymous sign-in is slow,
+    // the public feed and uploaded logo still appear.
+    const authBoot=withTimeout(
+      ensureSession(),
+      6500,
+      "Auth"
+    ).catch(error=>{
+      console.warn("Auth boot timeout/error:",error);
+      return null;
+    });
+
+    await publicBoot;
+
+    // Automatic retries — no manual refresh should be required.
+    if(!state.news.length){
+      scheduleBootNewsRetry(500);
+      scheduleBootNewsRetry(1600);
+      scheduleBootNewsRetry(3800);
+    }
+
+    // Realtime can start as soon as the public data boot is done.
     setupRealtime();
 
-    if(!state.news.length){
-      setTimeout(()=>loadNews({silent:true}),450);
-      setTimeout(()=>loadNews({silent:true}),1400);
-    }
+    await authBoot;
+    renderSession();
   }
 
   function bindUI(){
@@ -5312,9 +5367,49 @@
     toast("ID скопійовано");
   }
 
-  async function loadSettings(){
-    const {data,error}=await sb.from("site_settings").select("title,subtitle,logo_url").eq("id",1).maybeSingle();
-    if(!error && data) state.settings={...state.settings,...data};
+  async function loadSettings(options={}){
+    // Show the last known uploaded logo instantly while Supabase responds.
+    try{
+      const cached=JSON.parse(localStorage.getItem("ahltv-site-settings-cache")||"null");
+      if(cached && typeof cached==="object"){
+        state.settings={...state.settings,...cached};
+        applySettings();
+      }
+    }catch{}
+
+    try{
+      const request=sb
+        .from("site_settings")
+        .select("title,subtitle,logo_url")
+        .eq("id",1)
+        .maybeSingle();
+
+      const {data,error}=await withTimeout(
+        request,
+        options.boot ? 5500 : 8000,
+        "Site settings"
+      );
+
+      if(error) throw error;
+
+      if(data){
+        state.settings={...state.settings,...data};
+
+        try{
+          localStorage.setItem(
+            "ahltv-site-settings-cache",
+            JSON.stringify({
+              title:state.settings.title,
+              subtitle:state.settings.subtitle,
+              logo_url:state.settings.logo_url
+            })
+          );
+        }catch{}
+      }
+    }catch(error){
+      console.warn("loadSettings:",error);
+    }
+
     applySettings();
   }
 
@@ -5324,58 +5419,161 @@
     document.title=`${state.settings.title || "News AHLTV & UMP"} ${state.settings.subtitle || ""}`.trim();
 
     const mark=$("brandMark");
-    if(state.settings.logo_url){
-      mark.innerHTML=`<img src="${escapeHtml(state.settings.logo_url)}" alt="Logo">`;
+    const logoUrl=state.settings.logo_url;
+
+    if(logoUrl){
+      const current=mark.querySelector("img");
+
+      // Avoid replacing a working image on every settings/realtime refresh.
+      if(!current || current.dataset.src!==logoUrl){
+        const img=new Image();
+        img.alt="Logo";
+        img.dataset.src=logoUrl;
+        img.decoding="async";
+
+        img.onload=()=>{
+          mark.innerHTML="";
+          mark.appendChild(img);
+          mark.classList.add("has-logo");
+        };
+
+        img.onerror=()=>{
+          console.warn("Logo image failed to load:",logoUrl);
+
+          // Keep an already-rendered logo if there is one.
+          if(!mark.querySelector("img")){
+            mark.textContent=(state.settings.title?.trim()?.[0]||"A").toUpperCase();
+            mark.classList.remove("has-logo");
+          }
+        };
+
+        img.src=logoUrl;
+      }
     }else{
       mark.textContent=(state.settings.title?.trim()?.[0]||"A").toUpperCase();
+      mark.classList.remove("has-logo");
     }
   }
 
   let newsLoadPromise=null;
   let newsRealtimeTimer=null;
+  let newsLastErrorAt=0;
+
+  async function fetchPublishedNews(){
+    const modernQuery=sb
+      .from("news")
+      .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
+      .eq("status","published")
+      .order("published_at",{ascending:false,nullsFirst:false})
+      .order("created_at",{ascending:false});
+
+    try{
+      const result=await withTimeout(
+        modernQuery,
+        7000,
+        "News"
+      );
+
+      if(!result.error) return result;
+
+      const message=String(result.error?.message||"").toLowerCase();
+
+      // Compatibility fallback if the v22 migration has not been applied
+      // or Supabase schema cache is temporarily stale.
+      if(
+        message.includes("status") ||
+        message.includes("published_at") ||
+        message.includes("schema cache") ||
+        message.includes("column")
+      ){
+        throw new Error("USE_LEGACY_NEWS_QUERY");
+      }
+
+      return result;
+    }catch(error){
+      if(String(error?.message||"").includes("USE_LEGACY_NEWS_QUERY")){
+        // continue to legacy query below
+      }else if(/timeout/i.test(String(error?.message||""))){
+        throw error;
+      }else{
+        console.warn("Modern news query fallback:",error);
+      }
+    }
+
+    const legacyQuery=sb
+      .from("news")
+      .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
+      .order("created_at",{ascending:false});
+
+    const legacy=await withTimeout(
+      legacyQuery,
+      7000,
+      "Legacy news"
+    );
+
+    if(legacy.data){
+      legacy.data=legacy.data.map(n=>({
+        ...n,
+        status:"published",
+        published_at:n.created_at
+      }));
+    }
+
+    return legacy;
+  }
 
   async function loadNews(options={}){
     const silent=!!options.silent;
+    const force=!!options.force;
 
-    // Do not start several identical requests at the same time.
-    if(newsLoadPromise) return newsLoadPromise;
+    if(newsLoadPromise && !force) return newsLoadPromise;
 
-    newsLoadPromise=(async()=>{
-      // Spinner only for the very first/manual load.
-      // Realtime refreshes happen invisibly in the background.
+    // If force=true while another request is hanging, create a fresh request
+    // rather than making the UI wait forever for the old one.
+    const thisPromise=(async()=>{
       if(!silent && !state.news.length){
-        $("newsList").innerHTML='<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
+        $("newsList").innerHTML=
+          '<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
       }
 
-      const {data,error}=await sb
-        .from("news")
-        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
-        .eq("status","published")
-        .order("published_at",{ascending:false,nullsFirst:false})
-        .order("created_at",{ascending:false});
+      try{
+        const {data,error}=await fetchPublishedNews();
 
-      if(error){
+        if(error) throw error;
+
+        state.news=data||[];
+        newsLastErrorAt=0;
+        renderNews();
+        return state.news;
+      }catch(error){
+        newsLastErrorAt=Date.now();
         console.error("loadNews:",error);
 
-        // If old news are already visible, don't destroy the feed because
-        // of one temporary realtime/network error.
         if(!state.news.length){
-          $("newsList").innerHTML='<div class="empty"><strong>Не вдалося завантажити</strong>Перевір таблицю news та RLS.</div>';
-          $("newsCount").textContent="Помилка";
-        }else{
-          toast("Не вдалося оновити новини","err");
-        }
-        return;
-      }
+          $("newsList").innerHTML=`
+            <div class="empty">
+              <strong>Новини тимчасово не завантажились</strong>
+              Сайт спробує ще раз автоматично.
+            </div>
+          `;
+          $("newsCount").textContent="Повторна спроба…";
 
-      state.news=data||[];
-      renderNews();
+          // Self-healing retry. No button press required.
+          scheduleBootNewsRetry(1200);
+        }
+
+        return state.news;
+      }
     })();
 
+    newsLoadPromise=thisPromise;
+
     try{
-      await newsLoadPromise;
+      return await thisPromise;
     }finally{
-      newsLoadPromise=null;
+      if(newsLoadPromise===thisPromise){
+        newsLoadPromise=null;
+      }
     }
   }
 
@@ -5900,6 +6098,13 @@
         subtitle:data?.subtitle || subtitle,
         logo_url:data?.logo_url ?? logo_url
       };
+
+      try{
+        localStorage.setItem(
+          "ahltv-site-settings-cache",
+          JSON.stringify(state.settings)
+        );
+      }catch{}
 
       applySettings();
       $("siteLogoInput").value="";
