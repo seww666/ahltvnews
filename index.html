@@ -2573,33 +2573,155 @@
     @media(min-width:620px){.admin-analytics-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:390px){.publish-actions{grid-template-columns:1fr}}
 
 
-    /* v23 — profile redesign */
+    /* =========================================================
+       v24 — profile redesign, safely layered over v22
+       ========================================================= */
     .profile-sheet{background:linear-gradient(180deg,rgba(135,80,247,.035),transparent 190px),#0d0d10}
-    .profile-main-card{position:relative;overflow:hidden;margin-bottom:10px;padding:15px;border-radius:18px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(140deg,rgba(135,80,247,.09),rgba(255,255,255,.012) 48%,transparent),#131317;box-shadow:0 12px 30px rgba(0,0,0,.22)}
-    .profile-main-bg{position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(180deg,black,transparent 85%);opacity:.45}
-    .profile-main-card:after{content:"";position:absolute;width:180px;height:180px;right:-85px;top:-105px;border-radius:50%;background:rgba(135,80,247,.17);filter:blur(25px);pointer-events:none}
+
+    .profile-main-card{
+      position:relative;overflow:hidden;margin-bottom:10px;padding:15px;
+      border-radius:18px;border:1px solid rgba(255,255,255,.075);
+      background:linear-gradient(140deg,rgba(135,80,247,.09),rgba(255,255,255,.012) 48%,transparent),#131317;
+      box-shadow:0 12px 30px rgba(0,0,0,.22)
+    }
+
+    .profile-main-bg{
+      position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                 linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+      background-size:22px 22px;
+      -webkit-mask-image:linear-gradient(180deg,black,transparent 85%);
+      mask-image:linear-gradient(180deg,black,transparent 85%);
+      opacity:.45
+    }
+
+    .profile-main-card:after{
+      content:"";position:absolute;width:180px;height:180px;right:-85px;top:-105px;
+      border-radius:50%;background:rgba(135,80,247,.17);filter:blur(25px);pointer-events:none
+    }
+
     .profile-main-top{position:relative;z-index:1;display:flex;align-items:center;gap:13px}
     .profile-avatar-wrap-xl{width:64px;height:64px;flex:0 0 auto}
-    .profile-avatar-wrap-xl .profile-avatar-xl{width:64px;height:64px;border-radius:20px;background:linear-gradient(145deg,rgba(135,80,247,.14),rgba(255,255,255,.02)),#1a1522;border:1px solid rgba(145,95,255,.25);color:#e0d0ff;font-size:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
-    .profile-main-info{min-width:0;flex:1}.profile-kicker{margin-bottom:5px;color:#736783;font-size:6px;font-weight:900;letter-spacing:.14em}
-    .profile-name-row{display:flex;align-items:center;flex-wrap:wrap;gap:7px;min-width:0}.profile-name-row h3{margin:0;max-width:190px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:17px;letter-spacing:-.45px}
-    .profile-sub-row{display:flex;align-items:center;gap:5px;margin-top:6px;color:#75747d;font-size:8px;font-weight:700}.profile-sub-row .profile-live-dot{width:6px;height:6px;border-radius:50%;background:#69dda0;box-shadow:0 0 9px rgba(105,221,160,.35)}.profile-separator{opacity:.45}
-    .profile-main-bottom{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:11px;border-top:1px solid rgba(255,255,255,.055)}
-    .profile-since{display:flex;align-items:center;gap:6px;min-width:0;color:#686771;font-size:8px}.profile-since svg{width:12px;height:12px;color:#8a6ac7}.profile-since b{color:#b7b4bf;font-weight:800}
-    .profile-id-pill{display:flex;align-items:center;gap:5px;padding:5px 7px;border-radius:8px;background:#0f0e12;border:1px solid rgba(255,255,255,.06);white-space:nowrap}.profile-id-pill span{color:#5d5b65;font-size:6px;font-weight:900}.profile-id-pill b{color:#a99cbc;font-size:7px;letter-spacing:.07em}
-    .profile-dashboard{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:13px}
-    .profile-dashboard-card{position:relative;min-width:0;display:grid;grid-template-columns:36px 1fr 14px;align-items:center;gap:8px;padding:9px;border-radius:14px;border:1px solid rgba(255,255,255,.065);background:#111114;color:#e9e8ed;text-align:left;transition:transform .18s ease,background .18s ease,border-color .18s ease}
-    .profile-dashboard-card:hover{background:#151519;border-color:rgba(255,255,255,.10)}.profile-dashboard-card:active{transform:scale(.97)}
+
+    .profile-avatar-wrap-xl .profile-avatar-xl{
+      width:64px;height:64px;border-radius:20px;
+      background:linear-gradient(145deg,rgba(135,80,247,.14),rgba(255,255,255,.02)),#1a1522;
+      border:1px solid rgba(145,95,255,.25);color:#e0d0ff;font-size:20px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05)
+    }
+
+    .profile-main-info{min-width:0;flex:1}
+    .profile-kicker{margin-bottom:5px;color:#736783;font-size:6px;font-weight:900;letter-spacing:.14em}
+    .profile-name-row{display:flex;align-items:center;flex-wrap:wrap;gap:7px;min-width:0}
+
+    .profile-name-row h3{
+      margin:0;max-width:190px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+      font-size:17px;letter-spacing:-.45px
+    }
+
+    .profile-sub-row{
+      display:flex;align-items:center;gap:5px;margin-top:6px;
+      color:#75747d;font-size:8px;font-weight:700
+    }
+
+    .profile-sub-row .profile-live-dot{
+      width:6px;height:6px;border-radius:50%;background:#69dda0;
+      box-shadow:0 0 9px rgba(105,221,160,.35)
+    }
+
+    .profile-separator{opacity:.45}
+
+    .profile-main-bottom{
+      position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;
+      gap:10px;margin-top:14px;padding-top:11px;border-top:1px solid rgba(255,255,255,.055)
+    }
+
+    .profile-since{display:flex;align-items:center;gap:6px;min-width:0;color:#686771;font-size:8px}
+    .profile-since svg{width:12px;height:12px;color:#8a6ac7}
+    .profile-since b{color:#b7b4bf;font-weight:800}
+
+    .profile-id-pill{
+      display:flex;align-items:center;gap:5px;padding:5px 7px;border-radius:8px;
+      background:#0f0e12;border:1px solid rgba(255,255,255,.06);white-space:nowrap
+    }
+
+    .profile-id-pill span{color:#5d5b65;font-size:6px;font-weight:900}
+    .profile-id-pill b{color:#a99cbc;font-size:7px;letter-spacing:.07em}
+
+    .profile-dashboard{
+      display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:13px
+    }
+
+    .profile-dashboard-card{
+      position:relative;min-width:0;display:grid;grid-template-columns:36px 1fr 14px;
+      align-items:center;gap:8px;padding:9px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.065);background:#111114;color:#e9e8ed;
+      text-align:left;transition:transform .18s ease,background .18s ease,border-color .18s ease
+    }
+
+    .profile-dashboard-card:hover{background:#151519;border-color:rgba(255,255,255,.10)}
+    .profile-dashboard-card:active{transform:scale(.97)}
     .profile-dashboard-card#profileAdminBtn{grid-column:1/-1;background:#15101d;border-color:rgba(135,80,247,.13)}
-    .profile-dashboard-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#19151f;color:#9976d8}.profile-dashboard-icon.admin{background:#21152c;color:#d3baff}.profile-dashboard-icon svg{width:15px;height:15px}
-    .profile-dashboard-copy{min-width:0}.profile-dashboard-copy span{display:block;color:#5f5e67;font-size:6px;font-weight:900;letter-spacing:.08em}.profile-dashboard-copy b{display:block;margin-top:3px;color:#d5d4da;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-dashboard-arrow{width:13px;height:13px;color:#57555f}
-    .profile-section-title{display:flex;align-items:center;gap:9px;margin:12px 2px 7px}.profile-section-title span{color:#5e5d66;font-size:6px;font-weight:900;letter-spacing:.11em}.profile-section-title div{flex:1;height:1px;background:rgba(255,255,255,.045)}
-    .profile-account-card{overflow:hidden;border-radius:14px;border:1px solid rgba(255,255,255,.065);background:#101013}
-    .profile-row{width:100%;display:grid;grid-template-columns:36px 1fr 28px;align-items:center;gap:9px;padding:10px;border:0;background:transparent;color:#e6e5ea;text-align:left;transition:background .18s ease}.profile-row + .profile-row{border-top:1px solid rgba(255,255,255,.05)}.profile-row:hover{background:#141418}.profile-row:active{background:#18181c}
-    .profile-row-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#18181c;color:#9271ce}.profile-row-icon svg{width:15px;height:15px}
-    .profile-row-copy b{display:block;font-size:9px}.profile-row-copy small{display:block;margin-top:2px;color:#66656e;font-size:7px}.profile-row-action{width:26px;height:26px;display:grid;place-items:center;border-radius:8px;color:#57565f}.profile-row-action svg{width:13px;height:13px}
-    .profile-row.danger .profile-row-icon{background:rgba(255,93,116,.065);color:#d68190}.profile-row.danger .profile-row-copy b{color:#e2a5af}
-    @media(max-width:370px){.profile-dashboard{grid-template-columns:1fr}.profile-dashboard-card#profileAdminBtn{grid-column:auto}.profile-main-bottom{align-items:flex-start;flex-direction:column}}
+
+    .profile-dashboard-icon{
+      width:34px;height:34px;display:grid;place-items:center;border-radius:10px;
+      background:#19151f;color:#9976d8
+    }
+
+    .profile-dashboard-icon.admin{background:#21152c;color:#d3baff}
+    .profile-dashboard-icon svg{width:15px;height:15px}
+    .profile-dashboard-copy{min-width:0}
+
+    .profile-dashboard-copy span{
+      display:block;color:#5f5e67;font-size:6px;font-weight:900;letter-spacing:.08em
+    }
+
+    .profile-dashboard-copy b{
+      display:block;margin-top:3px;color:#d5d4da;font-size:9px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+    }
+
+    .profile-dashboard-arrow{width:13px;height:13px;color:#57555f}
+    .profile-section-title{display:flex;align-items:center;gap:9px;margin:12px 2px 7px}
+    .profile-section-title span{color:#5e5d66;font-size:6px;font-weight:900;letter-spacing:.11em}
+    .profile-section-title div{flex:1;height:1px;background:rgba(255,255,255,.045)}
+
+    .profile-account-card{
+      overflow:hidden;border-radius:14px;border:1px solid rgba(255,255,255,.065);background:#101013
+    }
+
+    .profile-row{
+      width:100%;display:grid;grid-template-columns:36px 1fr 28px;align-items:center;
+      gap:9px;padding:10px;border:0;background:transparent;color:#e6e5ea;text-align:left;
+      transition:background .18s ease
+    }
+
+    .profile-row + .profile-row{border-top:1px solid rgba(255,255,255,.05)}
+    .profile-row:hover{background:#141418}
+    .profile-row:active{background:#18181c}
+
+    .profile-row-icon{
+      width:34px;height:34px;display:grid;place-items:center;border-radius:10px;
+      background:#18181c;color:#9271ce
+    }
+
+    .profile-row-icon svg{width:15px;height:15px}
+    .profile-row-copy b{display:block;font-size:9px}
+    .profile-row-copy small{display:block;margin-top:2px;color:#66656e;font-size:7px}
+
+    .profile-row-action{
+      width:26px;height:26px;display:grid;place-items:center;border-radius:8px;color:#57565f
+    }
+
+    .profile-row-action svg{width:13px;height:13px}
+    .profile-row.danger .profile-row-icon{background:rgba(255,93,116,.065);color:#d68190}
+    .profile-row.danger .profile-row-copy b{color:#e2a5af}
+
+    @media(max-width:370px){
+      .profile-dashboard{grid-template-columns:1fr}
+      .profile-dashboard-card#profileAdminBtn{grid-column:auto}
+      .profile-main-bottom{align-items:flex-start;flex-direction:column}
+    }
 
   </style>
 </head>
@@ -2796,60 +2918,96 @@
     <div id="signedProfile" class="profile-content hidden">
       <div class="profile-main-card">
         <div class="profile-main-bg"></div>
+
         <div class="profile-main-top">
           <div class="profile-avatar-wrap profile-avatar-wrap-xl">
             <div class="profile-avatar-xl" id="profileAvatar">U</div>
-            <button class="avatar-edit-btn" id="avatarEditBtn" type="button" aria-label="Змінити аватар"><i data-lucide="camera"></i></button>
+            <button class="avatar-edit-btn" id="avatarEditBtn" type="button" aria-label="Змінити аватар">
+              <i data-lucide="camera"></i>
+            </button>
             <input id="avatarInput" class="hidden" type="file" accept="image/jpeg,image/png,image/webp">
           </div>
+
           <div class="profile-main-info">
             <div class="profile-kicker">AHLTV × UMP ACCOUNT</div>
-            <div class="profile-name-row"><h3 id="profileName">Користувач</h3><span class="role-badge" id="profileRoleBadge">MEMBER</span></div>
-            <div class="profile-sub-row"><span class="profile-live-dot"></span><span id="profileOnlineText">Online</span><span class="profile-separator">•</span><span id="profileRole">Member</span></div>
+            <div class="profile-name-row">
+              <h3 id="profileName">Користувач</h3>
+              <span class="role-badge" id="profileRoleBadge">MEMBER</span>
+            </div>
+            <div class="profile-sub-row">
+              <span class="profile-live-dot"></span>
+              <span id="profileOnlineText">Online</span>
+              <span class="profile-separator">•</span>
+              <span id="profileRole">Member</span>
+            </div>
           </div>
         </div>
+
         <div class="profile-main-bottom">
-          <div class="profile-since"><i data-lucide="calendar-days"></i><span>З нами з <b id="profileJoined">—</b></span></div>
-          <div class="profile-id-pill"><span>ID</span><b id="profileShortId">—</b></div>
+          <div class="profile-since">
+            <i data-lucide="calendar-days"></i>
+            <span>З нами з <b id="profileJoined">—</b></span>
+          </div>
+          <div class="profile-id-pill">
+            <span>ID</span>
+            <b id="profileShortId">—</b>
+          </div>
         </div>
       </div>
 
       <div class="profile-dashboard">
         <button class="profile-dashboard-card" id="profileOpenChatBtn">
           <div class="profile-dashboard-icon"><i data-lucide="messages-square"></i></div>
-          <div class="profile-dashboard-copy"><span>МІЙ ЧАТ</span><b><span id="profileUnread">0</span> нових</b></div>
+          <div class="profile-dashboard-copy">
+            <span>МІЙ ЧАТ</span>
+            <b><span id="profileUnread">0</span> нових</b>
+          </div>
           <i class="profile-dashboard-arrow" data-lucide="arrow-up-right"></i>
         </button>
 
         <button class="profile-dashboard-card" id="refreshProfileBtn">
           <div class="profile-dashboard-icon"><i data-lucide="refresh-cw"></i></div>
-          <div class="profile-dashboard-copy"><span>СИНХРОНІЗАЦІЯ</span><b id="profileStatus">ACTIVE</b></div>
+          <div class="profile-dashboard-copy">
+            <span>СИНХРОНІЗАЦІЯ</span>
+            <b id="profileStatus">ACTIVE</b>
+          </div>
           <i class="profile-dashboard-arrow" data-lucide="arrow-up-right"></i>
         </button>
 
         <button class="profile-dashboard-card hidden" id="profileAdminBtn">
           <div class="profile-dashboard-icon admin"><i data-lucide="shield"></i></div>
-          <div class="profile-dashboard-copy"><span>ДОСТУП</span><b>Admin panel</b></div>
+          <div class="profile-dashboard-copy">
+            <span>ДОСТУП</span>
+            <b>Admin panel</b>
+          </div>
           <i class="profile-dashboard-arrow" data-lucide="arrow-up-right"></i>
         </button>
       </div>
 
-      <div class="profile-section-title"><span>АКАУНТ</span><div></div></div>
+      <div class="profile-section-title">
+        <span>АКАУНТ</span>
+        <div></div>
+      </div>
 
       <div class="profile-account-card">
         <button class="profile-row" id="copyIdBtn">
           <span class="profile-row-icon"><i data-lucide="fingerprint"></i></span>
-          <span class="profile-row-copy"><b>User ID</b><small>Скопіювати повний ID акаунта</small></span>
+          <span class="profile-row-copy">
+            <b>User ID</b>
+            <small>Скопіювати повний ID акаунта</small>
+          </span>
           <span class="profile-row-action"><i data-lucide="copy"></i></span>
         </button>
 
         <button class="profile-row danger" id="logoutBtn">
           <span class="profile-row-icon"><i data-lucide="log-out"></i></span>
-          <span class="profile-row-copy"><b>Вийти з акаунта</b><small>Завершити поточну сесію</small></span>
+          <span class="profile-row-copy">
+            <b>Вийти з акаунта</b>
+            <small>Завершити поточну сесію</small>
+          </span>
           <span class="profile-row-action"><i data-lucide="chevron-right"></i></span>
         </button>
       </div>
-    </div>
     </div>
   </div>
 </div>
@@ -3491,24 +3649,1468 @@
     initHero3D();
     applyLanguage();
 
-    // First restore/create session.
     await ensureSession();
 
-    // Then load site data immediately.
     await Promise.allSettled([
       loadSettings(),
       loadNews({silent:false})
     ]);
 
+    renderSession();
     setupRealtime();
 
-    // Automatic quiet retries if the first request returned no rows
-    // because auth/network was still warming up.
     if(!state.news.length){
       setTimeout(()=>loadNews({silent:true}),450);
       setTimeout(()=>loadNews({silent:true}),1400);
     }
   }
+
+  function bindUI(){
+    window.addEventListener("scroll",()=> $("topbar").classList.toggle("is-scrolled",scrollY>12),{passive:true});
+
+    qsa("[data-close]").forEach(btn => btn.addEventListener("click",()=>closeModal(btn.dataset.close)));
+    qsa(".modal-shell").forEach(m => m.addEventListener("click",e=>{ if(e.target===m) closeModal(m.id); }));
+
+    $("langBtn").addEventListener("click",()=>openModal("langModal"));
+    qsa(".lang-option").forEach(btn=>btn.addEventListener("click",()=>setLanguage(btn.dataset.lang)));
+
+    $("profileBtn").addEventListener("click",()=>openModal("profileModal"));
+    $("navChat").addEventListener("click",async()=>{
+      qsa(".bottom-nav .nav-btn").forEach(x=>x.classList.remove("active"));
+      $("navChat").classList.add("active");
+      moveBottomNavIndicator($("navChat"),true);
+      await openChat();
+    });
+    $("navProfile").addEventListener("click",()=>{
+      qsa(".bottom-nav .nav-btn").forEach(x=>x.classList.remove("active"));
+      $("navProfile").classList.add("active");
+      moveBottomNavIndicator($("navProfile"),true);
+      openModal("profileModal");
+    });
+    $("adminTopBtn").addEventListener("click",async()=>{
+      if(state.profile?.role!=="admin"){
+        toast("Немає доступу","err");
+        return;
+      }
+      $("siteTitleInput").value=state.settings.title||"";
+      $("siteSubtitleInput").value=state.settings.subtitle||"";
+      openModal("adminModal");
+      await loadAdminDashboard();
+    });
+    $("refreshBtn").addEventListener("click",async()=>{ await loadNews(); toast("Стрічку оновлено"); });
+
+    qsa(".auth-tab").forEach(btn=>btn.addEventListener("click",()=>{
+      qsa(".auth-tab").forEach(x=>x.classList.toggle("active",x===btn));
+      $("loginPane").classList.toggle("hidden",btn.dataset.authTab!=="login");
+      $("registerPane").classList.toggle("hidden",btn.dataset.authTab!=="register");
+    }));
+
+    $("loginBtn").addEventListener("click",login);
+    $("registerBtn").addEventListener("click",register);
+    $("guestBtn").addEventListener("click",guestMode);
+
+    $("loginPassword").addEventListener("keydown",e=>{
+      if(e.key==="Enter") login();
+    });
+    $("loginUsername").addEventListener("keydown",e=>{
+      if(e.key==="Enter") $("loginPassword").focus();
+    });
+    $("regPassword").addEventListener("keydown",e=>{
+      if(e.key==="Enter") register();
+    });
+    $("logoutBtn").addEventListener("click",logout);
+    $("copyIdBtn").addEventListener("click",copyUserId);
+
+    $("profileOpenChatBtn").addEventListener("click",async()=>{
+      closeModal("profileModal");
+      await openChat();
+    });
+
+    $("refreshProfileBtn").addEventListener("click",async()=>{
+      const btn=$("refreshProfileBtn");
+      btn.disabled=true;
+      try{
+        await loadProfile();
+        renderSession();
+        await refreshProfileCardStats();
+        toast("Профіль оновлено");
+      }finally{
+        btn.disabled=false;
+      }
+    });
+
+    $("profileAdminBtn").addEventListener("click",async()=>{
+      if(state.profile?.role!=="admin") return;
+      closeModal("profileModal");
+      await loadAdminDashboard();
+      openModal("adminModal");
+    });
+
+    $("filters").addEventListener("click",e=>{
+      const btn=e.target.closest(".chip");
+      if(!btn || !btn.dataset.filter) return;
+      state.filter=btn.dataset.filter;
+      qsa("#filters .chip").forEach(x=>x.classList.toggle("active",x===btn));
+      renderNews();
+    });
+
+    function moveBottomNavIndicator(activeBtn,animate=true){
+      const nav=$("bottomNav");
+      const indicator=$("navIndicator");
+      if(!nav || !indicator || !activeBtn) return;
+
+      const navRect=nav.getBoundingClientRect();
+      const btnRect=activeBtn.getBoundingClientRect();
+
+      const left=btnRect.left-navRect.left;
+      const width=btnRect.width;
+      const center=left+(width/2);
+
+      indicator.style.left=`${left}px`;
+      indicator.style.width=`${width}px`;
+
+      nav.style.setProperty(
+        "--dock-x",
+        `${(center/navRect.width)*100}%`
+      );
+
+      if(animate){
+        nav.classList.remove("nav-moving","dock-focus");
+        void nav.offsetWidth;
+        nav.classList.add("nav-moving","dock-focus");
+
+        activeBtn.classList.remove("nav-pop","dock-press");
+        void activeBtn.offsetWidth;
+        activeBtn.classList.add("dock-press");
+
+        setTimeout(()=>{
+          nav.classList.remove("nav-moving","dock-focus");
+          activeBtn.classList.remove("dock-press");
+        },560);
+      }
+    }
+
+    function addDockRipple(btn,event){
+      if(!btn || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const rect=btn.getBoundingClientRect();
+      const ripple=document.createElement("span");
+      ripple.className="dock-ripple";
+
+      const x=(event?.clientX ?? (rect.left+rect.width/2))-rect.left;
+      const y=(event?.clientY ?? (rect.top+rect.height/2))-rect.top;
+
+      ripple.style.left=`${x}px`;
+      ripple.style.top=`${y}px`;
+
+      btn.appendChild(ripple);
+      setTimeout(()=>ripple.remove(),540);
+    }
+
+    function initPremiumBottomDock(){
+      const nav=$("bottomNav");
+      if(!nav) return;
+
+      const buttons=qsa(".bottom-nav .nav-btn");
+
+      buttons.forEach(btn=>{
+        btn.addEventListener("pointerdown",e=>{
+          addDockRipple(btn,e);
+          nav.classList.add("dock-peek");
+        });
+
+        btn.addEventListener("pointerup",()=>{
+          nav.classList.remove("dock-peek");
+        });
+
+        btn.addEventListener("pointercancel",()=>{
+          nav.classList.remove("dock-peek");
+        });
+
+        btn.addEventListener("pointerleave",()=>{
+          nav.classList.remove("dock-peek");
+        });
+      });
+
+      const sync=()=>{
+        const active=document.querySelector(".bottom-nav .nav-btn.active");
+        if(active) moveBottomNavIndicator(active,false);
+      };
+
+      window.addEventListener("resize",()=>{
+        clearTimeout(window.__dockResizeTimer);
+        window.__dockResizeTimer=setTimeout(sync,80);
+      });
+
+      if(window.visualViewport){
+        visualViewport.addEventListener("resize",sync);
+      }
+
+      requestAnimationFrame(sync);
+      setTimeout(sync,220);
+    }
+
+
+    qsa("[data-nav]").forEach(btn=>btn.addEventListener("click",()=>{
+      qsa(".bottom-nav .nav-btn").forEach(x=>x.classList.remove("active"));
+      btn.classList.add("active");
+      moveBottomNavIndicator(btn,true);
+
+      if(btn.dataset.nav==="latest"){
+        state.filter="all";
+        renderNews();
+        scrollTo({top:0,behavior:"smooth"});
+      }
+    }));
+
+    requestAnimationFrame(()=>{
+      moveBottomNavIndicator(
+        document.querySelector(".bottom-nav .nav-btn.active"),
+        false
+      );
+    });
+
+    // Secret admin entrance: 5 rapid taps on the logo.
+    let taps=[];
+    $("brandSecret").addEventListener("click",async()=>{
+      taps = [...taps.filter(t=>Date.now()-t<1800),Date.now()];
+      if(taps.length>=5){
+        taps=[];
+        await tryOpenAdmin();
+      }
+    });
+
+    qsa(".admin-tab").forEach(btn=>btn.addEventListener("click",()=>{
+      qsa(".admin-tab").forEach(x=>x.classList.toggle("active",x===btn));
+      qsa(".admin-pane").forEach(x=>x.classList.remove("active"));
+      $(`admin-${btn.dataset.adminTab}`).classList.add("active");
+    }));
+
+    $("newsImageInput").addEventListener("change",previewNewsImage);
+    $("publishNewsBtn").addEventListener("click",publishNews);
+    $("saveDraftBtn").addEventListener("click",saveDraft);
+
+    $("avatarEditBtn").addEventListener("click",()=> $("avatarInput").click());
+    $("avatarInput").addEventListener("change",uploadAvatar);
+
+    $("editNewsImage").addEventListener("change",()=>{
+      const file=$("editNewsImage").files[0];
+      const preview=$("editNewsPreview");
+      if(!file){ preview.style.display="none"; return; }
+      preview.src=URL.createObjectURL(file);
+      preview.style.display="block";
+    });
+
+    $("saveEditNewsBtn").addEventListener("click",()=>saveEditedNews(true));
+    $("publishDraftNowBtn").addEventListener("click",publishCurrentDraft);
+    bindPostLanguageTabs();
+    $("sendChatBtn").addEventListener("click",sendChatMessage);
+
+    $("chatInput").addEventListener("focus",()=>{
+      setChatComposerFocus(true);
+      setTimeout(()=>{
+        $("chatBody").scrollTo({top:$("chatBody").scrollHeight,behavior:"smooth"});
+      },180);
+    });
+
+    $("chatInput").addEventListener("blur",()=>{
+      setTimeout(()=>{
+        if(document.activeElement!==$("chatInput")) setChatComposerFocus(false);
+      },80);
+    });
+
+    $("chatInput").addEventListener("input",()=>{
+      autosizeChatInput($("chatInput"));
+      const value=$("chatInput").value;
+      $("chatCharCount").textContent=`${value.length} / 1000`;
+      if(value.trim()) animateChatSendReady();
+    });
+
+    $("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChatMessage();}});
+    $("chatLoginBtn").addEventListener("click",()=>{closeModal("chatModal");openModal("profileModal");});
+    $("adminChatReplyBtn").addEventListener("click",sendAdminChatReply);
+    $("adminChatReplyInput").addEventListener("input",()=>autosizeChatInput($("adminChatReplyInput")));
+    $("adminChatReplyInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminChatReply();}});
+    $("newsDescInput").addEventListener("keydown",e=>{
+      if((e.ctrlKey || e.metaKey) && e.key==="Enter") publishNews();
+    });
+    $("saveSiteBtn").addEventListener("click",saveSiteSettings);
+  }
+
+  async function ensureSession(){
+    const {data:{session}} = await sb.auth.getSession();
+    if(session){
+      state.user=session.user;
+      await loadProfile();
+      return;
+    }
+    await guestMode(false);
+  }
+
+  async function guestMode(show=true){
+    const {data,error}=await sb.auth.signInAnonymously();
+    if(error){
+      console.error(error);
+      if(show) toast("Не вдалося увійти як гість. Перевір Anonymous Sign-ins у Supabase.","err");
+      return;
+    }
+    state.user=data.user;
+    state.profile=null;
+    renderSession();
+    if(show){ closeModal("profileModal"); toast("Гостьовий режим активний"); }
+  }
+
+  async function register(){
+    const username=$("regUsername").value.trim();
+    const password=$("regPassword").value;
+
+    if(!validUsername(username)){
+      toast("Нік: 3–24 символи, латиниця, цифри, _ . -","err"); return;
+    }
+    if(password.length<6){ toast("Пароль має містити мінімум 6 символів","err"); return; }
+
+    const email=usernameToEmail(username);
+    const {data,error}=await sb.auth.signUp({
+      email,password,
+      options:{ data:{ username } }
+    });
+
+    if(error){
+      console.error(error);
+      toast(error.message.includes("registered") ? "Такий нік уже зайнятий" : "Не вдалося створити акаунт","err");
+      return;
+    }
+
+    state.user=data.user;
+
+    const profileReady=await upsertOwnProfile(username);
+    await loadProfile();
+
+    renderSession();
+    closeModal("profileModal");
+
+    if(profileReady && state.profile){
+      toast("Акаунт створено");
+    }else{
+      toast("Акаунт створено. Профіль синхронізується...");
+      setTimeout(async()=>{
+        await ensureOwnProfile();
+        renderSession();
+      },350);
+    }
+  }
+
+  async function login(){
+    const username=$("loginUsername").value.trim();
+    const password=$("loginPassword").value;
+    const btn=$("loginBtn");
+
+    if(!username || !password){
+      toast("Введи нік і пароль","err");
+      return;
+    }
+
+    if(btn.disabled) return;
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Вхід...';
+
+    try{
+      const email=usernameToEmail(username);
+      const {data,error}=await sb.auth.signInWithPassword({email,password});
+
+      if(error) throw error;
+
+      state.user=data.user;
+
+      // Give Supabase auth state a moment to settle before DB requests.
+      await new Promise(resolve=>setTimeout(resolve,80));
+      await loadProfile();
+
+      renderSession();
+      closeModal("profileModal");
+
+      if(state.profile?.role === "admin"){
+        toast("Вхід адміністратора виконано");
+      }else{
+        toast("Вхід виконано");
+      }
+    }catch(error){
+      console.error("Login error:",error);
+      const msg=String(error?.message||"").toLowerCase();
+
+      if(msg.includes("invalid login credentials")){
+        toast("Невірний нік або пароль","err");
+      }else if(msg.includes("email not confirmed")){
+        toast("У Supabase вимкни Confirm email","err");
+      }else{
+        toast("Помилка входу: "+(error?.message||"невідома помилка"),"err");
+      }
+    }finally{
+      btn.disabled=false;
+      btn.innerHTML='<i data-lucide="log-in"></i>Увійти';
+      icons();
+    }
+  }
+
+  async function logout(){
+    await sb.auth.signOut();
+    state.user=null; state.profile=null;
+    await guestMode(false);
+    renderSession();
+    closeModal("profileModal");
+    toast("Ви вийшли з акаунта");
+  }
+
+  async function upsertOwnProfile(username){
+    if(!state.user || state.user.is_anonymous) return false;
+
+    const cleanUsername=(username || state.user?.user_metadata?.username || "User").trim();
+    const now=new Date().toISOString();
+
+    // First try to create the profile. Do NOT upsert role, so an existing admin
+    // can never accidentally be changed back to "member".
+    let {error}=await sb.from("profiles").insert({
+      id:state.user.id,
+      username:cleanUsername,
+      display_name:cleanUsername,
+      role:"member",
+      last_seen_at:now
+    });
+
+    if(error){
+      const msg=String(error.message||"").toLowerCase();
+
+      // Existing profile: only refresh safe public fields.
+      if(error.code==="23505" || msg.includes("duplicate") || msg.includes("unique")){
+        const {error:updateError}=await sb
+          .from("profiles")
+          .update({
+            username:cleanUsername,
+            display_name:cleanUsername,
+            last_seen_at:now
+          })
+          .eq("id",state.user.id);
+
+        if(updateError){
+          console.error("profile update",updateError);
+          return false;
+        }
+        return true;
+      }
+
+      // Compatibility if another installation doesn't have display_name.
+      if(msg.includes("display_name") && (msg.includes("column") || msg.includes("schema cache"))){
+        const {error:fallbackError}=await sb.from("profiles").insert({
+          id:state.user.id,
+          username:cleanUsername,
+          role:"member",
+          last_seen_at:now
+        });
+
+        if(fallbackError){
+          const fallbackMsg=String(fallbackError.message||"").toLowerCase();
+
+          if(fallbackError.code==="23505" || fallbackMsg.includes("duplicate") || fallbackMsg.includes("unique")){
+            const {error:updateFallback}=await sb
+              .from("profiles")
+              .update({
+                username:cleanUsername,
+                last_seen_at:now
+              })
+              .eq("id",state.user.id);
+
+            if(updateFallback){
+              console.error("profile fallback update",updateFallback);
+              return false;
+            }
+            return true;
+          }
+
+          console.error("profile fallback insert",fallbackError);
+          return false;
+        }
+
+        return true;
+      }
+
+      console.error("profile insert",error);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function ensureOwnProfile(){
+    if(!state.user || state.user.is_anonymous) return false;
+
+    if(state.profile?.id===state.user.id) return true;
+
+    await loadProfile();
+    if(state.profile?.id===state.user.id) return true;
+
+    const username=(
+      state.user?.user_metadata?.username ||
+      state.user?.email?.split("@")[0] ||
+      "User"
+    ).trim();
+
+    const created=await upsertOwnProfile(username);
+    if(!created) return false;
+
+    await new Promise(resolve=>setTimeout(resolve,80));
+    await loadProfile();
+
+    return !!state.profile;
+  }
+
+  async function loadProfile(){
+    if(!state.user || state.user.is_anonymous){
+      state.profile=null;
+      return null;
+    }
+
+    const {data,error}=await sb
+      .from("profiles")
+      .select("id,username,display_name,role,avatar_url,created_at,last_seen_at")
+      .eq("id",state.user.id)
+      .maybeSingle();
+
+    if(error){
+      const msg=String(error.message||"").toLowerCase();
+
+      // Compatibility if display_name is absent on another schema.
+      if(msg.includes("display_name") && (msg.includes("column") || msg.includes("schema cache"))){
+        const fallback=await sb
+          .from("profiles")
+          .select("id,username,role,avatar_url,created_at,last_seen_at")
+          .eq("id",state.user.id)
+          .maybeSingle();
+
+        if(fallback.error){
+          console.error("load profile",fallback.error);
+          state.profile=null;
+          return null;
+        }
+
+        state.profile=fallback.data||null;
+      }else{
+        console.error("load profile",error);
+        state.profile=null;
+        return null;
+      }
+    }else{
+      state.profile=data||null;
+    }
+
+    if(state.profile){
+      await sb
+        .from("profiles")
+        .update({last_seen_at:new Date().toISOString()})
+        .eq("id",state.user.id);
+    }
+
+    return state.profile;
+  }
+
+  function renderAvatar(el,url,initial){
+    if(!el) return;
+    if(url){
+      el.innerHTML=`<img src="${escapeHtml(url)}" alt="">`;
+    }else{
+      el.textContent=initial;
+    }
+  }
+
+  function formatProfileJoined(value){
+    if(!value) return "—";
+    try{
+      return new Intl.DateTimeFormat(
+        state.lang==="en" ? "en-GB" : (state.lang==="ru" ? "ru-RU" : "uk-UA"),
+        {day:"2-digit",month:"2-digit",year:"2-digit"}
+      ).format(new Date(value));
+    }catch{
+      return "—";
+    }
+  }
+
+  async function refreshProfileCardStats(){
+    if(!state.user || state.user.is_anonymous) return;
+
+    const joined=$("profileJoined");
+    if(joined){
+      joined.textContent=formatProfileJoined(
+        state.profile?.created_at || state.user?.created_at
+      );
+    }
+
+    const unreadEl=$("profileUnread");
+    if(unreadEl){
+      const {count,error}=await sb
+        .from("chat_messages")
+        .select("id",{count:"exact",head:true})
+        .eq("user_id",state.user.id)
+        .eq("sender_role","admin")
+        .eq("is_read",false);
+
+      unreadEl.textContent=error ? "—" : String(count||0);
+    }
+  }
+
+  function renderSession(){
+    const isGuest=!state.user || state.user.is_anonymous;
+    const username=state.profile?.username || (isGuest ? t("guest") : state.user?.user_metadata?.username || t("member"));
+    const first=(username[0]||"G").toUpperCase();
+
+    $("heroUser").textContent=username;
+    renderAvatar($("heroAvatar"),state.profile?.avatar_url,first);
+    renderAvatar($("profileAvatar"),state.profile?.avatar_url,first);
+    $("profileName").textContent=username;
+    $("profileRole").textContent=state.profile?.role==="admin" ? t("admin") : (isGuest ? t("guest") : t("member"));
+
+    const topAvatar=$("profileTopAvatar");
+    const topName=$("profileTopName");
+    const topRole=$("profileTopRole");
+    if(topAvatar) renderAvatar(topAvatar,state.profile?.avatar_url,first);
+    if(topName) topName.textContent=username;
+    if(topRole) topRole.textContent=state.profile?.role==="admin" ? "Admin" : (isGuest ? "Guest" : "Member");
+
+    const shortId=$("profileShortId");
+    const roleBadge=$("profileRoleBadge");
+    const status=$("profileStatus");
+    if(shortId) shortId.textContent=state.user?.id ? state.user.id.slice(0,8).toUpperCase() : "—";
+    if(status) status.textContent=state.user ? "ACTIVE" : "OFFLINE";
+    if(roleBadge){
+      const isAdm=state.profile?.role==="admin";
+      roleBadge.textContent=isAdm ? "ADMIN" : (isGuest ? "GUEST" : "MEMBER");
+      roleBadge.classList.toggle("admin",isAdm);
+    }
+
+    const joined=$("profileJoined");
+    if(joined){
+      joined.textContent=formatProfileJoined(
+        state.profile?.created_at || state.user?.created_at
+      );
+    }
+
+    const profileAdminBtn=$("profileAdminBtn");
+    if(profileAdminBtn){
+      profileAdminBtn.classList.toggle("hidden",state.profile?.role!=="admin");
+    }
+
+    if(!isGuest){
+      setTimeout(()=>refreshProfileCardStats(),0);
+    }
+
+    $("guestAuth").classList.toggle("hidden",!isGuest);
+    $("signedProfile").classList.toggle("hidden",isGuest);
+
+    const adminBtn=$("adminTopBtn");
+    if(adminBtn){adminBtn.classList.toggle("hidden", state.profile?.role!=="admin");}
+    setTimeout(()=>refreshUnreadBadge(),0);
+  }
+
+  async function copyUserId(){
+    if(!state.user) return;
+    await navigator.clipboard?.writeText(state.user.id);
+    toast("ID скопійовано");
+  }
+
+  async function loadSettings(){
+    const {data,error}=await sb.from("site_settings").select("title,subtitle,logo_url").eq("id",1).maybeSingle();
+    if(!error && data) state.settings={...state.settings,...data};
+    applySettings();
+  }
+
+  function applySettings(){
+    $("brandTitle").textContent=state.settings.title || "News AHLTV & UMP";
+    $("brandSub").textContent=state.settings.subtitle || "by sewa/vadim777";
+    document.title=`${state.settings.title || "News AHLTV & UMP"} ${state.settings.subtitle || ""}`.trim();
+
+    const mark=$("brandMark");
+    if(state.settings.logo_url){
+      mark.innerHTML=`<img src="${escapeHtml(state.settings.logo_url)}" alt="Logo">`;
+    }else{
+      mark.textContent=(state.settings.title?.trim()?.[0]||"A").toUpperCase();
+    }
+  }
+
+  let newsLoadPromise=null;
+  let newsRealtimeTimer=null;
+
+  async function loadNews(options={}){
+    const silent=!!options.silent;
+
+    // Do not start several identical requests at the same time.
+    if(newsLoadPromise) return newsLoadPromise;
+
+    newsLoadPromise=(async()=>{
+      // Spinner only for the very first/manual load.
+      // Realtime refreshes happen invisibly in the background.
+      if(!silent && !state.news.length){
+        $("newsList").innerHTML='<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
+      }
+
+      const {data,error}=await sb
+        .from("news")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
+        .eq("status","published")
+        .order("published_at",{ascending:false,nullsFirst:false})
+        .order("created_at",{ascending:false});
+
+      if(error){
+        console.error("loadNews:",error);
+
+        // If old news are already visible, don't destroy the feed because
+        // of one temporary realtime/network error.
+        if(!state.news.length){
+          $("newsList").innerHTML='<div class="empty"><strong>Не вдалося завантажити</strong>Перевір таблицю news та RLS.</div>';
+          $("newsCount").textContent="Помилка";
+        }else{
+          toast("Не вдалося оновити новини","err");
+        }
+        return;
+      }
+
+      state.news=data||[];
+      renderNews();
+    })();
+
+    try{
+      await newsLoadPromise;
+    }finally{
+      newsLoadPromise=null;
+    }
+  }
+
+  function scheduleSilentNewsRefresh(){
+    clearTimeout(newsRealtimeTimer);
+    newsRealtimeTimer=setTimeout(()=>{
+      loadNews({silent:true});
+    },180);
+  }
+
+  function renderNews(){
+    const items=state.filter==="all" ? state.news : state.news.filter(n=>n.category===state.filter);
+    $("newsCount").textContent=`${items.length} ${items.length===1?t("publication_one"):t("publication_many")}`;
+
+    if(!items.length){
+      $("newsList").innerHTML='<div class="empty"><strong>Поки порожньо</strong>У цій категорії ще немає публікацій.</div>';
+      return;
+    }
+
+    $("newsList").innerHTML=items.map((n,i)=>{
+      const localized=getLocalizedNews(n);
+      return `
+      <article class="news-card" data-id="${n.id}" style="--delay:${Math.min(i*.045,.25)}s">
+        <div class="news-cover">
+          <img src="${escapeHtml(n.image_url || placeholderImage(localized.title))}" alt="${escapeHtml(localized.title)}" loading="lazy">
+          <div class="cover-shade"></div>
+          <div class="category">${escapeHtml(n.category || "AHLTV")}</div>
+        </div>
+        <div class="news-body">
+          <h3 class="news-title">${escapeHtml(localized.title)}</h3>
+          <p class="news-desc">${escapeHtml(localized.description || "")}</p>
+          <div class="news-meta">
+            <div class="meta-author"><i></i>${escapeHtml(n.author || "Newsroom")}</div>
+            <div class="news-meta-right">
+              <span class="news-views"><i data-lucide="eye"></i>${Number(n.view_count||0)}</span>
+              <time>${formatDate(n.created_at)}</time>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+    }).join("");
+
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){ entry.target.classList.add("visible"); observer.unobserve(entry.target); }
+      });
+    },{threshold:.08});
+    qsa(".news-card").forEach(card=>{
+      observer.observe(card);
+      card.addEventListener("click",()=>openArticle(card.dataset.id));
+    });
+    icons();
+  }
+
+  function placeholderImage(title="News"){
+    const safe=encodeURIComponent((title||"News").slice(0,42));
+    return `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='675'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23100c18'/%3E%3Cstop offset='1' stop-color='%23220f3e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='675' fill='url(%23g)'/%3E%3Ccircle cx='1000' cy='70' r='260' fill='%238f4cff' opacity='.18'/%3E%3Ctext x='70' y='560' fill='%23f4edff' font-family='Arial' font-size='46' font-weight='700'%3E${safe}%3C/text%3E%3C/svg%3E`;
+  }
+
+  async function openArticle(id){
+    const n=state.news.find(x=>String(x.id)===String(id));
+    if(!n) return;
+
+    const localized=getLocalizedNews(n);
+    $("articleImage").src=n.image_url||placeholderImage(localized.title);
+    $("articleTitle").textContent=localized.title;
+    $("articleDesc").textContent=localized.description;
+    $("articleModal").dataset.newsId=String(n.id);
+    $("articleMeta").innerHTML=`<span>${escapeHtml(n.category||"AHLTV")}</span><span>•</span><span>${formatDate(n.created_at)}</span><span>•</span><span>${escapeHtml(n.author||"Newsroom")}</span><span>•</span><span>${Number(n.view_count||0)} views</span>`;
+    openModal("articleModal");
+
+    const viewKey=`viewed_news_${n.id}`;
+    if(!sessionStorage.getItem(viewKey)){
+      sessionStorage.setItem(viewKey,"1");
+
+      const {data,error}=await sb.rpc("increment_news_view",{news_id:n.id});
+      if(!error){
+        n.view_count=Number(data ?? (Number(n.view_count||0)+1));
+        $("articleMeta").innerHTML=`<span>${escapeHtml(n.category||"AHLTV")}</span><span>•</span><span>${formatDate(n.created_at)}</span><span>•</span><span>${escapeHtml(n.author||"Newsroom")}</span><span>•</span><span>${Number(n.view_count||0)} views</span>`;
+        renderNews();
+      }else{
+        console.warn("View counter:",error);
+      }
+    }
+  }
+
+  async function tryOpenAdmin(){
+    if(!state.user || state.user.is_anonymous){ openModal("profileModal"); toast("Спочатку увійди в акаунт","err"); return; }
+    await loadProfile();
+    if(state.profile?.role!=="admin"){ toast("Цей профіль не має доступу","err"); return; }
+
+    $("siteTitleInput").value=state.settings.title||"";
+    $("siteSubtitleInput").value=state.settings.subtitle||"";
+    openModal("adminModal");
+    await loadAdminDashboard();
+  }
+
+  async function loadAdminDashboard(){
+    if(state.profile?.role!=="admin") return;
+
+    const dayAgo=new Date(Date.now()-86400000).toISOString();
+
+    const [newsRes,usersRes,msgRes,unreadRes]=await Promise.all([
+      sb.from("news").select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,view_count,status,published_at,created_at").order("created_at",{ascending:false}),
+      sb.from("admin_profiles").select("id,username,role,avatar_url,created_at,last_seen_at").order("created_at",{ascending:false}),
+      sb.from("chat_messages").select("id",{count:"exact",head:true}),
+      sb.from("chat_messages").select("id",{count:"exact",head:true}).eq("sender_role","user").eq("is_read",false)
+    ]);
+
+    const news=newsRes.data||[];
+    const users=usersRes.data||[];
+    const published=news.filter(n=>(n.status||"published")==="published");
+    const drafts=news.filter(n=>n.status==="draft");
+    const totalViews=published.reduce((s,n)=>s+Number(n.view_count||0),0);
+    const publishedToday=published.filter(n=>new Date(n.published_at||n.created_at)>=new Date(dayAgo)).length;
+    const usersToday=users.filter(u=>u.created_at&&new Date(u.created_at)>=new Date(dayAgo)).length;
+    const top=[...published].sort((a,b)=>Number(b.view_count||0)-Number(a.view_count||0))[0];
+
+    $("statPublished").textContent=String(published.length);
+    $("statDrafts").textContent=String(drafts.length);
+    $("statViews").textContent=totalViews>999?`${(totalViews/1000).toFixed(1)}K`:String(totalViews);
+    $("statUsers").textContent=String(users.length);
+    $("statMessages").textContent=String(msgRes.count||0);
+    $("statPublishedToday").textContent=`+${publishedToday} сьогодні`;
+    $("statUsersToday").textContent=`+${usersToday} сьогодні`;
+    $("statUnreadChats").textContent=`${unreadRes.count||0} непрочитаних`;
+    $("statTopNews").textContent=top?`Топ: ${top.title.slice(0,18)}${top.title.length>18?"…":""}`:"Топ: —";
+    $("draftCountBadge").textContent=String(drafts.length);
+
+    $("adminNewsList").innerHTML=published.map(n=>`
+      <div class="admin-news-row">
+        <div><strong>${escapeHtml(n.title)}</strong><small>${escapeHtml(n.category||"AHLTV")} · ${Number(n.view_count||0)} views · ${formatDate(n.published_at||n.created_at)}</small></div>
+        <div class="admin-news-actions"><button class="mini-btn edit" data-edit-news="${n.id}"><i data-lucide="pencil"></i></button><button class="mini-btn delete" data-delete-news="${n.id}"><i data-lucide="trash-2"></i></button></div>
+      </div>`).join("")||'<div style="color:var(--muted);font-size:10px">Новин немає</div>';
+
+    $("adminDraftsList").innerHTML=drafts.map(n=>`
+      <div class="admin-news-row draft-row">
+        <div><strong>${escapeHtml(n.title)} <span class="draft-status">DRAFT</span></strong><small>${escapeHtml(n.category||"AHLTV")} · ${formatDate(n.created_at)}</small></div>
+        <div class="admin-news-actions"><button class="mini-btn edit" data-edit-news="${n.id}"><i data-lucide="pencil"></i></button><button class="mini-btn delete" data-delete-news="${n.id}"><i data-lucide="trash-2"></i></button></div>
+      </div>`).join("")||'<div style="color:var(--muted);font-size:10px;padding:8px 0">Чернеток немає</div>';
+
+    qsa("[data-edit-news]").forEach(btn=>btn.addEventListener("click",()=>openEditNews(btn.dataset.editNews)));
+    qsa("[data-delete-news]").forEach(btn=>btn.addEventListener("click",()=>deleteNews(btn.dataset.deleteNews)));
+
+    if(!usersRes.error){
+      $("adminUsersList").innerHTML=users.map(u=>`
+        <div class="user-row"><div><strong>${escapeHtml(u.username||"unknown")}</strong><small>${escapeHtml(u.role||"member")} · ${formatDate(u.created_at)}</small></div><small>${escapeHtml(String(u.id).slice(0,8))}</small></div>
+      `).join("")||'<div style="color:var(--muted);font-size:10px">Користувачів немає</div>';
+    }
+
+    await loadAdminChats();
+    icons();
+  }
+
+  function previewNewsImage(){
+    const file=$("newsImageInput").files[0], preview=$("newsPreview");
+    if(!file){ preview.style.display="none"; return; }
+    preview.src=URL.createObjectURL(file);
+    preview.style.display="block";
+  }
+
+  async function compressImage(file,options={}){
+    const maxWidth=options.maxWidth || 1600;
+    const maxHeight=options.maxHeight || 1600;
+    const quality=options.quality ?? .82;
+
+    if(!file || !["image/jpeg","image/png","image/webp"].includes(file.type)) return file;
+
+    const bitmap=await createImageBitmap(file);
+    let width=bitmap.width;
+    let height=bitmap.height;
+
+    const scale=Math.min(1,maxWidth/width,maxHeight/height);
+    width=Math.max(1,Math.round(width*scale));
+    height=Math.max(1,Math.round(height*scale));
+
+    const canvas=document.createElement("canvas");
+    canvas.width=width;
+    canvas.height=height;
+
+    const ctx=canvas.getContext("2d",{alpha:false});
+    ctx.drawImage(bitmap,0,0,width,height);
+    bitmap.close?.();
+
+    const blob=await new Promise((resolve)=>{
+      canvas.toBlob(resolve,"image/webp",quality);
+    });
+
+    if(!blob) return file;
+
+    // Do not replace the original if compression somehow made it larger.
+    if(blob.size >= file.size && file.size < 2*1024*1024) return file;
+
+    return new File(
+      [blob],
+      (file.name.replace(/\.[^.]+$/,"") || "image") + ".webp",
+      {type:"image/webp",lastModified:Date.now()}
+    );
+  }
+
+  async function uploadImage(bucket,file,prefix,options={}){
+    if(!file) return null;
+
+    const allowedTypes=["image/jpeg","image/png","image/webp"];
+    if(!allowedTypes.includes(file.type)){
+      throw new Error("Підтримуються тільки JPG, PNG або WebP");
+    }
+
+    if(file.size>12*1024*1024){
+      throw new Error("Фото завелике. Максимум 12 MB.");
+    }
+
+    let uploadFile=file;
+    try{
+      uploadFile=await compressImage(file,options);
+    }catch(e){
+      console.warn("Image compression skipped:",e);
+    }
+
+    const extMap={
+      "image/jpeg":"jpg",
+      "image/png":"png",
+      "image/webp":"webp"
+    };
+
+    const ext=extMap[uploadFile.type] || "webp";
+    const safeId=(crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`);
+    const path=`${prefix}/${state.user.id}/${safeId}.${ext}`;
+
+    const {data,error}=await sb.storage
+      .from(bucket)
+      .upload(path,uploadFile,{
+        cacheControl:"3600",
+        upsert:false,
+        contentType:uploadFile.type
+      });
+
+    if(error){
+      console.error("Storage upload error:",error);
+
+      if(/bucket not found/i.test(error.message||"")){
+        throw new Error(`Storage bucket "${bucket}" не створений`);
+      }
+      if(/row-level security|rls|unauthorized/i.test(error.message||"")){
+        throw new Error("Supabase Storage не дає право завантажувати фото");
+      }
+      throw error;
+    }
+
+    const {data:publicData}=sb.storage.from(bucket).getPublicUrl(data.path);
+    if(!publicData?.publicUrl){
+      throw new Error("Не вдалося отримати посилання на фото");
+    }
+
+    return publicData.publicUrl;
+  }
+
+  async function uploadAvatar(){
+    const input=$("avatarInput");
+    const file=input?.files?.[0];
+    if(!file || !state.user || state.user.is_anonymous) return;
+
+    toast("Завантажую аватар...");
+
+    try{
+      const avatar_url=await uploadImage("avatars",file,"avatars",{
+        maxWidth:512,
+        maxHeight:512,
+        quality:.84
+      });
+
+      const {error}=await sb
+        .from("profiles")
+        .update({avatar_url,last_seen_at:new Date().toISOString()})
+        .eq("id",state.user.id);
+
+      if(error) throw error;
+
+      state.profile={...(state.profile||{}),avatar_url};
+      renderSession();
+      toast("Аватар оновлено");
+    }catch(e){
+      console.error("Avatar upload:",e);
+      toast(e?.message || "Не вдалося завантажити аватар","err");
+    }finally{
+      if(input) input.value="";
+    }
+  }
+
+  async function openEditNews(id){
+    let n=state.news.find(x=>String(x.id)===String(id));
+    if(!n){
+      const {data,error}=await sb.from("news")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
+        .eq("id",id).single();
+      if(error){toast("Не вдалося відкрити новину","err");return;}
+      n=data;
+    }
+
+    $("editNewsId").value=n.id;
+    $("editNewsModal").dataset.status=n.status||"published";
+    $("publishDraftNowBtn").classList.toggle("hidden",(n.status||"published")!=="draft");
+    $("editNewsTitle").value=n.title_uk||n.title||"";
+    $("editNewsTitleEn").value=n.title_en||"";
+    $("editNewsTitleRu").value=n.title_ru||"";
+    $("editNewsCategory").value=n.category||"AHLTV";
+    $("editNewsDesc").value=n.description_uk||n.description||"";
+    $("editNewsDescEn").value=n.description_en||"";
+    $("editNewsDescRu").value=n.description_ru||"";
+    $("editNewsImage").value="";
+    $("editNewsPreview").style.display="none";
+    closeModal("adminModal");openModal("editNewsModal");
+  }
+
+  async function saveEditedNews(closeAfter=true){
+    if(state.profile?.role!=="admin") return;
+
+    const id=$("editNewsId").value;
+    const title=$("editNewsTitle").value.trim();
+    const title_en=$("editNewsTitleEn").value.trim();
+    const title_ru=$("editNewsTitleRu").value.trim();
+
+    const description=$("editNewsDesc").value.trim();
+    const description_en=$("editNewsDescEn").value.trim();
+    const description_ru=$("editNewsDescRu").value.trim();
+
+    const category=$("editNewsCategory").value;
+    const file=$("editNewsImage").files[0];
+    const btn=$("saveEditNewsBtn");
+
+    if(!title){ toast("Напиши заголовок","err"); return; }
+    if(!description){ toast("Напиши опис","err"); return; }
+
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Зберігаю...';
+
+    try{
+      const current=state.news.find(x=>String(x.id)===String(id));
+      let image_url=current?.image_url || null;
+
+      if(file){
+        image_url=await uploadImage("news-images",file,"news",{
+          maxWidth:1600,
+          maxHeight:1600,
+          quality:.82
+        });
+      }
+
+      const {data,error}=await sb
+        .from("news")
+        .update({
+          title,
+          description,
+          title_uk:title,
+          title_en:title_en || null,
+          title_ru:title_ru || null,
+          description_uk:description,
+          description_en:description_en || null,
+          description_ru:description_ru || null,
+          category,
+          image_url
+        })
+        .eq("id",id)
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
+        .single();
+
+      if(error) throw error;
+
+      if((data.status||"published")==="published"){
+        state.news=state.news.map(n=>String(n.id)===String(id)?data:n);
+        renderNews();
+      }
+      if(closeAfter){closeModal("editNewsModal");openModal("adminModal");}
+      await loadAdminDashboard();
+      if(closeAfter)toast("Новину оновлено");
+    }catch(e){
+      console.error("Edit news:",e);
+      toast(e?.message || "Не вдалося зберегти зміни","err");
+    }finally{
+      btn.disabled=false;
+      btn.innerHTML='<i data-lucide="save"></i><span>Зберегти зміни</span>';
+      icons();
+    }
+  }
+
+  async function saveNewsAs(status="published"){
+    if(state.profile?.role!=="admin"){toast("Немає доступу адміністратора","err");return;}
+
+    const titleEl=$("newsTitleInput"),descEl=$("newsDescInput"),categoryEl=$("newsCategoryInput"),imageEl=$("newsImageInput");
+    const title=(titleEl?.value||"").trim(),title_en=($("newsTitleEnInput")?.value||"").trim(),title_ru=($("newsTitleRuInput")?.value||"").trim();
+    const description=(descEl?.value||"").trim(),description_en=($("newsDescEnInput")?.value||"").trim(),description_ru=($("newsDescRuInput")?.value||"").trim();
+    const category=(categoryEl?.value||"AHLTV").trim(),file=imageEl?.files?.[0]||null;
+
+    if(!title){toast("Напиши заголовок новини","err");titleEl?.focus();return;}
+    if(status==="published"&&!description){toast("Для публікації потрібен опис","err");descEl?.focus();return;}
+
+    const btn=status==="draft"?$("saveDraftBtn"):$("publishNewsBtn");
+    if(btn.disabled)return;
+    const oldHtml=btn.innerHTML;
+    btn.disabled=true;
+    btn.innerHTML=status==="draft"?'<span class="spinner" style="width:15px;height:15px;margin:0"></span>Зберігаю...':'<span class="spinner" style="width:15px;height:15px;margin:0"></span>Публікую...';
+
+    try{
+      let image_url=null;
+      if(file) image_url=await uploadImage("news-images",file,"news",{maxWidth:1600,maxHeight:1600,quality:.82});
+
+      const payload={
+        title,description,title_uk:title,title_en:title_en||null,title_ru:title_ru||null,
+        description_uk:description,description_en:description_en||null,description_ru:description_ru||null,
+        category,image_url,author:state.profile?.username||"Sewa199",created_by:state.user.id,
+        status,published_at:status==="published"?new Date().toISOString():null
+      };
+
+      const {data,error}=await sb.from("news").insert(payload)
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
+        .single();
+      if(error)throw error;
+
+      titleEl.value="";descEl.value="";$("newsTitleEnInput").value="";$("newsTitleRuInput").value="";$("newsDescEnInput").value="";$("newsDescRuInput").value="";
+      if(imageEl)imageEl.value="";$("newsPreview").style.display="none";
+
+      if(status==="published"){state.news=[data,...state.news.filter(n=>String(n.id)!==String(data.id))];renderNews();toast("Новину опубліковано");}
+      else toast("Чернетку збережено");
+
+      await loadAdminDashboard();
+    }catch(error){
+      console.error("Save news:",error);
+      toast(error?.message||"Не вдалося зберегти","err");
+    }finally{
+      btn.disabled=false;btn.innerHTML=oldHtml;icons();
+    }
+  }
+
+  async function publishNews(){return saveNewsAs("published");}
+  async function saveDraft(){return saveNewsAs("draft");}
+
+  async function publishCurrentDraft(){
+    if(state.profile?.role!=="admin")return;
+    const id=$("editNewsId").value;if(!id)return;
+    const btn=$("publishDraftNowBtn"),old=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Публікую...';
+    try{
+      await saveEditedNews(false);
+      const {data,error}=await sb.from("news").update({status:"published",published_at:new Date().toISOString()}).eq("id",id)
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at").single();
+      if(error)throw error;
+      state.news=[data,...state.news.filter(n=>String(n.id)!==String(id))];renderNews();closeModal("editNewsModal");await loadAdminDashboard();openModal("adminModal");toast("Чернетку опубліковано");
+    }catch(e){console.error(e);toast(e?.message||"Не вдалося опублікувати","err");}
+    finally{btn.disabled=false;btn.innerHTML=old;icons();}
+  }
+
+  async function deleteNews(id){
+    if(state.profile?.role!=="admin") return;
+    if(!confirm("Видалити цю новину?")) return;
+    const {error}=await sb.from("news").delete().eq("id",id);
+    if(error){ toast("Не вдалося видалити","err"); return; }
+    await loadNews(); await loadAdminDashboard(); toast("Новину видалено");
+  }
+
+  async function saveSiteSettings(){
+    if(state.profile?.role!=="admin"){
+      toast("Немає прав адміністратора","err");
+      return;
+    }
+
+    const btn=$("saveSiteBtn");
+    const title=$("siteTitleInput").value.trim() || "News AHLTV & UMP";
+    const subtitle=$("siteSubtitleInput").value.trim() || "by sewa/vadim777";
+    const file=$("siteLogoInput").files[0];
+
+    if(btn.disabled) return;
+
+    btn.disabled=true;
+    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Збереження...';
+
+    try{
+      let logo_url=state.settings.logo_url || null;
+
+      // 1. Upload logo only if a new file was selected.
+      if(file){
+        try{
+          logo_url=await uploadImage("site-assets",file,"logo",{maxWidth:800,maxHeight:800,quality:.85});
+        }catch(uploadError){
+          console.error("Logo upload error:",uploadError);
+          throw new Error(uploadError?.message || "Не вдалося завантажити логотип у Storage");
+        }
+      }
+
+      // 2. Update the existing settings row.
+      // This avoids UPSERT/RLS edge cases when row id=1 already exists.
+      const payload={
+        title,
+        subtitle,
+        logo_url,
+        updated_by:state.user.id,
+        updated_at:new Date().toISOString()
+      };
+
+      let {data,error}=await sb
+        .from("site_settings")
+        .update(payload)
+        .eq("id",1)
+        .select("id,title,subtitle,logo_url")
+        .maybeSingle();
+
+      // 3. If settings row does not exist, create it.
+      if(!error && !data){
+        const insertResult=await sb
+          .from("site_settings")
+          .insert({id:1,...payload})
+          .select("id,title,subtitle,logo_url")
+          .single();
+
+        data=insertResult.data;
+        error=insertResult.error;
+      }
+
+      if(error) throw error;
+
+      state.settings={
+        title:data?.title || title,
+        subtitle:data?.subtitle || subtitle,
+        logo_url:data?.logo_url ?? logo_url
+      };
+
+      applySettings();
+      $("siteLogoInput").value="";
+      toast("Налаштування сайту збережено");
+
+    }catch(error){
+      console.error("Save site settings error:",error);
+
+      let message=error?.message || "Невідома помилка";
+
+      if(/row-level security|rls/i.test(message)){
+        message="Supabase заблокував збереження через RLS";
+      }else if(/column .* does not exist/i.test(message)){
+        message="У таблиці site_settings не вистачає потрібної колонки";
+      }else if(/bucket|storage/i.test(message) && file){
+        message="Не вдалося зберегти логотип у Storage";
+      }
+
+      toast(message,"err");
+    }finally{
+      btn.disabled=false;
+      btn.innerHTML=`<i data-lucide="save"></i><span>${t("save")}</span>`;
+      icons();
+    }
+  }
+
+
+  function isRegisteredUser(){ return !!state.user && !state.user.is_anonymous; }
+  function formatChatTime(value){ if(!value)return ""; return new Intl.DateTimeFormat("uk-UA",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(new Date(value)); }
+  function setChatComposerFocus(focused){
+    const sheet=document.querySelector("#chatModal .chat-sheet");
+    if(!sheet) return;
+    sheet.classList.toggle("composer-focus",!!focused);
+  }
+
+  function animateChatSendReady(){
+    const btn=$("sendChatBtn");
+    if(!btn) return;
+    btn.classList.remove("ready");
+    void btn.offsetWidth;
+    btn.classList.add("ready");
+    setTimeout(()=>btn.classList.remove("ready"),380);
+  }
+
+  function bumpChatBody(){
+    const body=$("chatBody");
+    if(!body) return;
+    body.classList.remove("chat-bump");
+    void body.offsetWidth;
+    body.classList.add("chat-bump");
+    setTimeout(()=>body.classList.remove("chat-bump"),320);
+  }
+
+  function autosizeChatInput(el){ if(!el)return; el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,110)+"px"; }
+  async function openChat(){
+    setChatComposerFocus(false);
+    openModal("chatModal");
+
+    const ok=isRegisteredUser();
+    $("chatLoginWall").classList.toggle("hidden",ok);
+    $("chatBody").classList.toggle("hidden",!ok);
+    $("chatComposer").classList.toggle("hidden",!ok);
+
+    if(!ok){
+      icons();
+      return;
+    }
+
+    const profileReady=await ensureOwnProfile();
+    if(!profileReady){
+      $("chatHeadStatus").textContent="Профіль синхронізується...";
+    }else{
+      $("chatHeadStatus").textContent="Напиши повідомлення — я відповім тут";
+    }
+
+    await loadOwnChat();
+    await markOwnChatRead();
+    $("chatBadge").classList.add("hidden");
+    icons();
+  }
+  async function loadOwnChat(){
+    if(!isRegisteredUser()) return;
+
+    const {data,error}=await sb
+      .from("chat_messages")
+      .select("id,user_id,sender_role,message,created_at,is_read")
+      .eq("user_id",state.user.id)
+      .order("created_at",{ascending:true});
+
+    if(error){
+      console.error("load chat",error);
+      toast("Не вдалося завантажити чат: "+(error.message||"помилка"),"err");
+      return;
+    }
+
+    state.chat.messages=data||[];
+    renderOwnChat();
+  }
+  function renderOwnChat(){
+    const items=state.chat.messages||[];
+    $("chatEmpty").classList.toggle("hidden",items.length>0);
+
+    $("chatMessages").innerHTML=items.map((m,i)=>`
+      <div class="chat-message ${m.sender_role==="admin"?"admin":"me"}" style="animation-delay:${Math.min(i*.025,.16)}s">
+        <div class="chat-bubble">
+          ${escapeHtml(m.message)}
+          <span class="chat-message-time">${formatChatTime(m.created_at)}</span>
+        </div>
+      </div>
+    `).join("");
+
+    requestAnimationFrame(()=>{
+      $("chatBody").scrollTop=$("chatBody").scrollHeight;
+    });
+  }
+  async function sendChatMessage(){
+    if(!isRegisteredUser()){
+      openChat();
+      return;
+    }
+
+    const input=$("chatInput");
+    const message=(input.value||"").trim();
+    if(!message) return;
+
+    const btn=$("sendChatBtn");
+    btn.disabled=true;
+    btn.classList.add("sending");
+
+    try{
+      const ready=await ensureOwnProfile();
+      if(!ready){
+        throw new Error("Профіль ще не створився. Запусти FIX_CHAT_ACCOUNT.sql один раз у Supabase.");
+      }
+
+      const {data,error}=await sb.rpc("send_chat_message",{message_text:message});
+      if(error) throw error;
+
+      const row=Array.isArray(data)?data[0]:data;
+      if(!row)throw new Error("Не вдалося надіслати повідомлення");
+
+      input.value="";
+      $("chatCharCount").textContent="0 / 1000";
+      autosizeChatInput(input);
+      state.chat.messages.push(row);
+      renderOwnChat();
+
+      requestAnimationFrame(()=>{
+        const messages=qsa("#chatMessages .chat-message");
+        const last=messages[messages.length-1];
+        if(last){
+          last.classList.add("new-pop");
+          setTimeout(()=>last.classList.remove("new-pop"),460);
+        }
+        bumpChatBody();
+      });
+    }catch(e){
+      console.error("send chat",e);
+      const msg=String(e?.message||"");
+      if(/SPAM_COOLDOWN/i.test(msg)) toast("Занадто швидко. Зачекай 3 секунди.","err");
+      else if(/SPAM_DUPLICATE/i.test(msg)) toast("Не надсилай однакове повідомлення повторно.","err");
+      else if(/SPAM_RATE/i.test(msg)) toast("Забагато повідомлень. Спробуй трохи пізніше.","err");
+      else toast(msg||"Не вдалося надіслати","err");
+    }finally{
+      btn.disabled=false;
+      btn.classList.remove("sending");
+    }
+  }
+  async function markOwnChatRead(){ if(!isRegisteredUser())return; await sb.from("chat_messages").update({is_read:true}).eq("user_id",state.user.id).eq("sender_role","admin").eq("is_read",false); }
+  async function refreshUnreadBadge(){ if(!isRegisteredUser()){ $("chatBadge").classList.add("hidden"); return; } const {count,error}=await sb.from("chat_messages").select("id",{count:"exact",head:true}).eq("user_id",state.user.id).eq("sender_role","admin").eq("is_read",false); if(error)return; const b=$("chatBadge"); if(count>0){b.textContent=count>9?"9+":String(count);b.classList.remove("hidden");}else b.classList.add("hidden"); }
+  async function loadAdminChats(){ if(state.profile?.role!=="admin")return; const {data,error}=await sb.from("admin_chat_threads").select("*").order("last_message_at",{ascending:false}); if(error){console.error(error);$("adminChatList").innerHTML='<div style="padding:12px;color:var(--muted);font-size:9px">Не вдалося завантажити діалоги</div>';return;} state.chat.threads=data||[]; $("adminChatCount").textContent=String(state.chat.threads.length); $("adminChatList").innerHTML=state.chat.threads.map(t=>{const i=(t.username||"U")[0].toUpperCase();const av=t.avatar_url?`<img src="${escapeHtml(t.avatar_url)}" alt="">`:escapeHtml(i);return `<button class="admin-chat-contact ${state.chat.activeUserId===t.user_id?"active":""}" data-chat-user="${t.user_id}"><span class="admin-chat-contact-avatar">${av}</span><span><strong>${escapeHtml(t.username||"Користувач")}</strong><small>${escapeHtml(t.last_message||"")}</small></span><time>${formatChatTime(t.last_message_at)}</time></button>`;}).join("")||'<div style="padding:12px;color:var(--muted);font-size:9px">Діалогів ще немає</div>'; qsa("[data-chat-user]").forEach(btn=>btn.addEventListener("click",()=>openAdminChatThread(btn.dataset.chatUser))); }
+  async function openAdminChatThread(userId,mark=true){ if(state.profile?.role!=="admin")return; state.chat.activeUserId=userId; const t=state.chat.threads.find(x=>String(x.user_id)===String(userId)); const name=t?.username||"Користувач", first=(name[0]||"U").toUpperCase(); $("adminChatThreadEmpty").classList.add("hidden"); $("adminChatThread").classList.remove("hidden"); $("adminChatUsername").textContent=name; $("adminChatUserId").textContent=String(userId).slice(0,8).toUpperCase(); renderAvatar($("adminChatAvatar"),t?.avatar_url,first); const {data,error}=await sb.from("chat_messages").select("id,user_id,sender_role,message,created_at,is_read").eq("user_id",userId).order("created_at",{ascending:true}); if(error){toast("Не вдалося відкрити діалог","err");return;} $("adminChatMessages").innerHTML=(data||[]).map(m=>`<div class="chat-message ${m.sender_role==="admin"?"me":"admin"}"><div class="chat-bubble">${escapeHtml(m.message)}<span class="chat-message-time">${formatChatTime(m.created_at)}</span></div></div>`).join(""); requestAnimationFrame(()=>{$("adminChatMessages").scrollTop=$("adminChatMessages").scrollHeight;}); if(mark) await sb.from("chat_messages").update({is_read:true}).eq("user_id",userId).eq("sender_role","user").eq("is_read",false); qsa("[data-chat-user]").forEach(btn=>btn.classList.toggle("active",btn.dataset.chatUser===String(userId))); }
+  async function sendAdminChatReply(){ if(state.profile?.role!=="admin"||!state.chat.activeUserId)return; const input=$("adminChatReplyInput"), message=(input.value||"").trim(); if(!message)return; const btn=$("adminChatReplyBtn");btn.disabled=true;try{const {error}=await sb.from("chat_messages").insert({user_id:state.chat.activeUserId,sender_role:"admin",message});if(error)throw error;input.value="";await loadAdminChats();await openAdminChatThread(state.chat.activeUserId,false);}catch(e){console.error(e);toast(e?.message||"Не вдалося відповісти","err");}finally{btn.disabled=false;} }
+
+  function setupRealtime(){
+    sb.channel("news-live")
+      .on("postgres_changes",{event:"*",schema:"public",table:"news"},()=>{
+        scheduleSilentNewsRefresh();
+      })
+      .on("postgres_changes",{event:"UPDATE",schema:"public",table:"site_settings",filter:"id=eq.1"},async()=>loadSettings())
+      .subscribe();
+    sb.channel("chat-live")
+      .on("postgres_changes",{event:"INSERT",schema:"public",table:"chat_messages"},async(payload)=>{
+        const row=payload.new;
+        if(state.profile?.role==="admin"){await loadAdminChats(); if(state.chat.activeUserId&&String(state.chat.activeUserId)===String(row.user_id)) await openAdminChatThread(state.chat.activeUserId,false);}
+        if(isRegisteredUser()&&String(row.user_id)===String(state.user.id)){if($("chatModal").classList.contains("open")){await loadOwnChat();await markOwnChatRead();}else await refreshUnreadBadge();}
+      }).subscribe();
+  }
+
+  sb.auth.onAuthStateChange((_event,session)=>{
+    // Do not await Supabase DB calls directly inside this callback.
+    // Deferring prevents auth calls from hanging on some browsers/devices.
+    setTimeout(async()=>{
+      state.user=session?.user||null;
+      if(state.user && !state.user.is_anonymous){
+        await loadProfile();
+
+        if(!state.profile){
+          await ensureOwnProfile();
+        }
+      }else{
+        state.profile=null;
+      }
+
+      renderSession();
+    },0);
+  });
+
   init();
 })();
 </script>
