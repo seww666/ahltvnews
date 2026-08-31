@@ -2625,11 +2625,22 @@
     }
 
     state.user=data.user;
-    await upsertOwnProfile(username);
+
+    const profileReady=await upsertOwnProfile(username);
     await loadProfile();
+
     renderSession();
     closeModal("profileModal");
-    toast("Акаунт створено");
+
+    if(profileReady && state.profile){
+      toast("Акаунт створено");
+    }else{
+      toast("Акаунт створено. Профіль синхронізується...");
+      setTimeout(async()=>{
+        await ensureOwnProfile();
+        renderSession();
+      },350);
+    }
   }
 
   async function login(){
@@ -2694,24 +2705,154 @@
   }
 
   async function upsertOwnProfile(username){
-    if(!state.user || state.user.is_anonymous) return;
-    const {error}=await sb.from("profiles").upsert({
+    if(!state.user || state.user.is_anonymous) return false;
+
+    const cleanUsername=(username || state.user?.user_metadata?.username || "User").trim();
+    const now=new Date().toISOString();
+
+    // First try to create the profile. Do NOT upsert role, so an existing admin
+    // can never accidentally be changed back to "member".
+    let {error}=await sb.from("profiles").insert({
       id:state.user.id,
-      username,
+      username:cleanUsername,
+      display_name:cleanUsername,
       role:"member",
-      last_seen_at:new Date().toISOString()
-    },{onConflict:"id"});
-    if(error) console.error("profile upsert",error);
+      last_seen_at:now
+    });
+
+    if(error){
+      const msg=String(error.message||"").toLowerCase();
+
+      // Existing profile: only refresh safe public fields.
+      if(error.code==="23505" || msg.includes("duplicate") || msg.includes("unique")){
+        const {error:updateError}=await sb
+          .from("profiles")
+          .update({
+            username:cleanUsername,
+            display_name:cleanUsername,
+            last_seen_at:now
+          })
+          .eq("id",state.user.id);
+
+        if(updateError){
+          console.error("profile update",updateError);
+          return false;
+        }
+        return true;
+      }
+
+      // Compatibility if another installation doesn't have display_name.
+      if(msg.includes("display_name") && (msg.includes("column") || msg.includes("schema cache"))){
+        const {error:fallbackError}=await sb.from("profiles").insert({
+          id:state.user.id,
+          username:cleanUsername,
+          role:"member",
+          last_seen_at:now
+        });
+
+        if(fallbackError){
+          const fallbackMsg=String(fallbackError.message||"").toLowerCase();
+
+          if(fallbackError.code==="23505" || fallbackMsg.includes("duplicate") || fallbackMsg.includes("unique")){
+            const {error:updateFallback}=await sb
+              .from("profiles")
+              .update({
+                username:cleanUsername,
+                last_seen_at:now
+              })
+              .eq("id",state.user.id);
+
+            if(updateFallback){
+              console.error("profile fallback update",updateFallback);
+              return false;
+            }
+            return true;
+          }
+
+          console.error("profile fallback insert",fallbackError);
+          return false;
+        }
+
+        return true;
+      }
+
+      console.error("profile insert",error);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function ensureOwnProfile(){
+    if(!state.user || state.user.is_anonymous) return false;
+
+    if(state.profile?.id===state.user.id) return true;
+
+    await loadProfile();
+    if(state.profile?.id===state.user.id) return true;
+
+    const username=(
+      state.user?.user_metadata?.username ||
+      state.user?.email?.split("@")[0] ||
+      "User"
+    ).trim();
+
+    const created=await upsertOwnProfile(username);
+    if(!created) return false;
+
+    await new Promise(resolve=>setTimeout(resolve,80));
+    await loadProfile();
+
+    return !!state.profile;
   }
 
   async function loadProfile(){
-    if(!state.user || state.user.is_anonymous){ state.profile=null; return; }
-    const {data,error}=await sb.from("profiles").select("id,username,role,avatar_url,created_at,last_seen_at").eq("id",state.user.id).maybeSingle();
-    if(error) console.error(error);
-    state.profile=data||null;
-    if(state.profile){
-      await sb.from("profiles").update({last_seen_at:new Date().toISOString()}).eq("id",state.user.id);
+    if(!state.user || state.user.is_anonymous){
+      state.profile=null;
+      return null;
     }
+
+    const {data,error}=await sb
+      .from("profiles")
+      .select("id,username,display_name,role,avatar_url,created_at,last_seen_at")
+      .eq("id",state.user.id)
+      .maybeSingle();
+
+    if(error){
+      const msg=String(error.message||"").toLowerCase();
+
+      // Compatibility if display_name is absent on another schema.
+      if(msg.includes("display_name") && (msg.includes("column") || msg.includes("schema cache"))){
+        const fallback=await sb
+          .from("profiles")
+          .select("id,username,role,avatar_url,created_at,last_seen_at")
+          .eq("id",state.user.id)
+          .maybeSingle();
+
+        if(fallback.error){
+          console.error("load profile",fallback.error);
+          state.profile=null;
+          return null;
+        }
+
+        state.profile=fallback.data||null;
+      }else{
+        console.error("load profile",error);
+        state.profile=null;
+        return null;
+      }
+    }else{
+      state.profile=data||null;
+    }
+
+    if(state.profile){
+      await sb
+        .from("profiles")
+        .update({last_seen_at:new Date().toISOString()})
+        .eq("id",state.user.id);
+    }
+
+    return state.profile;
   }
 
   function renderAvatar(el,url,initial){
@@ -3320,13 +3461,95 @@
   }
 
 
-  function isRegisteredUser(){ return !!state.user && !state.user.is_anonymous && !!state.profile; }
+  function isRegisteredUser(){ return !!state.user && !state.user.is_anonymous; }
   function formatChatTime(value){ if(!value)return ""; return new Intl.DateTimeFormat("uk-UA",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(new Date(value)); }
   function autosizeChatInput(el){ if(!el)return; el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,110)+"px"; }
-  async function openChat(){ openModal("chatModal"); const ok=isRegisteredUser(); $("chatLoginWall").classList.toggle("hidden",ok); $("chatBody").classList.toggle("hidden",!ok); $("chatComposer").classList.toggle("hidden",!ok); if(!ok){icons();return;} await loadOwnChat(); await markOwnChatRead(); $("chatBadge").classList.add("hidden"); icons(); }
-  async function loadOwnChat(){ if(!isRegisteredUser())return; const {data,error}=await sb.from("chat_messages").select("id,user_id,sender_role,message,created_at,is_read").eq("user_id",state.user.id).order("created_at",{ascending:true}); if(error){console.error(error);toast("Не вдалося завантажити чат","err");return;} state.chat.messages=data||[]; renderOwnChat(); }
+  async function openChat(){
+    openModal("chatModal");
+
+    const ok=isRegisteredUser();
+    $("chatLoginWall").classList.toggle("hidden",ok);
+    $("chatBody").classList.toggle("hidden",!ok);
+    $("chatComposer").classList.toggle("hidden",!ok);
+
+    if(!ok){
+      icons();
+      return;
+    }
+
+    const profileReady=await ensureOwnProfile();
+    if(!profileReady){
+      $("chatHeadStatus").textContent="Профіль синхронізується...";
+    }else{
+      $("chatHeadStatus").textContent="Напиши повідомлення — я відповім тут";
+    }
+
+    await loadOwnChat();
+    await markOwnChatRead();
+    $("chatBadge").classList.add("hidden");
+    icons();
+  }
+  async function loadOwnChat(){
+    if(!isRegisteredUser()) return;
+
+    const {data,error}=await sb
+      .from("chat_messages")
+      .select("id,user_id,sender_role,message,created_at,is_read")
+      .eq("user_id",state.user.id)
+      .order("created_at",{ascending:true});
+
+    if(error){
+      console.error("load chat",error);
+      toast("Не вдалося завантажити чат: "+(error.message||"помилка"),"err");
+      return;
+    }
+
+    state.chat.messages=data||[];
+    renderOwnChat();
+  }
   function renderOwnChat(){ const items=state.chat.messages||[]; $("chatEmpty").classList.toggle("hidden",items.length>0); $("chatMessages").innerHTML=items.map(m=>`<div class="chat-message ${m.sender_role==="admin"?"admin":"me"}"><div class="chat-bubble">${escapeHtml(m.message)}<span class="chat-message-time">${formatChatTime(m.created_at)}</span></div></div>`).join(""); requestAnimationFrame(()=>{$("chatBody").scrollTop=$("chatBody").scrollHeight;}); }
-  async function sendChatMessage(){ if(!isRegisteredUser()){openChat();return;} const input=$("chatInput"), message=(input.value||"").trim(); if(!message)return; const btn=$("sendChatBtn"); btn.disabled=true; try{const {data,error}=await sb.from("chat_messages").insert({user_id:state.user.id,sender_role:"user",message}).select("id,user_id,sender_role,message,created_at,is_read").single(); if(error)throw error; input.value=""; autosizeChatInput(input); state.chat.messages.push(data); renderOwnChat();}catch(e){console.error(e);toast(e?.message||"Не вдалося надіслати","err");}finally{btn.disabled=false;} }
+  async function sendChatMessage(){
+    if(!isRegisteredUser()){
+      openChat();
+      return;
+    }
+
+    const input=$("chatInput");
+    const message=(input.value||"").trim();
+    if(!message) return;
+
+    const btn=$("sendChatBtn");
+    btn.disabled=true;
+
+    try{
+      const ready=await ensureOwnProfile();
+      if(!ready){
+        throw new Error("Профіль ще не створився. Запусти FIX_CHAT_ACCOUNT.sql один раз у Supabase.");
+      }
+
+      const {data,error}=await sb
+        .from("chat_messages")
+        .insert({
+          user_id:state.user.id,
+          sender_role:"user",
+          message
+        })
+        .select("id,user_id,sender_role,message,created_at,is_read")
+        .single();
+
+      if(error) throw error;
+
+      input.value="";
+      autosizeChatInput(input);
+      state.chat.messages.push(data);
+      renderOwnChat();
+    }catch(e){
+      console.error("send chat",e);
+      toast(e?.message||"Не вдалося надіслати","err");
+    }finally{
+      btn.disabled=false;
+    }
+  }
   async function markOwnChatRead(){ if(!isRegisteredUser())return; await sb.from("chat_messages").update({is_read:true}).eq("user_id",state.user.id).eq("sender_role","admin").eq("is_read",false); }
   async function refreshUnreadBadge(){ if(!isRegisteredUser()){ $("chatBadge").classList.add("hidden"); return; } const {count,error}=await sb.from("chat_messages").select("id",{count:"exact",head:true}).eq("user_id",state.user.id).eq("sender_role","admin").eq("is_read",false); if(error)return; const b=$("chatBadge"); if(count>0){b.textContent=count>9?"9+":String(count);b.classList.remove("hidden");}else b.classList.add("hidden"); }
   async function loadAdminChats(){ if(state.profile?.role!=="admin")return; const {data,error}=await sb.from("admin_chat_threads").select("*").order("last_message_at",{ascending:false}); if(error){console.error(error);$("adminChatList").innerHTML='<div style="padding:12px;color:var(--muted);font-size:9px">Не вдалося завантажити діалоги</div>';return;} state.chat.threads=data||[]; $("adminChatCount").textContent=String(state.chat.threads.length); $("adminChatList").innerHTML=state.chat.threads.map(t=>{const i=(t.username||"U")[0].toUpperCase();const av=t.avatar_url?`<img src="${escapeHtml(t.avatar_url)}" alt="">`:escapeHtml(i);return `<button class="admin-chat-contact ${state.chat.activeUserId===t.user_id?"active":""}" data-chat-user="${t.user_id}"><span class="admin-chat-contact-avatar">${av}</span><span><strong>${escapeHtml(t.username||"Користувач")}</strong><small>${escapeHtml(t.last_message||"")}</small></span><time>${formatChatTime(t.last_message_at)}</time></button>`;}).join("")||'<div style="padding:12px;color:var(--muted);font-size:9px">Діалогів ще немає</div>'; qsa("[data-chat-user]").forEach(btn=>btn.addEventListener("click",()=>openAdminChatThread(btn.dataset.chatUser))); }
@@ -3353,9 +3576,14 @@
       state.user=session?.user||null;
       if(state.user && !state.user.is_anonymous){
         await loadProfile();
+
+        if(!state.profile){
+          await ensureOwnProfile();
+        }
       }else{
         state.profile=null;
       }
+
       renderSession();
     },0);
   });
