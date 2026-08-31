@@ -1706,6 +1706,90 @@
     .admin-chat-layout{display:grid;gap:10px}.admin-chat-list-card,.admin-chat-thread-card{border:1px solid var(--line);background:#0e0e11;border-radius:15px;overflow:hidden}.admin-chat-list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid rgba(255,255,255,.06)}.admin-chat-list-head h4{margin:0;font-size:12px}.admin-chat-list-head p{margin:3px 0 0;color:var(--muted);font-size:8px}.admin-chat-count{min-width:26px;height:26px;padding:0 8px;display:grid;place-items:center;border-radius:9px;background:#1b1623;color:#cdbaff;font-size:9px;font-weight:900}.admin-chat-list{max-height:260px;overflow:auto}.admin-chat-contact{width:100%;display:grid;grid-template-columns:36px 1fr auto;gap:9px;align-items:center;border:0;border-bottom:1px solid rgba(255,255,255,.045);background:transparent;color:#e9e8ed;padding:10px 11px;text-align:left}.admin-chat-contact:hover,.admin-chat-contact.active{background:#15131a}.admin-chat-contact-avatar,.admin-chat-user-avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#1b1623;color:#c9b2ff;font-size:10px;font-weight:900;overflow:hidden}.admin-chat-contact-avatar img,.admin-chat-user-avatar img{width:100%;height:100%;object-fit:cover}.admin-chat-contact strong{display:block;font-size:10px}.admin-chat-contact small{display:block;max-width:180px;margin-top:2px;color:#707079;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.admin-chat-contact time{font-size:7px;color:#595861}.admin-chat-thread-empty{min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#66656e;text-align:center;padding:24px}.admin-chat-thread-empty svg{width:24px;height:24px;margin-bottom:9px;color:#7e65af}.admin-chat-thread-empty strong{font-size:11px;color:#b7b5bd}.admin-chat-thread-empty span{font-size:8px;margin-top:3px}.admin-chat-thread-head{display:flex;align-items:center;gap:9px;padding:11px;border-bottom:1px solid rgba(255,255,255,.06)}.admin-chat-thread-head strong{display:block;font-size:10px}.admin-chat-thread-head small{display:block;color:#6f6d76;font-size:7px;margin-top:2px}.admin-chat-messages{height:260px;overflow-y:auto;padding:11px;background:#0c0c0f}.admin-chat-reply{display:grid;grid-template-columns:1fr 40px;gap:7px;padding:9px;border-top:1px solid rgba(255,255,255,.06)}.admin-chat-reply button{width:40px;height:40px}
     @media(min-width:760px){.admin-chat-layout{grid-template-columns:280px 1fr}.admin-chat-list{max-height:410px}.admin-chat-messages{height:330px}}
 
+
+    /* v17 — multilingual news */
+    .post-language-box{
+      margin:10px 0 13px;
+      padding:10px;
+      border:1px solid rgba(255,255,255,.075);
+      border-radius:14px;
+      background:#0d0d10;
+    }
+
+    .post-language-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:9px;
+    }
+
+    .post-language-head b{
+      display:block;
+      font-size:10px;
+      color:#dddce2;
+    }
+
+    .post-language-head span:not(.post-language-status){
+      display:block;
+      margin-top:2px;
+      color:#707079;
+      font-size:8px;
+    }
+
+    .post-language-status{
+      padding:5px 7px;
+      border-radius:7px;
+      background:#17131f;
+      border:1px solid rgba(135,80,247,.15);
+      color:#a988ec;
+      font-size:7px;
+      font-weight:900;
+      letter-spacing:.08em;
+      white-space:nowrap;
+    }
+
+    .post-lang-tabs{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:5px;
+      padding:4px;
+      margin-bottom:9px;
+      border-radius:10px;
+      background:#09090c;
+      border:1px solid rgba(255,255,255,.055);
+    }
+
+    .post-lang-btn{
+      height:32px;
+      border:0;
+      border-radius:8px;
+      background:transparent;
+      color:#6e6d76;
+      font-size:9px;
+      font-weight:900;
+      transition:.2s ease;
+    }
+
+    .post-lang-btn.active{
+      color:#e8dcff;
+      background:#1a1522;
+      box-shadow:inset 0 0 0 1px rgba(135,80,247,.15);
+    }
+
+    .post-lang-btn:active{transform:scale(.96)}
+
+    .post-lang-pane{display:none}
+    .post-lang-pane.active{
+      display:block;
+      animation:postLangIn .2s ease;
+    }
+
+    @keyframes postLangIn{
+      from{opacity:0;transform:translateY(3px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
   </style>
 </head>
 <body>
@@ -1984,9 +2068,53 @@
 
     <input type="hidden" id="editNewsId">
 
-    <div class="field">
-      <label>Заголовок</label>
-      <input class="input" id="editNewsTitle" maxlength="120" placeholder="Заголовок новини">
+    <div class="post-language-box">
+      <div class="post-language-head">
+        <div>
+          <b>Текст публікації</b>
+          <span>Редагуй кожну мову окремо</span>
+        </div>
+        <span class="post-language-status">UA · EN · RU</span>
+      </div>
+
+      <div class="post-lang-tabs" data-post-lang-tabs="edit">
+        <button type="button" class="post-lang-btn active" data-post-lang="uk">UA</button>
+        <button type="button" class="post-lang-btn" data-post-lang="en">EN</button>
+        <button type="button" class="post-lang-btn" data-post-lang="ru">RU</button>
+      </div>
+
+      <div class="post-lang-pane active" data-post-pane="edit-uk">
+        <div class="field">
+          <label>Заголовок · Українська</label>
+          <input class="input" id="editNewsTitle" maxlength="120" placeholder="Заголовок новини">
+        </div>
+        <div class="field">
+          <label>Опис · Українська</label>
+          <textarea class="textarea" id="editNewsDesc" placeholder="Опис новини"></textarea>
+        </div>
+      </div>
+
+      <div class="post-lang-pane" data-post-pane="edit-en">
+        <div class="field">
+          <label>Title · English</label>
+          <input class="input" id="editNewsTitleEn" maxlength="120" placeholder="News title">
+        </div>
+        <div class="field">
+          <label>Description · English</label>
+          <textarea class="textarea" id="editNewsDescEn" placeholder="English description"></textarea>
+        </div>
+      </div>
+
+      <div class="post-lang-pane" data-post-pane="edit-ru">
+        <div class="field">
+          <label>Заголовок · Русский</label>
+          <input class="input" id="editNewsTitleRu" maxlength="120" placeholder="Заголовок новости">
+        </div>
+        <div class="field">
+          <label>Описание · Русский</label>
+          <textarea class="textarea" id="editNewsDescRu" placeholder="Описание новости"></textarea>
+        </div>
+      </div>
     </div>
 
     <div class="field">
@@ -1997,11 +2125,6 @@
         <option>Transfers</option>
         <option>Matches</option>
       </select>
-    </div>
-
-    <div class="field">
-      <label>Опис</label>
-      <textarea class="textarea" id="editNewsDesc" placeholder="Опис новини"></textarea>
     </div>
 
     <div class="field">
@@ -2045,13 +2168,61 @@
       <div class="admin-pane active" id="admin-publish">
         <div class="admin-card">
           <h4 data-i18n="new_publication">Нова публікація</h4>
-          <div class="field"><label data-i18n="title">Заголовок</label><input class="input" id="newsTitleInput" maxlength="120" placeholder="Заголовок новини" autocomplete="off" data-i18n-placeholder="news_title_placeholder"></div>
+
+          <div class="post-language-box">
+            <div class="post-language-head">
+              <div>
+                <b>Мови публікації</b>
+                <span>Сайт сам покаже потрібну версію</span>
+              </div>
+              <span class="post-language-status">UA · EN · RU</span>
+            </div>
+
+            <div class="post-lang-tabs" data-post-lang-tabs="publish">
+              <button type="button" class="post-lang-btn active" data-post-lang="uk">UA</button>
+              <button type="button" class="post-lang-btn" data-post-lang="en">EN</button>
+              <button type="button" class="post-lang-btn" data-post-lang="ru">RU</button>
+            </div>
+
+            <div class="post-lang-pane active" data-post-pane="publish-uk">
+              <div class="field">
+                <label>Заголовок · Українська</label>
+                <input class="input" id="newsTitleInput" maxlength="120" placeholder="Заголовок новини" autocomplete="off">
+              </div>
+              <div class="field">
+                <label>Опис · Українська</label>
+                <textarea class="textarea" id="newsDescInput" placeholder="Напиши опис новини"></textarea>
+              </div>
+            </div>
+
+            <div class="post-lang-pane" data-post-pane="publish-en">
+              <div class="field">
+                <label>Title · English</label>
+                <input class="input" id="newsTitleEnInput" maxlength="120" placeholder="News title">
+              </div>
+              <div class="field">
+                <label>Description · English</label>
+                <textarea class="textarea" id="newsDescEnInput" placeholder="Write the English version"></textarea>
+              </div>
+            </div>
+
+            <div class="post-lang-pane" data-post-pane="publish-ru">
+              <div class="field">
+                <label>Заголовок · Русский</label>
+                <input class="input" id="newsTitleRuInput" maxlength="120" placeholder="Заголовок новости">
+              </div>
+              <div class="field">
+                <label>Описание · Русский</label>
+                <textarea class="textarea" id="newsDescRuInput" placeholder="Напиши русскую версию"></textarea>
+              </div>
+            </div>
+          </div>
+
           <div class="field"><label data-i18n="category">Категорія</label>
             <select class="select" id="newsCategoryInput">
               <option>AHLTV</option><option>UMP</option><option>Transfers</option><option>Matches</option>
             </select>
           </div>
-          <div class="field"><label data-i18n="description">Опис</label><textarea class="textarea" id="newsDescInput" placeholder="Напиши опис новини" data-i18n-placeholder="news_desc_placeholder"></textarea></div>
           <div class="field">
             <label data-i18n="photo">Фото</label>
             <div class="file-box">
@@ -2193,6 +2364,18 @@
 
     renderSession();
     renderNews();
+
+    const articleModal=$("articleModal");
+    if(articleModal?.classList.contains("open") && articleModal.dataset.newsId){
+      const n=state.news.find(x=>String(x.id)===String(articleModal.dataset.newsId));
+      if(n){
+        const localized=getLocalizedNews(n);
+        $("articleTitle").textContent=localized.title;
+        $("articleDesc").textContent=localized.description;
+        $("articleImage").src=n.image_url||placeholderImage(localized.title);
+      }
+    }
+
     icons();
   }
 
@@ -2219,6 +2402,47 @@
 
   function escapeHtml(value=""){
     return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  }
+
+  function getLocalizedNews(n,lang=state.lang){
+    if(!n) return {title:"",description:""};
+
+    const normalized=lang==="uk" ? "uk" : (lang==="ru" ? "ru" : "en");
+
+    const titleMap={
+      uk:n.title_uk || n.title,
+      en:n.title_en || n.title_uk || n.title,
+      ru:n.title_ru || n.title_uk || n.title
+    };
+
+    const descMap={
+      uk:n.description_uk || n.description,
+      en:n.description_en || n.description_uk || n.description,
+      ru:n.description_ru || n.description_uk || n.description
+    };
+
+    return {
+      title:(titleMap[normalized] || n.title || "").trim(),
+      description:(descMap[normalized] || n.description || "").trim()
+    };
+  }
+
+  function bindPostLanguageTabs(){
+    qsa("[data-post-lang-tabs]").forEach(group=>{
+      group.addEventListener("click",e=>{
+        const btn=e.target.closest("[data-post-lang]");
+        if(!btn) return;
+
+        const scope=group.dataset.postLangTabs;
+        const lang=btn.dataset.postLang;
+
+        group.querySelectorAll(".post-lang-btn").forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+
+        qsa(`[data-post-pane^="${scope}-"]`).forEach(pane=>pane.classList.remove("active"));
+        document.querySelector(`[data-post-pane="${scope}-${lang}"]`)?.classList.add("active");
+      });
+    });
   }
 
   function formatDate(value){
@@ -2567,6 +2791,7 @@
     });
 
     $("saveEditNewsBtn").addEventListener("click",saveEditedNews);
+    bindPostLanguageTabs();
     $("sendChatBtn").addEventListener("click",sendChatMessage);
     $("chatInput").addEventListener("input",()=>autosizeChatInput($("chatInput")));
     $("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChatMessage();}});
@@ -2928,7 +3153,7 @@
 
   async function loadNews(){
     $("newsList").innerHTML='<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
-    const {data,error}=await sb.from("news").select("id,title,description,image_url,category,author,view_count,created_at").order("created_at",{ascending:false});
+    const {data,error}=await sb.from("news").select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at").order("created_at",{ascending:false});
     if(error){
       console.error(error);
       $("newsList").innerHTML='<div class="empty"><strong>Не вдалося завантажити</strong>Перевір таблицю news та RLS.</div>';
@@ -2948,16 +3173,18 @@
       return;
     }
 
-    $("newsList").innerHTML=items.map((n,i)=>`
+    $("newsList").innerHTML=items.map((n,i)=>{
+      const localized=getLocalizedNews(n);
+      return `
       <article class="news-card" data-id="${n.id}" style="--delay:${Math.min(i*.045,.25)}s">
         <div class="news-cover">
-          <img src="${escapeHtml(n.image_url || placeholderImage(n.title))}" alt="${escapeHtml(n.title)}" loading="lazy">
+          <img src="${escapeHtml(n.image_url || placeholderImage(localized.title))}" alt="${escapeHtml(localized.title)}" loading="lazy">
           <div class="cover-shade"></div>
           <div class="category">${escapeHtml(n.category || "AHLTV")}</div>
         </div>
         <div class="news-body">
-          <h3 class="news-title">${escapeHtml(n.title)}</h3>
-          <p class="news-desc">${escapeHtml(n.description || "")}</p>
+          <h3 class="news-title">${escapeHtml(localized.title)}</h3>
+          <p class="news-desc">${escapeHtml(localized.description || "")}</p>
           <div class="news-meta">
             <div class="meta-author"><i></i>${escapeHtml(n.author || "Newsroom")}</div>
             <div class="news-meta-right">
@@ -2967,7 +3194,8 @@
           </div>
         </div>
       </article>
-    `).join("");
+    `;
+    }).join("");
 
     const observer=new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
@@ -2990,9 +3218,11 @@
     const n=state.news.find(x=>String(x.id)===String(id));
     if(!n) return;
 
-    $("articleImage").src=n.image_url||placeholderImage(n.title);
-    $("articleTitle").textContent=n.title||"";
-    $("articleDesc").textContent=n.description||"";
+    const localized=getLocalizedNews(n);
+    $("articleImage").src=n.image_url||placeholderImage(localized.title);
+    $("articleTitle").textContent=localized.title;
+    $("articleDesc").textContent=localized.description;
+    $("articleModal").dataset.newsId=String(n.id);
     $("articleMeta").innerHTML=`<span>${escapeHtml(n.category||"AHLTV")}</span><span>•</span><span>${formatDate(n.created_at)}</span><span>•</span><span>${escapeHtml(n.author||"Newsroom")}</span><span>•</span><span>${Number(n.view_count||0)} views</span>`;
     openModal("articleModal");
 
@@ -3202,9 +3432,13 @@
     if(!n) return;
 
     $("editNewsId").value=n.id;
-    $("editNewsTitle").value=n.title||"";
+    $("editNewsTitle").value=n.title_uk||n.title||"";
+    $("editNewsTitleEn").value=n.title_en||"";
+    $("editNewsTitleRu").value=n.title_ru||"";
     $("editNewsCategory").value=n.category||"AHLTV";
-    $("editNewsDesc").value=n.description||"";
+    $("editNewsDesc").value=n.description_uk||n.description||"";
+    $("editNewsDescEn").value=n.description_en||"";
+    $("editNewsDescRu").value=n.description_ru||"";
     $("editNewsImage").value="";
     $("editNewsPreview").style.display="none";
 
@@ -3217,7 +3451,13 @@
 
     const id=$("editNewsId").value;
     const title=$("editNewsTitle").value.trim();
+    const title_en=$("editNewsTitleEn").value.trim();
+    const title_ru=$("editNewsTitleRu").value.trim();
+
     const description=$("editNewsDesc").value.trim();
+    const description_en=$("editNewsDescEn").value.trim();
+    const description_ru=$("editNewsDescRu").value.trim();
+
     const category=$("editNewsCategory").value;
     const file=$("editNewsImage").files[0];
     const btn=$("saveEditNewsBtn");
@@ -3242,9 +3482,20 @@
 
       const {data,error}=await sb
         .from("news")
-        .update({title,description,category,image_url})
+        .update({
+          title,
+          description,
+          title_uk:title,
+          title_en:title_en || null,
+          title_ru:title_ru || null,
+          description_uk:description,
+          description_en:description_en || null,
+          description_ru:description_ru || null,
+          category,
+          image_url
+        })
         .eq("id",id)
-        .select("id,title,description,image_url,category,author,view_count,created_at")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
         .single();
 
       if(error) throw error;
@@ -3278,7 +3529,13 @@
     const btn=$("publishNewsBtn");
 
     const title=(titleEl?.value || "").trim();
+    const title_en=($("newsTitleEnInput")?.value || "").trim();
+    const title_ru=($("newsTitleRuInput")?.value || "").trim();
+
     const description=(descEl?.value || "").trim();
+    const description_en=($("newsDescEnInput")?.value || "").trim();
+    const description_ru=($("newsDescRuInput")?.value || "").trim();
+
     const category=(categoryEl?.value || "AHLTV").trim();
     const file=imageEl?.files?.[0] || null;
 
@@ -3309,6 +3566,12 @@
       const payload={
         title,
         description,
+        title_uk:title,
+        title_en:title_en || null,
+        title_ru:title_ru || null,
+        description_uk:description,
+        description_en:description_en || null,
+        description_ru:description_ru || null,
         category,
         image_url,
         author:state.profile?.username || "Sewa199",
@@ -3318,13 +3581,17 @@
       const {data,error}=await sb
         .from("news")
         .insert(payload)
-        .select("id,title,description,image_url,category,author,view_count,created_at")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
         .single();
 
       if(error) throw error;
 
       titleEl.value="";
       descEl.value="";
+      $("newsTitleEnInput").value="";
+      $("newsTitleRuInput").value="";
+      $("newsDescEnInput").value="";
+      $("newsDescRuInput").value="";
       if(imageEl) imageEl.value="";
       $("newsPreview").style.display="none";
 
