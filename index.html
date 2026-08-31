@@ -4676,12 +4676,91 @@
     },delay);
   }
 
+  const AUTO_PAGE_REFRESH_MS = 5 * 60 * 1000;
+  const STUCK_NEWS_RELOAD_MS = 9000;
+
+  function hasOpenModal(){
+    return !!document.querySelector(".modal-shell.open");
+  }
+
+  function isUserTyping(){
+    const el=document.activeElement;
+    if(!el) return false;
+
+    return (
+      el.tagName==="INPUT" ||
+      el.tagName==="TEXTAREA" ||
+      el.tagName==="SELECT" ||
+      el.isContentEditable
+    );
+  }
+
+  function safePageReload(reason="auto"){
+    if(document.hidden || hasOpenModal() || isUserTyping()){
+      return false;
+    }
+
+    try{
+      sessionStorage.setItem("ahltv-last-auto-reload",String(Date.now()));
+      sessionStorage.setItem("ahltv-last-auto-reload-reason",reason);
+    }catch{}
+
+    location.reload();
+    return true;
+  }
+
+  function setupAutomaticPageRefresh(){
+    // Normal refresh every 5 minutes, but never while the user is typing
+    // or has a modal/chat/admin window open.
+    setInterval(()=>{
+      safePageReload("periodic");
+    },AUTO_PAGE_REFRESH_MS);
+
+    // If news are still empty after boot, reload ONCE.
+    // Session guard prevents an endless reload loop.
+    setTimeout(()=>{
+      if(state.news.length) return;
+
+      let lastReload=0;
+      try{
+        lastReload=Number(sessionStorage.getItem("ahltv-stuck-news-reload")||0);
+      }catch{}
+
+      const now=Date.now();
+
+      if(now-lastReload > 60*1000){
+        try{
+          sessionStorage.setItem("ahltv-stuck-news-reload",String(now));
+        }catch{}
+
+        safePageReload("news-stuck");
+      }
+    },STUCK_NEWS_RELOAD_MS);
+
+    // When user returns to the tab after a long time, refresh once.
+    let hiddenAt=0;
+
+    document.addEventListener("visibilitychange",()=>{
+      if(document.hidden){
+        hiddenAt=Date.now();
+        return;
+      }
+
+      if(hiddenAt && Date.now()-hiddenAt > 3*60*1000){
+        setTimeout(()=>safePageReload("tab-return"),250);
+      }
+
+      hiddenAt=0;
+    });
+  }
+
   async function init(){
     icons();
     bindUI();
     initPremiumBottomDock();
     initHero3D();
     applyLanguage();
+    setupAutomaticPageRefresh();
 
     // Public content must NEVER wait for Supabase Auth.
     // News and site settings start loading immediately.
