@@ -4145,17 +4145,57 @@
     }
   }
 
-  async function loadNews(){
-    $("newsList").innerHTML='<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
-    const {data,error}=await sb.from("news").select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at").order("created_at",{ascending:false});
-    if(error){
-      console.error(error);
-      $("newsList").innerHTML='<div class="empty"><strong>Не вдалося завантажити</strong>Перевір таблицю news та RLS.</div>';
-      $("newsCount").textContent="Помилка";
-      return;
+  let newsLoadPromise=null;
+  let newsRealtimeTimer=null;
+
+  async function loadNews(options={}){
+    const silent=!!options.silent;
+
+    // Do not start several identical requests at the same time.
+    if(newsLoadPromise) return newsLoadPromise;
+
+    newsLoadPromise=(async()=>{
+      // Spinner only for the very first/manual load.
+      // Realtime refreshes happen invisibly in the background.
+      if(!silent && !state.news.length){
+        $("newsList").innerHTML='<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
+      }
+
+      const {data,error}=await sb
+        .from("news")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
+        .order("created_at",{ascending:false});
+
+      if(error){
+        console.error("loadNews:",error);
+
+        // If old news are already visible, don't destroy the feed because
+        // of one temporary realtime/network error.
+        if(!state.news.length){
+          $("newsList").innerHTML='<div class="empty"><strong>Не вдалося завантажити</strong>Перевір таблицю news та RLS.</div>';
+          $("newsCount").textContent="Помилка";
+        }else{
+          toast("Не вдалося оновити новини","err");
+        }
+        return;
+      }
+
+      state.news=data||[];
+      renderNews();
+    })();
+
+    try{
+      await newsLoadPromise;
+    }finally{
+      newsLoadPromise=null;
     }
-    state.news=data||[];
-    renderNews();
+  }
+
+  function scheduleSilentNewsRefresh(){
+    clearTimeout(newsRealtimeTimer);
+    newsRealtimeTimer=setTimeout(()=>{
+      loadNews({silent:true});
+    },180);
   }
 
   function renderNews(){
@@ -4872,7 +4912,9 @@
 
   function setupRealtime(){
     sb.channel("news-live")
-      .on("postgres_changes",{event:"*",schema:"public",table:"news"},async()=>loadNews())
+      .on("postgres_changes",{event:"*",schema:"public",table:"news"},()=>{
+        scheduleSilentNewsRefresh();
+      })
       .on("postgres_changes",{event:"UPDATE",schema:"public",table:"site_settings",filter:"id=eq.1"},async()=>loadSettings())
       .subscribe();
     sb.channel("chat-live")
