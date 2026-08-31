@@ -1513,6 +1513,185 @@
       }
     }
 
+
+    /* =========================================================
+       v14 — interactive 3D cube
+       ========================================================= */
+
+    .hero-3d{
+      pointer-events:auto;
+      user-select:none;
+      touch-action:none;
+    }
+
+    .scene-3d{
+      cursor:grab;
+    }
+
+    .scene-3d:active{
+      cursor:grabbing;
+    }
+
+    .cube-3d{
+      --rx:-18deg;
+      --ry:32deg;
+      --lift:0px;
+
+      transform:
+        rotateX(var(--rx))
+        rotateY(var(--ry))
+        translateY(var(--lift));
+
+      animation:none;
+      transition:
+        transform .28s cubic-bezier(.2,.8,.2,1),
+        filter .28s ease;
+    }
+
+    .cube-3d.auto-spin{
+      animation:cubeAutoSpin 12s linear infinite;
+    }
+
+    @keyframes cubeAutoSpin{
+      from{
+        transform:rotateX(-18deg) rotateY(32deg) translateY(0);
+      }
+      to{
+        transform:rotateX(-18deg) rotateY(392deg) translateY(0);
+      }
+    }
+
+    .cube-face{
+      padding:0;
+      outline:0;
+      cursor:pointer;
+      font-family:inherit;
+      transition:
+        background .22s ease,
+        border-color .22s ease,
+        color .22s ease,
+        box-shadow .22s ease;
+    }
+
+    .cube-face:hover{
+      border-color:rgba(255,255,255,.22);
+    }
+
+    .cube-face:active{
+      background:#20192a;
+    }
+
+    .cube-face.active{
+      background:#21172f;
+      border-color:rgba(135,80,247,.42);
+      color:#e6d7ff;
+      box-shadow:inset 0 0 0 1px rgba(135,80,247,.11);
+    }
+
+    .cube-face[data-cube-action="live"].active{
+      background:#102019;
+      border-color:rgba(113,223,170,.30);
+      color:#b8f2d4;
+    }
+
+    .cube-face[data-cube-action="news"].active{
+      background:#171b27;
+      border-color:rgba(115,145,255,.28);
+      color:#d3dcff;
+    }
+
+    .cube-hud{
+      position:absolute;
+      left:50%;
+      bottom:4px;
+      transform:translateX(-50%);
+
+      display:flex;
+      align-items:center;
+      gap:6px;
+
+      padding:6px 8px;
+      border-radius:8px;
+
+      background:rgba(10,10,12,.72);
+      border:1px solid rgba(255,255,255,.08);
+
+      color:#8d8995;
+      font-size:7px;
+      font-weight:800;
+      letter-spacing:.08em;
+      white-space:nowrap;
+
+      backdrop-filter:blur(8px);
+      opacity:.88;
+
+      transition:
+        color .22s ease,
+        border-color .22s ease,
+        background .22s ease;
+    }
+
+    .cube-hud-dot{
+      width:5px;
+      height:5px;
+      border-radius:50%;
+      background:#8750f7;
+    }
+
+    .hero-3d.mode-live .cube-hud{
+      color:#aeeecf;
+      border-color:rgba(113,223,170,.16);
+      background:rgba(10,18,14,.76);
+    }
+
+    .hero-3d.mode-live .cube-hud-dot{
+      background:#71dfaa;
+      box-shadow:0 0 10px rgba(113,223,170,.45);
+    }
+
+    .hero-3d.mode-news .cube-hud{
+      color:#cbd6ff;
+      border-color:rgba(115,145,255,.16);
+    }
+
+    .hero-3d.dragging .cube-3d{
+      transition:none;
+      filter:brightness(1.05);
+    }
+
+    .hero-3d.dragging .cube-shadow{
+      transform:translateY(72px) scale(.92);
+      opacity:.65;
+    }
+
+    .cube-shadow{
+      transition:
+        transform .28s ease,
+        opacity .28s ease;
+    }
+
+    .hero-3d.bump .cube-3d{
+      animation:cubeBump .42s cubic-bezier(.18,.89,.32,1.4);
+    }
+
+    @keyframes cubeBump{
+      0%{
+        transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(0) scale(1);
+      }
+      45%{
+        transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(-5px) scale(1.06);
+      }
+      100%{
+        transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(0) scale(1);
+      }
+    }
+
+    @media(max-width:560px){
+      .cube-hud{
+        bottom:11px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1553,17 +1732,30 @@
 
   <main>
     <section class="hero" id="heroPanel">
-      <div class="hero-3d" aria-hidden="true">
+      <div class="hero-3d" id="hero3d" aria-label="Interactive AHLTV UMP cube">
         <div class="scene-3d" id="scene3d">
-          <div class="cube-3d">
-            <div class="cube-face cube-front"><span>AHLTV</span></div>
-            <div class="cube-face cube-back"><span>UMP</span></div>
-            <div class="cube-face cube-right"><span>NEWS</span></div>
-            <div class="cube-face cube-left"><span>LIVE</span></div>
+          <div class="cube-3d" id="cube3d">
+            <button class="cube-face cube-front" type="button" data-cube-action="ahltv" aria-label="Open AHLTV">
+              <span>AHLTV</span>
+            </button>
+            <button class="cube-face cube-back" type="button" data-cube-action="ump" aria-label="UMP mode">
+              <span>UMP</span>
+            </button>
+            <button class="cube-face cube-right" type="button" data-cube-action="news" aria-label="News mode">
+              <span>NEWS</span>
+            </button>
+            <button class="cube-face cube-left" type="button" data-cube-action="live" aria-label="Live mode">
+              <span>LIVE</span>
+            </button>
             <div class="cube-face cube-top"></div>
             <div class="cube-face cube-bottom"></div>
           </div>
           <div class="cube-shadow"></div>
+        </div>
+
+        <div class="cube-hud" id="cubeHud">
+          <span class="cube-hud-dot"></span>
+          <span id="cubeHudText">AHLTV × UMP</span>
         </div>
       </div>
       <div class="eyebrow"><span class="dot"></span> AHLTV × UMP NEWSROOM</div>
@@ -2041,25 +2233,160 @@
   }
 
   function initHero3D(){
-    const panel=$("heroPanel");
+    const hero=$("hero3d");
     const scene=$("scene3d");
-    if(!panel || !scene || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const cube=$("cube3d");
+    const hudText=$("cubeHudText");
 
-    let raf=0;
-    panel.addEventListener("pointermove",(e)=>{
-      if(innerWidth < 700) return;
-      cancelAnimationFrame(raf);
-      raf=requestAnimationFrame(()=>{
-        const r=panel.getBoundingClientRect();
-        const x=(e.clientX-r.left)/r.width-.5;
-        const y=(e.clientY-r.top)/r.height-.5;
-        scene.style.transform=`rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`;
+    if(!hero || !scene || !cube) return;
+
+    let rotX=-18;
+    let rotY=32;
+    let dragging=false;
+    let moved=false;
+    let startX=0;
+    let startY=0;
+    let startRX=rotX;
+    let startRY=rotY;
+    let autoTimer=null;
+
+    const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function applyRotation(){
+      cube.style.setProperty("--rx",`${rotX}deg`);
+      cube.style.setProperty("--ry",`${rotY}deg`);
+    }
+
+    function stopAutoSpin(){
+      cube.classList.remove("auto-spin");
+      if(autoTimer) clearTimeout(autoTimer);
+    }
+
+    function resumeAutoSpin(){
+      if(reduceMotion) return;
+      stopAutoSpin();
+      autoTimer=setTimeout(()=>{
+        if(!dragging) cube.classList.add("auto-spin");
+      },3800);
+    }
+
+    function setMode(mode){
+      hero.classList.remove("mode-live","mode-news","mode-ump","mode-ahltv");
+      hero.classList.add(`mode-${mode}`);
+
+      qsa(".cube-face[data-cube-action]").forEach(face=>{
+        face.classList.toggle("active",face.dataset.cubeAction===mode);
+      });
+
+      const labels={
+        ahltv:"OPEN AHLTV",
+        ump:"UMP MODE",
+        news:"NEWS FEED",
+        live:"LIVE MODE"
+      };
+
+      if(hudText) hudText.textContent=labels[mode] || "AHLTV × UMP";
+
+      hero.classList.remove("bump");
+      void hero.offsetWidth;
+      hero.classList.add("bump");
+      setTimeout(()=>hero.classList.remove("bump"),460);
+
+      if(mode==="news"){
+        state.filter="all";
+        renderNews();
+        scrollTo({top:document.querySelector(".section-head")?.offsetTop || 0,behavior:"smooth"});
+      }
+
+      if(mode==="live"){
+        toast("LIVE mode увімкнено");
+      }
+
+      if(mode==="ump"){
+        toast("UMP mode");
+      }
+
+      if(mode==="ahltv"){
+        window.open("https://ahltvtier7.lovable.app/","_blank","noopener,noreferrer");
+      }
+    }
+
+    scene.addEventListener("pointerdown",(e)=>{
+      if(e.button!==undefined && e.button!==0) return;
+
+      dragging=true;
+      moved=false;
+      startX=e.clientX;
+      startY=e.clientY;
+      startRX=rotX;
+      startRY=rotY;
+
+      hero.classList.add("dragging");
+      stopAutoSpin();
+
+      scene.setPointerCapture?.(e.pointerId);
+    });
+
+    scene.addEventListener("pointermove",(e)=>{
+      if(!dragging) return;
+
+      const dx=e.clientX-startX;
+      const dy=e.clientY-startY;
+
+      if(Math.abs(dx)+Math.abs(dy)>5) moved=true;
+
+      rotY=startRY + dx*.42;
+      rotX=Math.max(-55,Math.min(40,startRX - dy*.30));
+
+      applyRotation();
+    });
+
+    function endDrag(e){
+      if(!dragging) return;
+      dragging=false;
+      hero.classList.remove("dragging");
+      scene.releasePointerCapture?.(e.pointerId);
+      resumeAutoSpin();
+    }
+
+    scene.addEventListener("pointerup",endDrag);
+    scene.addEventListener("pointercancel",endDrag);
+
+    qsa(".cube-face[data-cube-action]").forEach(face=>{
+      face.addEventListener("click",(e)=>{
+        if(moved){
+          e.preventDefault();
+          moved=false;
+          return;
+        }
+
+        stopAutoSpin();
+        setMode(face.dataset.cubeAction);
+        resumeAutoSpin();
       });
     });
 
-    panel.addEventListener("pointerleave",()=>{
-      scene.style.transform="";
+    hero.addEventListener("dblclick",()=>{
+      stopAutoSpin();
+
+      rotX=-18;
+      rotY=32;
+      applyRotation();
+
+      qsa(".cube-face[data-cube-action]").forEach(face=>face.classList.remove("active"));
+      hero.classList.remove("mode-live","mode-news","mode-ump","mode-ahltv");
+
+      if(hudText) hudText.textContent="AHLTV × UMP";
+
+      toast("3D модель скинута");
+      resumeAutoSpin();
     });
+
+    if(!reduceMotion){
+      resumeAutoSpin();
+    }
+
+    applyRotation();
   }
 
   async function init(){
