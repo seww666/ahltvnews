@@ -1790,6 +1790,266 @@
       to{opacity:1;transform:translateY(0)}
     }
 
+
+    /* =========================================================
+       v18 — enhanced profile
+       ========================================================= */
+
+    .profile-sheet{
+      background:
+        linear-gradient(180deg,rgba(135,80,247,.035),transparent 180px),
+        #0f0f12;
+    }
+
+    .profile-hero-card{
+      position:relative;
+      overflow:hidden;
+      padding:15px;
+      background:
+        linear-gradient(135deg,rgba(135,80,247,.08),rgba(255,255,255,.015)),
+        #151519;
+    }
+
+    .profile-hero-card:after{
+      content:"";
+      position:absolute;
+      width:130px;
+      height:130px;
+      right:-65px;
+      top:-70px;
+      border-radius:50%;
+      background:rgba(135,80,247,.14);
+      filter:blur(18px);
+      pointer-events:none;
+    }
+
+    .profile-overline{
+      font-size:7px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.14em;
+      color:#78688f;
+      margin-bottom:5px;
+    }
+
+    .profile-status-line{
+      display:flex;
+      align-items:center;
+      gap:5px;
+      margin-top:8px;
+      color:#6fda9f;
+      font-size:8px;
+      font-weight:800;
+    }
+
+    .profile-live-dot{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:#69dda0;
+      box-shadow:0 0 9px rgba(105,221,160,.34);
+    }
+
+    .profile-stats-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:7px;
+      margin:10px 0;
+    }
+
+    .profile-stat-card{
+      min-width:0;
+      padding:10px 9px;
+      border-radius:13px;
+      border:1px solid rgba(255,255,255,.065);
+      background:#111114;
+    }
+
+    .profile-stat-icon{
+      width:27px;
+      height:27px;
+      display:grid;
+      place-items:center;
+      margin-bottom:9px;
+      border-radius:8px;
+      background:#19151f;
+      color:#9876d9;
+    }
+
+    .profile-stat-icon svg{
+      width:13px;
+      height:13px;
+    }
+
+    .profile-stat-card span{
+      display:block;
+      color:#5f5f68;
+      font-size:6px;
+      font-weight:900;
+      letter-spacing:.07em;
+      white-space:nowrap;
+    }
+
+    .profile-stat-card b{
+      display:block;
+      margin-top:4px;
+      color:#d8d7dc;
+      font-size:9px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .profile-id-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 11px;
+      margin-bottom:13px;
+      border-radius:13px;
+      background:#0c0c0f;
+      border:1px dashed rgba(135,80,247,.20);
+    }
+
+    .profile-id-copy{
+      min-width:0;
+    }
+
+    .profile-id-copy span{
+      display:block;
+      font-size:6px;
+      color:#615b6b;
+      font-weight:900;
+      letter-spacing:.09em;
+    }
+
+    .profile-id-copy b{
+      display:block;
+      margin-top:3px;
+      font-size:10px;
+      color:#bfb4d2;
+      letter-spacing:.06em;
+    }
+
+    #copyIdMiniBtn{
+      width:32px;
+      height:32px;
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      border-radius:9px;
+      border:1px solid rgba(255,255,255,.07);
+      background:#15131a;
+      color:#9d81d7;
+      transition:.2s ease;
+    }
+
+    #copyIdMiniBtn:active{
+      transform:scale(.92);
+    }
+
+    #copyIdMiniBtn svg{
+      width:14px;
+      height:14px;
+    }
+
+    .profile-section-label{
+      margin:13px 2px 7px;
+      color:#62616a;
+      font-size:7px;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+    }
+
+    .profile-quick-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:7px;
+    }
+
+    .profile-quick-card{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      min-width:0;
+      padding:10px;
+      border-radius:13px;
+      border:1px solid rgba(255,255,255,.07);
+      background:#111114;
+      color:#e5e4e9;
+      text-align:left;
+      transition:
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+    }
+
+    .profile-quick-card:hover{
+      background:#151519;
+      border-color:rgba(255,255,255,.10);
+    }
+
+    .profile-quick-card:active{
+      transform:scale(.97);
+    }
+
+    .profile-quick-icon{
+      width:34px;
+      height:34px;
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      border-radius:10px;
+      background:#19151f;
+      color:#9d7ddb;
+    }
+
+    .profile-quick-icon svg{
+      width:15px;
+      height:15px;
+    }
+
+    .profile-quick-card b{
+      display:block;
+      font-size:9px;
+    }
+
+    .profile-quick-card small{
+      display:block;
+      margin-top:2px;
+      color:#686770;
+      font-size:7px;
+    }
+
+    #profileAdminBtn{
+      grid-column:1/-1;
+      background:#17121f;
+      border-color:rgba(135,80,247,.16);
+    }
+
+    #profileAdminBtn .profile-quick-icon{
+      background:#22172e;
+      color:#ceb5ff;
+    }
+
+    @media(max-width:370px){
+      .profile-stats-grid{
+        grid-template-columns:1fr;
+      }
+
+      .profile-stat-card{
+        display:flex;
+        align-items:center;
+        gap:9px;
+      }
+
+      .profile-stat-icon{
+        margin-bottom:0;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1983,7 +2243,7 @@
     </div>
 
     <div id="signedProfile" class="profile-content hidden">
-      <div class="signed-profile-head">
+      <div class="signed-profile-head profile-hero-card">
         <div class="profile-avatar-wrap">
           <div class="profile-avatar-xl" id="profileAvatar">U</div>
           <button class="avatar-edit-btn" id="avatarEditBtn" type="button" aria-label="Змінити аватар">
@@ -1991,30 +2251,92 @@
           </button>
           <input id="avatarInput" class="hidden" type="file" accept="image/jpeg,image/png,image/webp">
         </div>
+
         <div class="signed-profile-main">
+          <div class="profile-overline">AHLTV × UMP ACCOUNT</div>
           <div class="signed-profile-name-row">
             <h3 id="profileName">Користувач</h3>
             <span class="role-badge" id="profileRoleBadge">MEMBER</span>
           </div>
           <p id="profileRole">Member</p>
+
+          <div class="profile-status-line">
+            <span class="profile-live-dot"></span>
+            <span id="profileOnlineText">Online</span>
+          </div>
         </div>
       </div>
 
-      <div class="profile-info-grid">
-        <div class="profile-info-card">
-          <div class="profile-info-icon"><i data-lucide="fingerprint"></i></div>
-          <div><span>ID</span><b id="profileShortId">—</b></div>
+      <div class="profile-stats-grid">
+        <div class="profile-stat-card">
+          <div class="profile-stat-icon"><i data-lucide="calendar-days"></i></div>
+          <div>
+            <span>НА САЙТІ З</span>
+            <b id="profileJoined">—</b>
+          </div>
         </div>
-        <div class="profile-info-card">
-          <div class="profile-info-icon"><i data-lucide="shield-check"></i></div>
-          <div><span>STATUS</span><b id="profileStatus">ACTIVE</b></div>
+
+        <div class="profile-stat-card">
+          <div class="profile-stat-icon"><i data-lucide="message-circle"></i></div>
+          <div>
+            <span>НОВІ В ЧАТІ</span>
+            <b id="profileUnread">0</b>
+          </div>
+        </div>
+
+        <div class="profile-stat-card">
+          <div class="profile-stat-icon"><i data-lucide="shield-check"></i></div>
+          <div>
+            <span>СТАТУС</span>
+            <b id="profileStatus">ACTIVE</b>
+          </div>
         </div>
       </div>
+
+      <div class="profile-id-card">
+        <div class="profile-id-copy">
+          <span>USER ID</span>
+          <b id="profileShortId">—</b>
+        </div>
+        <button id="copyIdMiniBtn" type="button" aria-label="Скопіювати ID">
+          <i data-lucide="copy"></i>
+        </button>
+      </div>
+
+      <div class="profile-section-label">Швидкі дії</div>
+
+      <div class="profile-quick-grid">
+        <button class="profile-quick-card" id="profileOpenChatBtn">
+          <span class="profile-quick-icon"><i data-lucide="messages-square"></i></span>
+          <span>
+            <b>Мій чат</b>
+            <small>Відкрити діалог</small>
+          </span>
+        </button>
+
+        <button class="profile-quick-card" id="refreshProfileBtn">
+          <span class="profile-quick-icon"><i data-lucide="refresh-cw"></i></span>
+          <span>
+            <b>Оновити</b>
+            <small>Синхронізувати профіль</small>
+          </span>
+        </button>
+
+        <button class="profile-quick-card hidden" id="profileAdminBtn">
+          <span class="profile-quick-icon"><i data-lucide="shield"></i></span>
+          <span>
+            <b>Admin</b>
+            <small>Панель керування</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="profile-section-label">Акаунт</div>
 
       <div class="profile-action-list">
         <button class="profile-action" id="copyIdBtn">
           <span class="profile-action-icon"><i data-lucide="copy"></i></span>
-          <span><b>Copy user ID</b><small>Скопіювати ID профілю</small></span>
+          <span><b>Copy user ID</b><small>Скопіювати повний ID профілю</small></span>
           <i data-lucide="chevron-right"></i>
         </button>
 
@@ -2024,6 +2346,7 @@
           <i data-lucide="chevron-right"></i>
         </button>
       </div>
+    </div>
     </div>
   </div>
 </div>
@@ -2705,6 +3028,32 @@
     });
     $("logoutBtn").addEventListener("click",logout);
     $("copyIdBtn").addEventListener("click",copyUserId);
+    $("copyIdMiniBtn").addEventListener("click",copyUserId);
+
+    $("profileOpenChatBtn").addEventListener("click",async()=>{
+      closeModal("profileModal");
+      await openChat();
+    });
+
+    $("refreshProfileBtn").addEventListener("click",async()=>{
+      const btn=$("refreshProfileBtn");
+      btn.disabled=true;
+      try{
+        await loadProfile();
+        renderSession();
+        await refreshProfileCardStats();
+        toast("Профіль оновлено");
+      }finally{
+        btn.disabled=false;
+      }
+    });
+
+    $("profileAdminBtn").addEventListener("click",async()=>{
+      if(state.profile?.role!=="admin") return;
+      closeModal("profileModal");
+      await loadAdminDashboard();
+      openModal("adminModal");
+    });
 
     $("filters").addEventListener("click",e=>{
       const btn=e.target.closest(".chip");
@@ -3089,6 +3438,41 @@
     }
   }
 
+  function formatProfileJoined(value){
+    if(!value) return "—";
+    try{
+      return new Intl.DateTimeFormat(
+        state.lang==="en" ? "en-GB" : (state.lang==="ru" ? "ru-RU" : "uk-UA"),
+        {day:"2-digit",month:"2-digit",year:"2-digit"}
+      ).format(new Date(value));
+    }catch{
+      return "—";
+    }
+  }
+
+  async function refreshProfileCardStats(){
+    if(!state.user || state.user.is_anonymous) return;
+
+    const joined=$("profileJoined");
+    if(joined){
+      joined.textContent=formatProfileJoined(
+        state.profile?.created_at || state.user?.created_at
+      );
+    }
+
+    const unreadEl=$("profileUnread");
+    if(unreadEl){
+      const {count,error}=await sb
+        .from("chat_messages")
+        .select("id",{count:"exact",head:true})
+        .eq("user_id",state.user.id)
+        .eq("sender_role","admin")
+        .eq("is_read",false);
+
+      unreadEl.textContent=error ? "—" : String(count||0);
+    }
+  }
+
   function renderSession(){
     const isGuest=!state.user || state.user.is_anonymous;
     const username=state.profile?.username || (isGuest ? t("guest") : state.user?.user_metadata?.username || t("member"));
@@ -3116,6 +3500,22 @@
       const isAdm=state.profile?.role==="admin";
       roleBadge.textContent=isAdm ? "ADMIN" : (isGuest ? "GUEST" : "MEMBER");
       roleBadge.classList.toggle("admin",isAdm);
+    }
+
+    const joined=$("profileJoined");
+    if(joined){
+      joined.textContent=formatProfileJoined(
+        state.profile?.created_at || state.user?.created_at
+      );
+    }
+
+    const profileAdminBtn=$("profileAdminBtn");
+    if(profileAdminBtn){
+      profileAdminBtn.classList.toggle("hidden",state.profile?.role!=="admin");
+    }
+
+    if(!isGuest){
+      setTimeout(()=>refreshProfileCardStats(),0);
     }
 
     $("guestAuth").classList.toggle("hidden",!isGuest);
