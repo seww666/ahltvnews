@@ -2050,6 +2050,158 @@
       }
     }
 
+
+    /* =========================================================
+       v19 — premium chat animations
+       ========================================================= */
+    .chat-sheet{transform-origin:50% 100%}
+    .modal-shell.open .chat-sheet{animation:chatSheetIn .46s cubic-bezier(.18,.89,.32,1.16)}
+    @keyframes chatSheetIn{
+      0%{opacity:0;transform:translateY(34px) scale(.97)}
+      60%{opacity:1;transform:translateY(-3px) scale(1.005)}
+      100%{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    .chat-head{
+      transition:padding .28s cubic-bezier(.2,.8,.2,1),background .28s ease,border-color .28s ease;
+    }
+    .chat-sheet.composer-focus .chat-head{
+      padding-top:5px;padding-bottom:9px;
+      background:linear-gradient(180deg,rgba(135,80,247,.025),transparent);
+      border-color:rgba(135,80,247,.10);
+    }
+
+    .chat-body{
+      transition:padding .32s cubic-bezier(.2,.8,.2,1),transform .32s cubic-bezier(.2,.8,.2,1);
+    }
+    .chat-sheet.composer-focus .chat-body{
+      padding-bottom:16px;transform:translateY(-2px);
+    }
+
+    .chat-composer{
+      position:relative;
+      transition:transform .34s cubic-bezier(.18,.89,.32,1.15),padding .28s ease,border-color .28s ease;
+    }
+    .chat-composer:before{
+      content:"";position:absolute;left:18px;right:18px;top:-1px;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(135,80,247,0),transparent);
+      transition:background .28s ease;
+    }
+    .chat-sheet.composer-focus .chat-composer{
+      transform:translateY(-4px);padding-top:13px;
+    }
+    .chat-sheet.composer-focus .chat-composer:before{
+      background:linear-gradient(90deg,transparent,rgba(135,80,247,.32),transparent);
+    }
+
+    .chat-composer textarea{
+      min-height:42px;
+      transform-origin:50% 100%;
+      transition:
+        min-height .34s cubic-bezier(.18,.89,.32,1.12),
+        border-color .24s ease,
+        box-shadow .24s ease,
+        background .24s ease,
+        transform .28s cubic-bezier(.2,.8,.2,1),
+        padding .28s ease;
+    }
+    .chat-composer textarea:focus{
+      min-height:58px;
+      background:#111017;
+      transform:scale(1.008);
+      border-color:rgba(135,80,247,.48);
+      box-shadow:0 0 0 3px rgba(135,80,247,.075),0 10px 26px rgba(0,0,0,.20);
+      padding-top:13px;padding-bottom:13px;
+    }
+
+    .chat-send-btn{
+      position:relative;overflow:hidden;transform-origin:50% 50%;
+      transition:transform .28s cubic-bezier(.18,.89,.32,1.3),background .24s ease,box-shadow .24s ease,opacity .24s ease;
+    }
+    .chat-send-btn:before{
+      content:"";position:absolute;inset:-20%;
+      background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.18),transparent 55%);
+      opacity:0;transform:scale(.5);
+      transition:opacity .24s ease,transform .34s ease;
+    }
+    .chat-sheet.composer-focus .chat-send-btn{
+      transform:translateY(-1px) scale(1.05);
+      background:#8250e8;
+      box-shadow:0 10px 22px rgba(117,66,220,.22);
+    }
+    .chat-sheet.composer-focus .chat-send-btn:before{opacity:1;transform:scale(1)}
+    .chat-send-btn.ready{animation:sendReady .35s cubic-bezier(.18,.89,.32,1.35)}
+    @keyframes sendReady{
+      0%{transform:scale(.9)}
+      60%{transform:scale(1.10)}
+      100%{transform:scale(1.05)}
+    }
+    .chat-send-btn.sending{pointer-events:none;animation:sendPulse .7s ease infinite}
+    @keyframes sendPulse{0%,100%{transform:scale(.98)}50%{transform:scale(1.06)}}
+
+    .chat-message{
+      opacity:0;transform:translateY(8px) scale(.985);
+      animation:chatMessageIn .34s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    @keyframes chatMessageIn{
+      from{opacity:0;transform:translateY(8px) scale(.985)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+    .chat-message.me{transform-origin:100% 100%}
+    .chat-message.admin{transform-origin:0 100%}
+
+    .chat-bubble{
+      transition:transform .2s ease,box-shadow .2s ease;
+    }
+    .chat-message.me .chat-bubble{box-shadow:0 8px 18px rgba(112,64,208,.13)}
+    .chat-message.admin .chat-bubble{box-shadow:0 7px 18px rgba(0,0,0,.14)}
+    .chat-bubble:hover{transform:translateY(-1px)}
+    .chat-message.new-pop .chat-bubble{animation:bubblePop .42s cubic-bezier(.18,.89,.32,1.35)}
+    @keyframes bubblePop{
+      0%{transform:scale(.88)}
+      60%{transform:scale(1.035)}
+      100%{transform:scale(1)}
+    }
+
+    .chat-owner-avatar{
+      transition:transform .28s cubic-bezier(.18,.89,.32,1.3),box-shadow .28s ease;
+    }
+    .chat-sheet.composer-focus .chat-owner-avatar{
+      transform:scale(1.04) rotate(-2deg);
+      box-shadow:0 8px 20px rgba(135,80,247,.10);
+    }
+
+    .chat-online-dot{animation:onlinePulse 2.2s ease-in-out infinite}
+    @keyframes onlinePulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(110,221,167,0),0 0 10px rgba(110,221,167,.30)}
+      50%{box-shadow:0 0 0 4px rgba(110,221,167,.055),0 0 14px rgba(110,221,167,.44)}
+    }
+
+    .chat-body.chat-bump{animation:chatBodyBump .28s ease}
+    @keyframes chatBodyBump{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-3px)}
+      100%{transform:translateY(0)}
+    }
+
+    @media(max-width:560px){
+      .chat-sheet.composer-focus{height:min(92svh,760px)}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .modal-shell.open .chat-sheet,
+      .chat-message,
+      .chat-send-btn.ready,
+      .chat-send-btn.sending,
+      .chat-message.new-pop .chat-bubble,
+      .chat-online-dot,
+      .chat-body.chat-bump{animation:none!important}
+
+      .chat-composer,.chat-composer textarea,.chat-send-btn,.chat-head,.chat-body,.chat-owner-avatar{
+        transition:none!important
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -3142,7 +3294,25 @@
     $("saveEditNewsBtn").addEventListener("click",saveEditedNews);
     bindPostLanguageTabs();
     $("sendChatBtn").addEventListener("click",sendChatMessage);
-    $("chatInput").addEventListener("input",()=>autosizeChatInput($("chatInput")));
+
+    $("chatInput").addEventListener("focus",()=>{
+      setChatComposerFocus(true);
+      setTimeout(()=>{
+        $("chatBody").scrollTo({top:$("chatBody").scrollHeight,behavior:"smooth"});
+      },180);
+    });
+
+    $("chatInput").addEventListener("blur",()=>{
+      setTimeout(()=>{
+        if(document.activeElement!==$("chatInput")) setChatComposerFocus(false);
+      },80);
+    });
+
+    $("chatInput").addEventListener("input",()=>{
+      autosizeChatInput($("chatInput"));
+      if($("chatInput").value.trim()) animateChatSendReady();
+    });
+
     $("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChatMessage();}});
     $("chatLoginBtn").addEventListener("click",()=>{closeModal("chatModal");openModal("profileModal");});
     $("adminChatReplyBtn").addEventListener("click",sendAdminChatReply);
@@ -4130,8 +4300,33 @@
 
   function isRegisteredUser(){ return !!state.user && !state.user.is_anonymous; }
   function formatChatTime(value){ if(!value)return ""; return new Intl.DateTimeFormat("uk-UA",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(new Date(value)); }
+  function setChatComposerFocus(focused){
+    const sheet=document.querySelector("#chatModal .chat-sheet");
+    if(!sheet) return;
+    sheet.classList.toggle("composer-focus",!!focused);
+  }
+
+  function animateChatSendReady(){
+    const btn=$("sendChatBtn");
+    if(!btn) return;
+    btn.classList.remove("ready");
+    void btn.offsetWidth;
+    btn.classList.add("ready");
+    setTimeout(()=>btn.classList.remove("ready"),380);
+  }
+
+  function bumpChatBody(){
+    const body=$("chatBody");
+    if(!body) return;
+    body.classList.remove("chat-bump");
+    void body.offsetWidth;
+    body.classList.add("chat-bump");
+    setTimeout(()=>body.classList.remove("chat-bump"),320);
+  }
+
   function autosizeChatInput(el){ if(!el)return; el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,110)+"px"; }
   async function openChat(){
+    setChatComposerFocus(false);
     openModal("chatModal");
 
     const ok=isRegisteredUser();
@@ -4174,7 +4369,23 @@
     state.chat.messages=data||[];
     renderOwnChat();
   }
-  function renderOwnChat(){ const items=state.chat.messages||[]; $("chatEmpty").classList.toggle("hidden",items.length>0); $("chatMessages").innerHTML=items.map(m=>`<div class="chat-message ${m.sender_role==="admin"?"admin":"me"}"><div class="chat-bubble">${escapeHtml(m.message)}<span class="chat-message-time">${formatChatTime(m.created_at)}</span></div></div>`).join(""); requestAnimationFrame(()=>{$("chatBody").scrollTop=$("chatBody").scrollHeight;}); }
+  function renderOwnChat(){
+    const items=state.chat.messages||[];
+    $("chatEmpty").classList.toggle("hidden",items.length>0);
+
+    $("chatMessages").innerHTML=items.map((m,i)=>`
+      <div class="chat-message ${m.sender_role==="admin"?"admin":"me"}" style="animation-delay:${Math.min(i*.025,.16)}s">
+        <div class="chat-bubble">
+          ${escapeHtml(m.message)}
+          <span class="chat-message-time">${formatChatTime(m.created_at)}</span>
+        </div>
+      </div>
+    `).join("");
+
+    requestAnimationFrame(()=>{
+      $("chatBody").scrollTop=$("chatBody").scrollHeight;
+    });
+  }
   async function sendChatMessage(){
     if(!isRegisteredUser()){
       openChat();
@@ -4187,6 +4398,7 @@
 
     const btn=$("sendChatBtn");
     btn.disabled=true;
+    btn.classList.add("sending");
 
     try{
       const ready=await ensureOwnProfile();
@@ -4210,11 +4422,22 @@
       autosizeChatInput(input);
       state.chat.messages.push(data);
       renderOwnChat();
+
+      requestAnimationFrame(()=>{
+        const messages=qsa("#chatMessages .chat-message");
+        const last=messages[messages.length-1];
+        if(last){
+          last.classList.add("new-pop");
+          setTimeout(()=>last.classList.remove("new-pop"),460);
+        }
+        bumpChatBody();
+      });
     }catch(e){
       console.error("send chat",e);
       toast(e?.message||"Не вдалося надіслати","err");
     }finally{
       btn.disabled=false;
+      btn.classList.remove("sending");
     }
   }
   async function markOwnChatRead(){ if(!isRegisteredUser())return; await sb.from("chat_messages").update({is_read:true}).eq("user_id",state.user.id).eq("sender_role","admin").eq("is_read",false); }
