@@ -2202,6 +2202,360 @@
       }
     }
 
+
+    /* =========================================================
+       v20 — final premium bottom dock
+       ========================================================= */
+    .bottom-nav{
+      --dock-x:12.5%;
+      --dock-accent:#9567ff;
+
+      bottom:calc(10px + env(safe-area-inset-bottom));
+      width:min(calc(100% - 18px),540px);
+      min-height:68px;
+      padding:6px;
+
+      grid-template-columns:repeat(4,1fr);
+      gap:4px;
+
+      border-radius:23px;
+      overflow:visible;
+
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.009)),
+        rgba(11,11,14,.94);
+
+      border:1px solid rgba(255,255,255,.09);
+
+      backdrop-filter:blur(26px) saturate(1.22);
+      -webkit-backdrop-filter:blur(26px) saturate(1.22);
+
+      box-shadow:
+        0 22px 55px rgba(0,0,0,.52),
+        0 5px 16px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.045);
+
+      transition:
+        transform .42s cubic-bezier(.2,.8,.2,1),
+        box-shadow .32s ease,
+        border-color .32s ease;
+    }
+
+    .bottom-nav:after{
+      content:"";
+      position:absolute;
+      left:var(--dock-x);
+      bottom:-15px;
+      width:88px;
+      height:30px;
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:radial-gradient(
+        ellipse at center,
+        rgba(132,82,247,.18),
+        rgba(132,82,247,.055) 46%,
+        transparent 72%
+      );
+      filter:blur(8px);
+      pointer-events:none;
+      z-index:-3;
+      transition:left .48s cubic-bezier(.18,.89,.32,1.15),opacity .25s ease;
+    }
+
+    .bottom-nav:before{
+      content:"";
+      position:absolute;
+      inset:1px;
+      border-radius:21px;
+      pointer-events:none;
+      z-index:-2;
+
+      background:
+        radial-gradient(
+          115px 54px at var(--dock-x) -2%,
+          rgba(146,96,255,.13),
+          transparent 72%
+        );
+
+      transition:background-position .4s ease;
+    }
+
+    .nav-indicator{
+      top:6px;
+      bottom:6px;
+      left:6px;
+      width:auto;
+      height:auto;
+
+      border-radius:17px;
+      border:1px solid rgba(151,103,255,.22);
+
+      background:
+        linear-gradient(180deg,rgba(144,91,255,.16),rgba(110,63,198,.075)),
+        rgba(25,20,34,.92);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.035),
+        0 8px 24px rgba(81,42,149,.13);
+
+      transform:none;
+      transition:
+        left .48s cubic-bezier(.18,.89,.32,1.15),
+        width .48s cubic-bezier(.18,.89,.32,1.15),
+        box-shadow .26s ease,
+        border-color .26s ease;
+
+      will-change:left,width;
+    }
+
+    .nav-indicator:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      background:
+        linear-gradient(
+          105deg,
+          transparent 20%,
+          rgba(255,255,255,.04) 45%,
+          transparent 70%
+        );
+      opacity:0;
+      transform:translateX(-35%);
+    }
+
+    .bottom-nav.nav-moving .nav-indicator:before{
+      animation:dockIndicatorSweep .52s ease;
+    }
+
+    @keyframes dockIndicatorSweep{
+      0%{opacity:0;transform:translateX(-45%)}
+      35%{opacity:1}
+      100%{opacity:0;transform:translateX(45%)}
+    }
+
+    .nav-indicator:after{
+      top:auto;
+      bottom:4px;
+      width:19px;
+      height:2px;
+      border-radius:999px;
+
+      background:#a477ff;
+      box-shadow:
+        0 0 10px rgba(164,119,255,.58),
+        0 0 18px rgba(135,80,247,.22);
+
+      transition:
+        width .28s cubic-bezier(.18,.89,.32,1.4),
+        opacity .28s ease;
+    }
+
+    .bottom-nav.nav-moving .nav-indicator:after{
+      width:29px;
+    }
+
+    .nav-btn{
+      min-height:56px;
+      gap:3px;
+      border-radius:17px;
+      overflow:hidden;
+      isolation:isolate;
+
+      color:#66656e;
+      font-size:8px;
+      letter-spacing:.005em;
+
+      transition:
+        color .25s ease,
+        transform .22s cubic-bezier(.18,.89,.32,1.3);
+    }
+
+    .nav-btn:before{
+      content:"";
+      position:absolute;
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%) scale(.2);
+      opacity:0;
+      background:radial-gradient(circle,rgba(150,104,255,.14),transparent 68%);
+      transition:
+        transform .38s cubic-bezier(.18,.89,.32,1.25),
+        opacity .28s ease;
+      z-index:-1;
+    }
+
+    .nav-btn.active:before{
+      opacity:1;
+      transform:translate(-50%,-52%) scale(1);
+    }
+
+    .nav-icon-wrap{
+      width:31px;
+      height:29px;
+      border-radius:10px;
+      position:relative;
+
+      transition:
+        transform .38s cubic-bezier(.18,.89,.32,1.3),
+        background .26s ease,
+        box-shadow .26s ease;
+    }
+
+    .nav-icon-wrap svg{
+      width:18px;
+      height:18px;
+      stroke-width:1.9;
+
+      transition:
+        transform .38s cubic-bezier(.18,.89,.32,1.35),
+        filter .28s ease,
+        stroke-width .28s ease;
+    }
+
+    .nav-btn.active{
+      color:#eee7ff;
+    }
+
+    .nav-btn.active .nav-icon-wrap{
+      transform:translateY(-2px) scale(1.06);
+      background:rgba(145,92,255,.075);
+      box-shadow:inset 0 0 0 1px rgba(155,110,255,.05);
+    }
+
+    .nav-btn.active .nav-icon-wrap svg{
+      transform:scale(1.09);
+      stroke-width:2.05;
+      filter:drop-shadow(0 0 7px rgba(151,101,255,.30));
+    }
+
+    .nav-btn>span:last-child{
+      opacity:.72;
+      transition:
+        transform .3s cubic-bezier(.2,.8,.2,1),
+        opacity .25s ease,
+        color .25s ease;
+    }
+
+    .nav-btn.active>span:last-child{
+      opacity:1;
+      color:#ddd0ff;
+      transform:translateY(-1px);
+    }
+
+    .nav-btn:active{
+      transform:scale(.93);
+    }
+
+    .nav-btn:active .nav-icon-wrap{
+      transform:translateY(0) scale(.88);
+    }
+
+    .nav-btn.dock-press .nav-icon-wrap{
+      animation:dockPress .38s cubic-bezier(.18,.89,.32,1.45);
+    }
+
+    @keyframes dockPress{
+      0%{transform:scale(.86)}
+      58%{transform:translateY(-3px) scale(1.11)}
+      100%{transform:translateY(-2px) scale(1.06)}
+    }
+
+    .dock-ripple{
+      position:absolute;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      pointer-events:none;
+      background:rgba(170,135,255,.17);
+      transform:translate(-50%,-50%) scale(.2);
+      opacity:.8;
+      animation:dockRipple .5s ease-out forwards;
+      z-index:0;
+    }
+
+    @keyframes dockRipple{
+      to{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(5);
+      }
+    }
+
+    .chat-badge{
+      right:-7px;
+      top:-5px;
+      height:16px;
+      min-width:16px;
+      padding:0 4px;
+      border:2px solid #151119;
+      background:#9a63ff;
+      box-shadow:0 4px 10px rgba(124,70,225,.28);
+      animation:chatBadgeBreath 2.2s ease-in-out infinite;
+    }
+
+    @keyframes chatBadgeBreath{
+      0%,100%{transform:scale(1);box-shadow:0 4px 10px rgba(124,70,225,.23)}
+      50%{transform:scale(1.08);box-shadow:0 5px 16px rgba(124,70,225,.38)}
+    }
+
+    .bottom-nav.dock-peek{
+      transform:translateX(-50%) translateY(4px) scale(.995);
+    }
+
+    .bottom-nav.dock-focus{
+      border-color:rgba(155,109,255,.14);
+      box-shadow:
+        0 24px 58px rgba(0,0,0,.56),
+        0 7px 22px rgba(57,30,105,.12),
+        inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    @media(max-width:390px){
+      .bottom-nav{
+        width:calc(100% - 12px);
+        min-height:64px;
+        padding:5px;
+        border-radius:21px;
+      }
+
+      .bottom-nav:before{border-radius:19px}
+
+      .nav-btn{
+        min-height:54px;
+        font-size:7.5px;
+      }
+
+      .nav-indicator{
+        top:5px;
+        bottom:5px;
+        border-radius:16px;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .bottom-nav,
+      .bottom-nav:after,
+      .nav-indicator,
+      .nav-indicator:after,
+      .nav-btn,
+      .nav-btn:before,
+      .nav-icon-wrap,
+      .nav-icon-wrap svg,
+      .nav-btn>span:last-child{
+        transition:none!important;
+      }
+
+      .dock-ripple,
+      .nav-btn.dock-press .nav-icon-wrap,
+      .chat-badge,
+      .bottom-nav.nav-moving .nav-indicator:before{
+        animation:none!important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2949,9 +3303,8 @@
         qsa(".bottom-nav .nav-btn").forEach(x=>x.classList.remove("active"));
         homeBtn.classList.add("active");
 
-        const indicator=$("navIndicator");
-        if(indicator){
-          indicator.style.transform="translateX(0)";
+        if(typeof moveBottomNavIndicator==="function"){
+          moveBottomNavIndicator(homeBtn,true);
         }
       }
     }
@@ -3117,6 +3470,7 @@
   async function init(){
     icons();
     bindUI();
+    initPremiumBottomDock();
     initHero3D();
     applyLanguage();
     await ensureSession();
@@ -3220,27 +3574,97 @@
       const indicator=$("navIndicator");
       if(!nav || !indicator || !activeBtn) return;
 
-      const buttons=qsa(".bottom-nav .nav-btn");
-      const index=buttons.indexOf(activeBtn);
-      if(index<0) return;
+      const navRect=nav.getBoundingClientRect();
+      const btnRect=activeBtn.getBoundingClientRect();
 
-      indicator.style.transform=`translateX(calc(${index * 100}% + ${index * 4}px))`;
+      const left=btnRect.left-navRect.left;
+      const width=btnRect.width;
+      const center=left+(width/2);
+
+      indicator.style.left=`${left}px`;
+      indicator.style.width=`${width}px`;
+
+      nav.style.setProperty(
+        "--dock-x",
+        `${(center/navRect.width)*100}%`
+      );
 
       if(animate){
-        nav.classList.remove("nav-moving");
+        nav.classList.remove("nav-moving","dock-focus");
         void nav.offsetWidth;
-        nav.classList.add("nav-moving");
+        nav.classList.add("nav-moving","dock-focus");
 
-        activeBtn.classList.remove("nav-pop");
+        activeBtn.classList.remove("nav-pop","dock-press");
         void activeBtn.offsetWidth;
-        activeBtn.classList.add("nav-pop");
+        activeBtn.classList.add("dock-press");
 
         setTimeout(()=>{
-          nav.classList.remove("nav-moving");
-          activeBtn.classList.remove("nav-pop");
-        },520);
+          nav.classList.remove("nav-moving","dock-focus");
+          activeBtn.classList.remove("dock-press");
+        },560);
       }
     }
+
+    function addDockRipple(btn,event){
+      if(!btn || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const rect=btn.getBoundingClientRect();
+      const ripple=document.createElement("span");
+      ripple.className="dock-ripple";
+
+      const x=(event?.clientX ?? (rect.left+rect.width/2))-rect.left;
+      const y=(event?.clientY ?? (rect.top+rect.height/2))-rect.top;
+
+      ripple.style.left=`${x}px`;
+      ripple.style.top=`${y}px`;
+
+      btn.appendChild(ripple);
+      setTimeout(()=>ripple.remove(),540);
+    }
+
+    function initPremiumBottomDock(){
+      const nav=$("bottomNav");
+      if(!nav) return;
+
+      const buttons=qsa(".bottom-nav .nav-btn");
+
+      buttons.forEach(btn=>{
+        btn.addEventListener("pointerdown",e=>{
+          addDockRipple(btn,e);
+          nav.classList.add("dock-peek");
+        });
+
+        btn.addEventListener("pointerup",()=>{
+          nav.classList.remove("dock-peek");
+        });
+
+        btn.addEventListener("pointercancel",()=>{
+          nav.classList.remove("dock-peek");
+        });
+
+        btn.addEventListener("pointerleave",()=>{
+          nav.classList.remove("dock-peek");
+        });
+      });
+
+      const sync=()=>{
+        const active=document.querySelector(".bottom-nav .nav-btn.active");
+        if(active) moveBottomNavIndicator(active,false);
+      };
+
+      window.addEventListener("resize",()=>{
+        clearTimeout(window.__dockResizeTimer);
+        window.__dockResizeTimer=setTimeout(sync,80);
+      });
+
+      if(window.visualViewport){
+        visualViewport.addEventListener("resize",sync);
+      }
+
+      requestAnimationFrame(sync);
+      setTimeout(sync,220);
+    }
+
 
     qsa("[data-nav]").forEach(btn=>btn.addEventListener("click",()=>{
       qsa(".bottom-nav .nav-btn").forEach(x=>x.classList.remove("active"));
