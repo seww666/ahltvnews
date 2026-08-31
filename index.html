@@ -1692,6 +1692,20 @@
       }
     }
 
+
+    /* v15 chat */
+    .bottom-nav{grid-template-columns:repeat(4,1fr)}
+    .nav-indicator{width:calc((100% - 24px) / 4)}
+    .nav-chat-icon{position:relative}.chat-badge{position:absolute;right:-5px;top:-4px;min-width:15px;height:15px;padding:0 4px;border-radius:999px;display:grid;place-items:center;background:#8d56f8;color:#fff;font-size:7px;font-weight:900;border:2px solid #17131f}
+    .chat-sheet{height:min(88svh,720px);display:flex;flex-direction:column;padding:11px 12px calc(12px + env(safe-area-inset-bottom));overflow:hidden}
+    .chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 2px 12px;border-bottom:1px solid rgba(255,255,255,.06);flex:0 0 auto}.chat-head-user{display:flex;align-items:center;gap:10px;min-width:0}.chat-owner-avatar{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#20172c;border:1px solid rgba(135,80,247,.24);color:#d9c6ff;font-size:14px;font-weight:900}.chat-title-row{display:flex;align-items:center;gap:7px}.chat-title-row h3{margin:0;font-size:14px}.chat-online-dot{width:6px;height:6px;border-radius:50%;background:#6edda7;box-shadow:0 0 10px rgba(110,221,167,.35)}.chat-head p{margin:3px 0 0;font-size:9px;color:var(--muted)}
+    .chat-body{flex:1;min-height:0;overflow-y:auto;padding:14px 2px 12px;scroll-behavior:smooth}.chat-empty{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#6e6d76;padding:30px}.chat-empty-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#15131a;border:1px solid rgba(255,255,255,.06);color:#8f71ca;margin-bottom:11px}.chat-empty-icon svg{width:22px;height:22px}.chat-empty strong{color:#c9c8ce;font-size:12px}.chat-empty span{margin-top:4px;font-size:9px}
+    .chat-message{display:flex;margin-bottom:9px}.chat-message.me{justify-content:flex-end}.chat-message.admin{justify-content:flex-start}.chat-bubble{max-width:82%;padding:9px 11px;border-radius:14px;font-size:11px;line-height:1.5;word-break:break-word}.chat-message.me .chat-bubble{background:#7040d0;color:#fff;border-bottom-right-radius:5px}.chat-message.admin .chat-bubble{background:#18181d;border:1px solid rgba(255,255,255,.07);color:#e3e2e7;border-bottom-left-radius:5px}.chat-message-time{display:block;margin-top:5px;font-size:7px;opacity:.55;text-align:right}
+    .chat-composer{flex:0 0 auto;display:grid;grid-template-columns:1fr 42px;gap:7px;align-items:end;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}.chat-composer textarea,.admin-chat-reply textarea{width:100%;max-height:110px;resize:none;border:1px solid rgba(255,255,255,.08);outline:0;background:#0d0d10;color:#fff;border-radius:13px;padding:11px 12px;font-size:11px;line-height:1.45}.chat-composer textarea:focus,.admin-chat-reply textarea:focus{border-color:rgba(135,80,247,.42);box-shadow:0 0 0 3px rgba(135,80,247,.07)}.chat-send-btn,.admin-chat-reply button{width:42px;height:42px;display:grid;place-items:center;border:0;border-radius:12px;background:#7542dc;color:#fff}.chat-send-btn:active,.admin-chat-reply button:active{transform:scale(.92)}.chat-send-btn svg,.admin-chat-reply button svg{width:17px;height:17px}
+    .chat-login-wall{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 18px}.chat-wall-icon{width:56px;height:56px;display:grid;place-items:center;border-radius:17px;background:#191421;border:1px solid rgba(135,80,247,.17);color:#aa88ef;margin-bottom:13px}.chat-wall-icon svg{width:23px;height:23px}.chat-login-wall h4{margin:0;font-size:14px}.chat-login-wall p{margin:6px 0 15px;color:var(--muted);font-size:9px;max-width:250px}
+    .admin-chat-layout{display:grid;gap:10px}.admin-chat-list-card,.admin-chat-thread-card{border:1px solid var(--line);background:#0e0e11;border-radius:15px;overflow:hidden}.admin-chat-list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid rgba(255,255,255,.06)}.admin-chat-list-head h4{margin:0;font-size:12px}.admin-chat-list-head p{margin:3px 0 0;color:var(--muted);font-size:8px}.admin-chat-count{min-width:26px;height:26px;padding:0 8px;display:grid;place-items:center;border-radius:9px;background:#1b1623;color:#cdbaff;font-size:9px;font-weight:900}.admin-chat-list{max-height:260px;overflow:auto}.admin-chat-contact{width:100%;display:grid;grid-template-columns:36px 1fr auto;gap:9px;align-items:center;border:0;border-bottom:1px solid rgba(255,255,255,.045);background:transparent;color:#e9e8ed;padding:10px 11px;text-align:left}.admin-chat-contact:hover,.admin-chat-contact.active{background:#15131a}.admin-chat-contact-avatar,.admin-chat-user-avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#1b1623;color:#c9b2ff;font-size:10px;font-weight:900;overflow:hidden}.admin-chat-contact-avatar img,.admin-chat-user-avatar img{width:100%;height:100%;object-fit:cover}.admin-chat-contact strong{display:block;font-size:10px}.admin-chat-contact small{display:block;max-width:180px;margin-top:2px;color:#707079;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.admin-chat-contact time{font-size:7px;color:#595861}.admin-chat-thread-empty{min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#66656e;text-align:center;padding:24px}.admin-chat-thread-empty svg{width:24px;height:24px;margin-bottom:9px;color:#7e65af}.admin-chat-thread-empty strong{font-size:11px;color:#b7b5bd}.admin-chat-thread-empty span{font-size:8px;margin-top:3px}.admin-chat-thread-head{display:flex;align-items:center;gap:9px;padding:11px;border-bottom:1px solid rgba(255,255,255,.06)}.admin-chat-thread-head strong{display:block;font-size:10px}.admin-chat-thread-head small{display:block;color:#6f6d76;font-size:7px;margin-top:2px}.admin-chat-messages{height:260px;overflow-y:auto;padding:11px;background:#0c0c0f}.admin-chat-reply{display:grid;grid-template-columns:1fr 40px;gap:7px;padding:9px;border-top:1px solid rgba(255,255,255,.06)}.admin-chat-reply button{width:40px;height:40px}
+    @media(min-width:760px){.admin-chat-layout{grid-template-columns:280px 1fr}.admin-chat-list{max-height:410px}.admin-chat-messages{height:330px}}
+
   </style>
 </head>
 <body>
@@ -1793,21 +1807,10 @@
 
 <nav class="bottom-nav" id="bottomNav" aria-label="Навігація">
   <div class="nav-indicator" id="navIndicator" aria-hidden="true"></div>
-
-  <button class="nav-btn active" data-nav="home">
-    <span class="nav-icon-wrap"><i data-lucide="newspaper"></i></span>
-    <span data-i18n="news">Новини</span>
-  </button>
-
-  <button class="nav-btn" data-nav="latest">
-    <span class="nav-icon-wrap"><i data-lucide="sparkles"></i></span>
-    <span data-i18n="fresh">Свіже</span>
-  </button>
-
-  <button class="nav-btn" id="navProfile">
-    <span class="nav-icon-wrap"><i data-lucide="circle-user-round"></i></span>
-    <span data-i18n="profile">Профіль</span>
-  </button>
+  <button class="nav-btn active" data-nav="home"><span class="nav-icon-wrap"><i data-lucide="newspaper"></i></span><span data-i18n="news">Новини</span></button>
+  <button class="nav-btn" data-nav="latest"><span class="nav-icon-wrap"><i data-lucide="sparkles"></i></span><span data-i18n="fresh">Свіже</span></button>
+  <button class="nav-btn" id="navChat"><span class="nav-icon-wrap nav-chat-icon"><i data-lucide="messages-square"></i><span class="chat-badge hidden" id="chatBadge">1</span></span><span>Чат</span></button>
+  <button class="nav-btn" id="navProfile"><span class="nav-icon-wrap"><i data-lucide="circle-user-round"></i></span><span data-i18n="profile">Профіль</span></button>
 </nav>
 
 
@@ -1941,6 +1944,20 @@
   </div>
 </div>
 
+
+<!-- Direct Chat -->
+<div class="modal-shell" id="chatModal">
+  <div class="sheet chat-sheet">
+    <div class="handle"></div>
+    <div class="chat-head">
+      <div class="chat-head-user"><div class="chat-owner-avatar">S</div><div><div class="chat-title-row"><h3>Чат із Sewa</h3><span class="chat-online-dot"></span></div><p>Напиши повідомлення — я відповім тут</p></div></div>
+      <button class="close-btn" data-close="chatModal"><i data-lucide="x"></i></button>
+    </div>
+    <div class="chat-login-wall hidden" id="chatLoginWall"><div class="chat-wall-icon"><i data-lucide="lock-keyhole"></i></div><h4>Увійди, щоб написати</h4><p>Чат доступний тільки для зареєстрованих користувачів.</p><button class="btn btn-primary" id="chatLoginBtn"><i data-lucide="log-in"></i>Увійти або зареєструватися</button></div>
+    <div class="chat-body" id="chatBody"><div class="chat-empty" id="chatEmpty"><div class="chat-empty-icon"><i data-lucide="message-circle-more"></i></div><strong>Почни діалог</strong><span>Напиши мені щось нижче</span></div><div id="chatMessages"></div></div>
+    <div class="chat-composer" id="chatComposer"><textarea id="chatInput" rows="1" maxlength="1000" placeholder="Написати повідомлення..."></textarea><button id="sendChatBtn" class="chat-send-btn" aria-label="Надіслати"><i data-lucide="send-horizontal"></i></button></div>
+  </div>
+</div>
 <!-- Article -->
 <div class="modal-shell" id="articleModal">
   <div class="sheet article-sheet">
@@ -2020,6 +2037,7 @@
       <div class="admin-tabs">
         <button class="chip admin-tab active" data-admin-tab="publish" data-i18n="publication">Публікація</button>
         <button class="chip admin-tab" data-admin-tab="news" data-i18n="news">Новини</button>
+        <button class="chip admin-tab" data-admin-tab="chat">Чати</button>
         <button class="chip admin-tab" data-admin-tab="users" data-i18n="users">Користувачі</button>
         <button class="chip admin-tab" data-admin-tab="site" data-i18n="site">Сайт</button>
       </div>
@@ -2050,6 +2068,13 @@
         <div class="admin-card"><h4 data-i18n="published_news">Опубліковані новини</h4><div id="adminNewsList"></div></div>
       </div>
 
+
+      <div class="admin-pane" id="admin-chat">
+        <div class="admin-chat-layout">
+          <div class="admin-chat-list-card"><div class="admin-chat-list-head"><div><h4>Повідомлення</h4><p>Діалоги з користувачами</p></div><span class="admin-chat-count" id="adminChatCount">0</span></div><div class="admin-chat-list" id="adminChatList"></div></div>
+          <div class="admin-chat-thread-card"><div class="admin-chat-thread-empty" id="adminChatThreadEmpty"><i data-lucide="messages-square"></i><strong>Оберіть діалог</strong><span>Тут з’явиться листування</span></div><div class="admin-chat-thread hidden" id="adminChatThread"><div class="admin-chat-thread-head"><div class="admin-chat-user-avatar" id="adminChatAvatar">U</div><div><strong id="adminChatUsername">Користувач</strong><small id="adminChatUserId">—</small></div></div><div class="admin-chat-messages" id="adminChatMessages"></div><div class="admin-chat-reply"><textarea id="adminChatReplyInput" rows="1" maxlength="1000" placeholder="Відповісти..."></textarea><button id="adminChatReplyBtn"><i data-lucide="send-horizontal"></i></button></div></div></div>
+        </div>
+      </div>
       <div class="admin-pane" id="admin-users">
         <div class="admin-card"><h4 data-i18n="registered_users">Зареєстровані користувачі</h4><div id="adminUsersList"></div></div>
       </div>
@@ -2086,7 +2111,8 @@
     news: [],
     filter: "all",
     lang: localStorage.getItem("news_lang") || "uk",
-    settings: { title:"News AHLTV & UMP", subtitle:"by sewa/vadim777", logo_url:null }
+    settings: { title:"News AHLTV & UMP", subtitle:"by sewa/vadim777", logo_url:null },
+    chat: { messages: [], activeUserId: null, threads: [] }
   };
 
   const I18N = {
@@ -2410,6 +2436,12 @@
     qsa(".lang-option").forEach(btn=>btn.addEventListener("click",()=>setLanguage(btn.dataset.lang)));
 
     $("profileBtn").addEventListener("click",()=>openModal("profileModal"));
+    $("navChat").addEventListener("click",async()=>{
+      qsa(".bottom-nav .nav-btn").forEach(x=>x.classList.remove("active"));
+      $("navChat").classList.add("active");
+      moveBottomNavIndicator($("navChat"),true);
+      await openChat();
+    });
     $("navProfile").addEventListener("click",()=>{
       qsa(".bottom-nav .nav-btn").forEach(x=>x.classList.remove("active"));
       $("navProfile").classList.add("active");
@@ -2535,6 +2567,13 @@
     });
 
     $("saveEditNewsBtn").addEventListener("click",saveEditedNews);
+    $("sendChatBtn").addEventListener("click",sendChatMessage);
+    $("chatInput").addEventListener("input",()=>autosizeChatInput($("chatInput")));
+    $("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChatMessage();}});
+    $("chatLoginBtn").addEventListener("click",()=>{closeModal("chatModal");openModal("profileModal");});
+    $("adminChatReplyBtn").addEventListener("click",sendAdminChatReply);
+    $("adminChatReplyInput").addEventListener("input",()=>autosizeChatInput($("adminChatReplyInput")));
+    $("adminChatReplyInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminChatReply();}});
     $("newsDescInput").addEventListener("keydown",e=>{
       if((e.ctrlKey || e.metaKey) && e.key==="Enter") publishNews();
     });
@@ -2717,9 +2756,8 @@
     $("signedProfile").classList.toggle("hidden",isGuest);
 
     const adminBtn=$("adminTopBtn");
-    if(adminBtn){
-      adminBtn.classList.toggle("hidden", state.profile?.role!=="admin");
-    }
+    if(adminBtn){adminBtn.classList.toggle("hidden", state.profile?.role!=="admin");}
+    setTimeout(()=>refreshUnreadBadge(),0);
   }
 
   async function copyUserId(){
@@ -2880,6 +2918,7 @@
       qsa("[data-delete-news]").forEach(btn=>btn.addEventListener("click",()=>deleteNews(btn.dataset.deleteNews)));
       icons();
     }
+    await loadAdminChats();
   }
 
   function previewNewsImage(){
@@ -3280,11 +3319,31 @@
     }
   }
 
+
+  function isRegisteredUser(){ return !!state.user && !state.user.is_anonymous && !!state.profile; }
+  function formatChatTime(value){ if(!value)return ""; return new Intl.DateTimeFormat("uk-UA",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit"}).format(new Date(value)); }
+  function autosizeChatInput(el){ if(!el)return; el.style.height="auto"; el.style.height=Math.min(el.scrollHeight,110)+"px"; }
+  async function openChat(){ openModal("chatModal"); const ok=isRegisteredUser(); $("chatLoginWall").classList.toggle("hidden",ok); $("chatBody").classList.toggle("hidden",!ok); $("chatComposer").classList.toggle("hidden",!ok); if(!ok){icons();return;} await loadOwnChat(); await markOwnChatRead(); $("chatBadge").classList.add("hidden"); icons(); }
+  async function loadOwnChat(){ if(!isRegisteredUser())return; const {data,error}=await sb.from("chat_messages").select("id,user_id,sender_role,message,created_at,is_read").eq("user_id",state.user.id).order("created_at",{ascending:true}); if(error){console.error(error);toast("Не вдалося завантажити чат","err");return;} state.chat.messages=data||[]; renderOwnChat(); }
+  function renderOwnChat(){ const items=state.chat.messages||[]; $("chatEmpty").classList.toggle("hidden",items.length>0); $("chatMessages").innerHTML=items.map(m=>`<div class="chat-message ${m.sender_role==="admin"?"admin":"me"}"><div class="chat-bubble">${escapeHtml(m.message)}<span class="chat-message-time">${formatChatTime(m.created_at)}</span></div></div>`).join(""); requestAnimationFrame(()=>{$("chatBody").scrollTop=$("chatBody").scrollHeight;}); }
+  async function sendChatMessage(){ if(!isRegisteredUser()){openChat();return;} const input=$("chatInput"), message=(input.value||"").trim(); if(!message)return; const btn=$("sendChatBtn"); btn.disabled=true; try{const {data,error}=await sb.from("chat_messages").insert({user_id:state.user.id,sender_role:"user",message}).select("id,user_id,sender_role,message,created_at,is_read").single(); if(error)throw error; input.value=""; autosizeChatInput(input); state.chat.messages.push(data); renderOwnChat();}catch(e){console.error(e);toast(e?.message||"Не вдалося надіслати","err");}finally{btn.disabled=false;} }
+  async function markOwnChatRead(){ if(!isRegisteredUser())return; await sb.from("chat_messages").update({is_read:true}).eq("user_id",state.user.id).eq("sender_role","admin").eq("is_read",false); }
+  async function refreshUnreadBadge(){ if(!isRegisteredUser()){ $("chatBadge").classList.add("hidden"); return; } const {count,error}=await sb.from("chat_messages").select("id",{count:"exact",head:true}).eq("user_id",state.user.id).eq("sender_role","admin").eq("is_read",false); if(error)return; const b=$("chatBadge"); if(count>0){b.textContent=count>9?"9+":String(count);b.classList.remove("hidden");}else b.classList.add("hidden"); }
+  async function loadAdminChats(){ if(state.profile?.role!=="admin")return; const {data,error}=await sb.from("admin_chat_threads").select("*").order("last_message_at",{ascending:false}); if(error){console.error(error);$("adminChatList").innerHTML='<div style="padding:12px;color:var(--muted);font-size:9px">Не вдалося завантажити діалоги</div>';return;} state.chat.threads=data||[]; $("adminChatCount").textContent=String(state.chat.threads.length); $("adminChatList").innerHTML=state.chat.threads.map(t=>{const i=(t.username||"U")[0].toUpperCase();const av=t.avatar_url?`<img src="${escapeHtml(t.avatar_url)}" alt="">`:escapeHtml(i);return `<button class="admin-chat-contact ${state.chat.activeUserId===t.user_id?"active":""}" data-chat-user="${t.user_id}"><span class="admin-chat-contact-avatar">${av}</span><span><strong>${escapeHtml(t.username||"Користувач")}</strong><small>${escapeHtml(t.last_message||"")}</small></span><time>${formatChatTime(t.last_message_at)}</time></button>`;}).join("")||'<div style="padding:12px;color:var(--muted);font-size:9px">Діалогів ще немає</div>'; qsa("[data-chat-user]").forEach(btn=>btn.addEventListener("click",()=>openAdminChatThread(btn.dataset.chatUser))); }
+  async function openAdminChatThread(userId,mark=true){ if(state.profile?.role!=="admin")return; state.chat.activeUserId=userId; const t=state.chat.threads.find(x=>String(x.user_id)===String(userId)); const name=t?.username||"Користувач", first=(name[0]||"U").toUpperCase(); $("adminChatThreadEmpty").classList.add("hidden"); $("adminChatThread").classList.remove("hidden"); $("adminChatUsername").textContent=name; $("adminChatUserId").textContent=String(userId).slice(0,8).toUpperCase(); renderAvatar($("adminChatAvatar"),t?.avatar_url,first); const {data,error}=await sb.from("chat_messages").select("id,user_id,sender_role,message,created_at,is_read").eq("user_id",userId).order("created_at",{ascending:true}); if(error){toast("Не вдалося відкрити діалог","err");return;} $("adminChatMessages").innerHTML=(data||[]).map(m=>`<div class="chat-message ${m.sender_role==="admin"?"me":"admin"}"><div class="chat-bubble">${escapeHtml(m.message)}<span class="chat-message-time">${formatChatTime(m.created_at)}</span></div></div>`).join(""); requestAnimationFrame(()=>{$("adminChatMessages").scrollTop=$("adminChatMessages").scrollHeight;}); if(mark) await sb.from("chat_messages").update({is_read:true}).eq("user_id",userId).eq("sender_role","user").eq("is_read",false); qsa("[data-chat-user]").forEach(btn=>btn.classList.toggle("active",btn.dataset.chatUser===String(userId))); }
+  async function sendAdminChatReply(){ if(state.profile?.role!=="admin"||!state.chat.activeUserId)return; const input=$("adminChatReplyInput"), message=(input.value||"").trim(); if(!message)return; const btn=$("adminChatReplyBtn");btn.disabled=true;try{const {error}=await sb.from("chat_messages").insert({user_id:state.chat.activeUserId,sender_role:"admin",message});if(error)throw error;input.value="";await loadAdminChats();await openAdminChatThread(state.chat.activeUserId,false);}catch(e){console.error(e);toast(e?.message||"Не вдалося відповісти","err");}finally{btn.disabled=false;} }
+
   function setupRealtime(){
     sb.channel("news-live")
       .on("postgres_changes",{event:"*",schema:"public",table:"news"},async()=>loadNews())
       .on("postgres_changes",{event:"UPDATE",schema:"public",table:"site_settings",filter:"id=eq.1"},async()=>loadSettings())
       .subscribe();
+    sb.channel("chat-live")
+      .on("postgres_changes",{event:"INSERT",schema:"public",table:"chat_messages"},async(payload)=>{
+        const row=payload.new;
+        if(state.profile?.role==="admin"){await loadAdminChats(); if(state.chat.activeUserId&&String(state.chat.activeUserId)===String(row.user_id)) await openAdminChatThread(state.chat.activeUserId,false);}
+        if(isRegisteredUser()&&String(row.user_id)===String(state.user.id)){if($("chatModal").classList.contains("open")){await loadOwnChat();await markOwnChatRead();}else await refreshUnreadBadge();}
+      }).subscribe();
   }
 
   sb.auth.onAuthStateChange((_event,session)=>{
