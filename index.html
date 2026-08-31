@@ -2556,6 +2556,22 @@
       }
     }
 
+
+    /* v22 — drafts, analytics, anti-spam */
+    .admin-analytics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+    .analytics-card{position:relative;min-width:0;padding:11px;border-radius:14px;border:1px solid rgba(255,255,255,.065);background:linear-gradient(180deg,rgba(255,255,255,.018),transparent),#101013;overflow:hidden}
+    .analytics-card:after{content:"";position:absolute;width:68px;height:68px;right:-32px;top:-38px;border-radius:50%;background:rgba(135,80,247,.055);filter:blur(10px)}
+    .analytics-icon{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#18141f;color:#9d7adb;margin-bottom:9px}
+    .analytics-icon svg{width:14px;height:14px}.analytics-card>span{display:block;color:#62616a;font-size:6px;font-weight:900;letter-spacing:.08em}
+    .analytics-card>b{display:block;margin-top:4px;color:#ecebf0;font-size:19px;line-height:1;letter-spacing:-.5px}
+    .analytics-card>small{display:block;margin-top:5px;color:#73727b;font-size:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .publish-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:3px}.draft-note{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:8px;color:#676670;font-size:8px}.draft-note svg{width:11px;height:11px}
+    .admin-list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.admin-list-head h4{margin:0;font-size:12px}.admin-list-head p{margin:3px 0 0;color:var(--muted);font-size:8px}
+    .draft-count-badge{min-width:28px;height:28px;padding:0 8px;display:grid;place-items:center;border-radius:9px;background:#191421;color:#c6aff5;border:1px solid rgba(135,80,247,.12);font-size:9px;font-weight:900}
+    .admin-news-row.draft-row{border-style:dashed;background:#0f0e12}.draft-status{display:inline-flex;align-items:center;gap:4px;margin-left:5px;padding:3px 5px;border-radius:5px;background:#191421;color:#a98be5;font-size:6px;font-weight:900;letter-spacing:.06em}
+    .chat-composer-wrap{flex:0 0 auto;border-top:1px solid rgba(255,255,255,.06);padding-top:9px}.chat-composer-wrap .chat-composer{border-top:0;padding-top:0}.chat-composer-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 3px 0;color:#585760;font-size:7px}.anti-spam-label{display:flex;align-items:center;gap:4px;color:#6f8f7c}.anti-spam-label svg{width:10px;height:10px}
+    @media(min-width:620px){.admin-analytics-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:390px){.publish-actions{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -2868,7 +2884,10 @@
     </div>
     <div class="chat-login-wall hidden" id="chatLoginWall"><div class="chat-wall-icon"><i data-lucide="lock-keyhole"></i></div><h4>Увійди, щоб написати</h4><p>Чат доступний тільки для зареєстрованих користувачів.</p><button class="btn btn-primary" id="chatLoginBtn"><i data-lucide="log-in"></i>Увійти або зареєструватися</button></div>
     <div class="chat-body" id="chatBody"><div class="chat-empty" id="chatEmpty"><div class="chat-empty-icon"><i data-lucide="message-circle-more"></i></div><strong>Почни діалог</strong><span>Напиши мені щось нижче</span></div><div id="chatMessages"></div></div>
-    <div class="chat-composer" id="chatComposer"><textarea id="chatInput" rows="1" maxlength="1000" placeholder="Написати повідомлення..."></textarea><button id="sendChatBtn" class="chat-send-btn" aria-label="Надіслати"><i data-lucide="send-horizontal"></i></button></div>
+    <div class="chat-composer-wrap" id="chatComposer">
+      <div class="chat-composer"><textarea id="chatInput" rows="1" maxlength="1000" placeholder="Написати повідомлення..."></textarea><button id="sendChatBtn" class="chat-send-btn" aria-label="Надіслати"><i data-lucide="send-horizontal"></i></button></div>
+      <div class="chat-composer-meta"><span class="anti-spam-label"><i data-lucide="shield-check"></i> Anti-spam</span><span id="chatCharCount">0 / 1000</span></div>
+    </div>
   </div>
 </div>
 <!-- Article -->
@@ -2965,9 +2984,10 @@
       <img class="preview-image" id="editNewsPreview" alt="">
     </div>
 
-    <button class="btn btn-primary" id="saveEditNewsBtn">
-      <i data-lucide="save"></i><span>Зберегти зміни</span>
-    </button>
+    <div class="publish-actions">
+      <button class="btn btn-ghost hidden" id="publishDraftNowBtn"><i data-lucide="send"></i><span>Опублікувати чернетку</span></button>
+      <button class="btn btn-primary" id="saveEditNewsBtn"><i data-lucide="save"></i><span>Зберегти зміни</span></button>
+    </div>
   </div>
 </div>
 
@@ -2981,14 +3001,19 @@
     </div>
 
     <div class="admin-layout">
-      <div class="stats">
-        <div class="stat"><b id="adminNewsCount">0</b><span>НОВИН</span></div>
-        <div class="stat"><b id="adminUsersCount">0</b><span>КОРИСТУВАЧІВ</span></div>
+      <div class="admin-analytics-grid">
+        <div class="analytics-card"><div class="analytics-icon"><i data-lucide="newspaper"></i></div><span>ОПУБЛІКОВАНО</span><b id="statPublished">0</b><small id="statPublishedToday">+0 сьогодні</small></div>
+        <div class="analytics-card"><div class="analytics-icon"><i data-lucide="file-pen-line"></i></div><span>ЧЕРНЕТКИ</span><b id="statDrafts">0</b><small>Не видно користувачам</small></div>
+        <div class="analytics-card"><div class="analytics-icon"><i data-lucide="eye"></i></div><span>ПЕРЕГЛЯДИ</span><b id="statViews">0</b><small id="statTopNews">Топ: —</small></div>
+        <div class="analytics-card"><div class="analytics-icon"><i data-lucide="users"></i></div><span>КОРИСТУВАЧІ</span><b id="statUsers">0</b><small id="statUsersToday">+0 сьогодні</small></div>
+        <div class="analytics-card"><div class="analytics-icon"><i data-lucide="messages-square"></i></div><span>ПОВІДОМЛЕННЯ</span><b id="statMessages">0</b><small id="statUnreadChats">0 непрочитаних</small></div>
+        <div class="analytics-card"><div class="analytics-icon"><i data-lucide="shield-check"></i></div><span>АНТИСПАМ</span><b>ON</b><small>Server-side protection</small></div>
       </div>
 
       <div class="admin-tabs">
         <button class="chip admin-tab active" data-admin-tab="publish" data-i18n="publication">Публікація</button>
         <button class="chip admin-tab" data-admin-tab="news" data-i18n="news">Новини</button>
+        <button class="chip admin-tab" data-admin-tab="drafts">Чернетки</button>
         <button class="chip admin-tab" data-admin-tab="chat">Чати</button>
         <button class="chip admin-tab" data-admin-tab="users" data-i18n="users">Користувачі</button>
         <button class="chip admin-tab" data-admin-tab="site" data-i18n="site">Сайт</button>
@@ -3060,7 +3085,11 @@
             </div>
             <img class="preview-image" id="newsPreview" alt=""><div class="compression-note">Фото автоматично стискається перед завантаженням, щоб сайт працював швидше.</div>
           </div>
-          <button class="btn btn-primary" id="publishNewsBtn"><i data-lucide="send"></i><span data-i18n="publish">Опублікувати</span></button>
+          <div class="publish-actions">
+            <button class="btn btn-ghost" id="saveDraftBtn"><i data-lucide="file-pen-line"></i><span>Зберегти чернетку</span></button>
+            <button class="btn btn-primary" id="publishNewsBtn"><i data-lucide="send"></i><span data-i18n="publish">Опублікувати</span></button>
+          </div>
+          <div class="draft-note"><i data-lucide="lock"></i> Чернетку бачиш тільки ти в Admin.</div>
         </div>
       </div>
 
@@ -3068,6 +3097,13 @@
         <div class="admin-card"><h4 data-i18n="published_news">Опубліковані новини</h4><div id="adminNewsList"></div></div>
       </div>
 
+
+      <div class="admin-pane" id="admin-drafts">
+        <div class="admin-card">
+          <div class="admin-list-head"><div><h4>Чернетки</h4><p>Незавершені публікації</p></div><span class="draft-count-badge" id="draftCountBadge">0</span></div>
+          <div id="adminDraftsList"></div>
+        </div>
+      </div>
 
       <div class="admin-pane" id="admin-chat">
         <div class="admin-chat-layout">
@@ -3703,6 +3739,7 @@
 
     $("newsImageInput").addEventListener("change",previewNewsImage);
     $("publishNewsBtn").addEventListener("click",publishNews);
+    $("saveDraftBtn").addEventListener("click",saveDraft);
 
     $("avatarEditBtn").addEventListener("click",()=> $("avatarInput").click());
     $("avatarInput").addEventListener("change",uploadAvatar);
@@ -3715,7 +3752,8 @@
       preview.style.display="block";
     });
 
-    $("saveEditNewsBtn").addEventListener("click",saveEditedNews);
+    $("saveEditNewsBtn").addEventListener("click",()=>saveEditedNews(true));
+    $("publishDraftNowBtn").addEventListener("click",publishCurrentDraft);
     bindPostLanguageTabs();
     $("sendChatBtn").addEventListener("click",sendChatMessage);
 
@@ -3734,7 +3772,9 @@
 
     $("chatInput").addEventListener("input",()=>{
       autosizeChatInput($("chatInput"));
-      if($("chatInput").value.trim()) animateChatSendReady();
+      const value=$("chatInput").value;
+      $("chatCharCount").textContent=`${value.length} / 1000`;
+      if(value.trim()) animateChatSendReady();
     });
 
     $("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChatMessage();}});
@@ -4163,7 +4203,9 @@
 
       const {data,error}=await sb
         .from("news")
-        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
+        .eq("status","published")
+        .order("published_at",{ascending:false,nullsFirst:false})
         .order("created_at",{ascending:false});
 
       if(error){
@@ -4287,43 +4329,60 @@
   }
 
   async function loadAdminDashboard(){
-    $("adminNewsCount").textContent=state.news.length;
+    if(state.profile?.role!=="admin") return;
 
-    const [{data:users,error:userErr},{data:news,error:newsErr}] = await Promise.all([
-      sb.from("admin_profiles").select("id,username,role,created_at,last_seen_at").order("created_at",{ascending:false}),
-      sb.from("news").select("id,title,description,image_url,category,view_count,created_at").order("created_at",{ascending:false})
+    const dayAgo=new Date(Date.now()-86400000).toISOString();
+
+    const [newsRes,usersRes,msgRes,unreadRes]=await Promise.all([
+      sb.from("news").select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,view_count,status,published_at,created_at").order("created_at",{ascending:false}),
+      sb.from("admin_profiles").select("id,username,role,avatar_url,created_at,last_seen_at").order("created_at",{ascending:false}),
+      sb.from("chat_messages").select("id",{count:"exact",head:true}),
+      sb.from("chat_messages").select("id",{count:"exact",head:true}).eq("sender_role","user").eq("is_read",false)
     ]);
 
-    if(!userErr){
-      $("adminUsersCount").textContent=users?.length||0;
-      $("adminUsersList").innerHTML=(users||[]).map(u=>`
-        <div class="user-row">
-          <div><strong>${escapeHtml(u.username||"unknown")}</strong><small>${escapeHtml(u.role||"member")} · ${formatDate(u.created_at)}</small></div>
-          <small>${escapeHtml(String(u.id).slice(0,8))}</small>
-        </div>
-      `).join("") || '<div style="color:var(--muted);font-size:10px">Користувачів немає</div>';
-    }else{
-      $("adminUsersList").innerHTML='<div style="color:var(--muted);font-size:10px">Немає доступу. Перевір admin_profiles view/RLS.</div>';
+    const news=newsRes.data||[];
+    const users=usersRes.data||[];
+    const published=news.filter(n=>(n.status||"published")==="published");
+    const drafts=news.filter(n=>n.status==="draft");
+    const totalViews=published.reduce((s,n)=>s+Number(n.view_count||0),0);
+    const publishedToday=published.filter(n=>new Date(n.published_at||n.created_at)>=new Date(dayAgo)).length;
+    const usersToday=users.filter(u=>u.created_at&&new Date(u.created_at)>=new Date(dayAgo)).length;
+    const top=[...published].sort((a,b)=>Number(b.view_count||0)-Number(a.view_count||0))[0];
+
+    $("statPublished").textContent=String(published.length);
+    $("statDrafts").textContent=String(drafts.length);
+    $("statViews").textContent=totalViews>999?`${(totalViews/1000).toFixed(1)}K`:String(totalViews);
+    $("statUsers").textContent=String(users.length);
+    $("statMessages").textContent=String(msgRes.count||0);
+    $("statPublishedToday").textContent=`+${publishedToday} сьогодні`;
+    $("statUsersToday").textContent=`+${usersToday} сьогодні`;
+    $("statUnreadChats").textContent=`${unreadRes.count||0} непрочитаних`;
+    $("statTopNews").textContent=top?`Топ: ${top.title.slice(0,18)}${top.title.length>18?"…":""}`:"Топ: —";
+    $("draftCountBadge").textContent=String(drafts.length);
+
+    $("adminNewsList").innerHTML=published.map(n=>`
+      <div class="admin-news-row">
+        <div><strong>${escapeHtml(n.title)}</strong><small>${escapeHtml(n.category||"AHLTV")} · ${Number(n.view_count||0)} views · ${formatDate(n.published_at||n.created_at)}</small></div>
+        <div class="admin-news-actions"><button class="mini-btn edit" data-edit-news="${n.id}"><i data-lucide="pencil"></i></button><button class="mini-btn delete" data-delete-news="${n.id}"><i data-lucide="trash-2"></i></button></div>
+      </div>`).join("")||'<div style="color:var(--muted);font-size:10px">Новин немає</div>';
+
+    $("adminDraftsList").innerHTML=drafts.map(n=>`
+      <div class="admin-news-row draft-row">
+        <div><strong>${escapeHtml(n.title)} <span class="draft-status">DRAFT</span></strong><small>${escapeHtml(n.category||"AHLTV")} · ${formatDate(n.created_at)}</small></div>
+        <div class="admin-news-actions"><button class="mini-btn edit" data-edit-news="${n.id}"><i data-lucide="pencil"></i></button><button class="mini-btn delete" data-delete-news="${n.id}"><i data-lucide="trash-2"></i></button></div>
+      </div>`).join("")||'<div style="color:var(--muted);font-size:10px;padding:8px 0">Чернеток немає</div>';
+
+    qsa("[data-edit-news]").forEach(btn=>btn.addEventListener("click",()=>openEditNews(btn.dataset.editNews)));
+    qsa("[data-delete-news]").forEach(btn=>btn.addEventListener("click",()=>deleteNews(btn.dataset.deleteNews)));
+
+    if(!usersRes.error){
+      $("adminUsersList").innerHTML=users.map(u=>`
+        <div class="user-row"><div><strong>${escapeHtml(u.username||"unknown")}</strong><small>${escapeHtml(u.role||"member")} · ${formatDate(u.created_at)}</small></div><small>${escapeHtml(String(u.id).slice(0,8))}</small></div>
+      `).join("")||'<div style="color:var(--muted);font-size:10px">Користувачів немає</div>';
     }
 
-    if(!newsErr){
-      $("adminNewsList").innerHTML=(news||[]).map(n=>`
-        <div class="admin-news-row">
-          <div>
-            <strong>${escapeHtml(n.title)}</strong>
-            <small>${escapeHtml(n.category||"AHLTV")} · ${Number(n.view_count||0)} views · ${formatDate(n.created_at)}</small>
-          </div>
-          <div class="admin-news-actions">
-            <button class="mini-btn edit" data-edit-news="${n.id}" aria-label="Редагувати"><i data-lucide="pencil"></i></button>
-            <button class="mini-btn delete" data-delete-news="${n.id}" aria-label="Видалити"><i data-lucide="trash-2"></i></button>
-          </div>
-        </div>
-      `).join("") || '<div style="color:var(--muted);font-size:10px">Новин немає</div>';
-      qsa("[data-edit-news]").forEach(btn=>btn.addEventListener("click",()=>openEditNews(btn.dataset.editNews)));
-      qsa("[data-delete-news]").forEach(btn=>btn.addEventListener("click",()=>deleteNews(btn.dataset.deleteNews)));
-      icons();
-    }
     await loadAdminChats();
+    icons();
   }
 
   function previewNewsImage(){
@@ -4461,11 +4520,19 @@
     }
   }
 
-  function openEditNews(id){
-    const n=state.news.find(x=>String(x.id)===String(id));
-    if(!n) return;
+  async function openEditNews(id){
+    let n=state.news.find(x=>String(x.id)===String(id));
+    if(!n){
+      const {data,error}=await sb.from("news")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
+        .eq("id",id).single();
+      if(error){toast("Не вдалося відкрити новину","err");return;}
+      n=data;
+    }
 
     $("editNewsId").value=n.id;
+    $("editNewsModal").dataset.status=n.status||"published";
+    $("publishDraftNowBtn").classList.toggle("hidden",(n.status||"published")!=="draft");
     $("editNewsTitle").value=n.title_uk||n.title||"";
     $("editNewsTitleEn").value=n.title_en||"";
     $("editNewsTitleRu").value=n.title_ru||"";
@@ -4475,12 +4542,10 @@
     $("editNewsDescRu").value=n.description_ru||"";
     $("editNewsImage").value="";
     $("editNewsPreview").style.display="none";
-
-    closeModal("adminModal");
-    openModal("editNewsModal");
+    closeModal("adminModal");openModal("editNewsModal");
   }
 
-  async function saveEditedNews(){
+  async function saveEditedNews(closeAfter=true){
     if(state.profile?.role!=="admin") return;
 
     const id=$("editNewsId").value;
@@ -4529,17 +4594,18 @@
           image_url
         })
         .eq("id",id)
-        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
         .single();
 
       if(error) throw error;
 
-      state.news=state.news.map(n=>String(n.id)===String(id) ? data : n);
-      renderNews();
-      closeModal("editNewsModal");
-      openModal("adminModal");
+      if((data.status||"published")==="published"){
+        state.news=state.news.map(n=>String(n.id)===String(id)?data:n);
+        renderNews();
+      }
+      if(closeAfter){closeModal("editNewsModal");openModal("adminModal");}
       await loadAdminDashboard();
-      toast("Новину оновлено");
+      if(closeAfter)toast("Новину оновлено");
     }catch(e){
       console.error("Edit news:",e);
       toast(e?.message || "Не вдалося зберегти зміни","err");
@@ -4550,116 +4616,69 @@
     }
   }
 
-  async function publishNews(){
-    if(state.profile?.role!=="admin"){
-      toast("Немає доступу адміністратора","err");
-      return;
-    }
+  async function saveNewsAs(status="published"){
+    if(state.profile?.role!=="admin"){toast("Немає доступу адміністратора","err");return;}
 
-    const titleEl=$("newsTitleInput");
-    const descEl=$("newsDescInput");
-    const categoryEl=$("newsCategoryInput");
-    const imageEl=$("newsImageInput");
-    const btn=$("publishNewsBtn");
+    const titleEl=$("newsTitleInput"),descEl=$("newsDescInput"),categoryEl=$("newsCategoryInput"),imageEl=$("newsImageInput");
+    const title=(titleEl?.value||"").trim(),title_en=($("newsTitleEnInput")?.value||"").trim(),title_ru=($("newsTitleRuInput")?.value||"").trim();
+    const description=(descEl?.value||"").trim(),description_en=($("newsDescEnInput")?.value||"").trim(),description_ru=($("newsDescRuInput")?.value||"").trim();
+    const category=(categoryEl?.value||"AHLTV").trim(),file=imageEl?.files?.[0]||null;
 
-    const title=(titleEl?.value || "").trim();
-    const title_en=($("newsTitleEnInput")?.value || "").trim();
-    const title_ru=($("newsTitleRuInput")?.value || "").trim();
+    if(!title){toast("Напиши заголовок новини","err");titleEl?.focus();return;}
+    if(status==="published"&&!description){toast("Для публікації потрібен опис","err");descEl?.focus();return;}
 
-    const description=(descEl?.value || "").trim();
-    const description_en=($("newsDescEnInput")?.value || "").trim();
-    const description_ru=($("newsDescRuInput")?.value || "").trim();
-
-    const category=(categoryEl?.value || "AHLTV").trim();
-    const file=imageEl?.files?.[0] || null;
-
-    if(!title){
-      toast("Напиши заголовок новини","err");
-      titleEl?.focus();
-      return;
-    }
-
-    if(!description){
-      toast("Напиши опис новини","err");
-      descEl?.focus();
-      return;
-    }
-
-    if(btn.disabled) return;
-
+    const btn=status==="draft"?$("saveDraftBtn"):$("publishNewsBtn");
+    if(btn.disabled)return;
+    const oldHtml=btn.innerHTML;
     btn.disabled=true;
-    btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Публікую...';
+    btn.innerHTML=status==="draft"?'<span class="spinner" style="width:15px;height:15px;margin:0"></span>Зберігаю...':'<span class="spinner" style="width:15px;height:15px;margin:0"></span>Публікую...';
 
     try{
       let image_url=null;
-
-      if(file){
-        image_url=await uploadImage("news-images",file,"news",{maxWidth:1600,maxHeight:1600,quality:.82});
-      }
+      if(file) image_url=await uploadImage("news-images",file,"news",{maxWidth:1600,maxHeight:1600,quality:.82});
 
       const payload={
-        title,
-        description,
-        title_uk:title,
-        title_en:title_en || null,
-        title_ru:title_ru || null,
-        description_uk:description,
-        description_en:description_en || null,
-        description_ru:description_ru || null,
-        category,
-        image_url,
-        author:state.profile?.username || "Sewa199",
-        created_by:state.user.id
+        title,description,title_uk:title,title_en:title_en||null,title_ru:title_ru||null,
+        description_uk:description,description_en:description_en||null,description_ru:description_ru||null,
+        category,image_url,author:state.profile?.username||"Sewa199",created_by:state.user.id,
+        status,published_at:status==="published"?new Date().toISOString():null
       };
 
-      const {data,error}=await sb
-        .from("news")
-        .insert(payload)
-        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
+      const {data,error}=await sb.from("news").insert(payload)
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
         .single();
+      if(error)throw error;
 
-      if(error) throw error;
+      titleEl.value="";descEl.value="";$("newsTitleEnInput").value="";$("newsTitleRuInput").value="";$("newsDescEnInput").value="";$("newsDescRuInput").value="";
+      if(imageEl)imageEl.value="";$("newsPreview").style.display="none";
 
-      titleEl.value="";
-      descEl.value="";
-      $("newsTitleEnInput").value="";
-      $("newsTitleRuInput").value="";
-      $("newsDescEnInput").value="";
-      $("newsDescRuInput").value="";
-      if(imageEl) imageEl.value="";
-      $("newsPreview").style.display="none";
-
-      if(data){
-        state.news=[data,...state.news.filter(n=>String(n.id)!==String(data.id))];
-        renderNews();
-      }else{
-        await loadNews();
-      }
+      if(status==="published"){state.news=[data,...state.news.filter(n=>String(n.id)!==String(data.id))];renderNews();toast("Новину опубліковано");}
+      else toast("Чернетку збережено");
 
       await loadAdminDashboard();
-      toast("Новину опубліковано");
-
     }catch(error){
-      console.error("Publish news error:",error);
-
-      let msg=error?.message || "Не вдалося опублікувати";
-
-      if(/relation .*news.* does not exist/i.test(msg)){
-        msg="У Supabase ще немає таблиці news";
-      }else if(/row-level security|rls/i.test(msg)){
-        msg="Supabase блокує публікацію. Потрібні права admin для news";
-      }else if(/bucket.*news-images|bucket not found/i.test(msg)){
-        msg="У Supabase немає Storage bucket news-images";
-      }else if(/violates not-null constraint/i.test(msg)){
-        msg="У таблиці news є обов'язкове поле, якого сайт не заповнює";
-      }
-
-      toast(msg,"err");
+      console.error("Save news:",error);
+      toast(error?.message||"Не вдалося зберегти","err");
     }finally{
-      btn.disabled=false;
-      btn.innerHTML=`<i data-lucide="send"></i><span>${t("publish")}</span>`;
-      icons();
+      btn.disabled=false;btn.innerHTML=oldHtml;icons();
     }
+  }
+
+  async function publishNews(){return saveNewsAs("published");}
+  async function saveDraft(){return saveNewsAs("draft");}
+
+  async function publishCurrentDraft(){
+    if(state.profile?.role!=="admin")return;
+    const id=$("editNewsId").value;if(!id)return;
+    const btn=$("publishDraftNowBtn"),old=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spinner" style="width:15px;height:15px;margin:0"></span>Публікую...';
+    try{
+      await saveEditedNews(false);
+      const {data,error}=await sb.from("news").update({status:"published",published_at:new Date().toISOString()}).eq("id",id)
+        .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at").single();
+      if(error)throw error;
+      state.news=[data,...state.news.filter(n=>String(n.id)!==String(id))];renderNews();closeModal("editNewsModal");await loadAdminDashboard();openModal("adminModal");toast("Чернетку опубліковано");
+    }catch(e){console.error(e);toast(e?.message||"Не вдалося опублікувати","err");}
+    finally{btn.disabled=false;btn.innerHTML=old;icons();}
   }
 
   async function deleteNews(id){
@@ -4870,21 +4889,16 @@
         throw new Error("Профіль ще не створився. Запусти FIX_CHAT_ACCOUNT.sql один раз у Supabase.");
       }
 
-      const {data,error}=await sb
-        .from("chat_messages")
-        .insert({
-          user_id:state.user.id,
-          sender_role:"user",
-          message
-        })
-        .select("id,user_id,sender_role,message,created_at,is_read")
-        .single();
-
+      const {data,error}=await sb.rpc("send_chat_message",{message_text:message});
       if(error) throw error;
 
+      const row=Array.isArray(data)?data[0]:data;
+      if(!row)throw new Error("Не вдалося надіслати повідомлення");
+
       input.value="";
+      $("chatCharCount").textContent="0 / 1000";
       autosizeChatInput(input);
-      state.chat.messages.push(data);
+      state.chat.messages.push(row);
       renderOwnChat();
 
       requestAnimationFrame(()=>{
@@ -4898,7 +4912,11 @@
       });
     }catch(e){
       console.error("send chat",e);
-      toast(e?.message||"Не вдалося надіслати","err");
+      const msg=String(e?.message||"");
+      if(/SPAM_COOLDOWN/i.test(msg)) toast("Занадто швидко. Зачекай 3 секунди.","err");
+      else if(/SPAM_DUPLICATE/i.test(msg)) toast("Не надсилай однакове повідомлення повторно.","err");
+      else if(/SPAM_RATE/i.test(msg)) toast("Забагато повідомлень. Спробуй трохи пізніше.","err");
+      else toast(msg||"Не вдалося надіслати","err");
     }finally{
       btn.disabled=false;
       btn.classList.remove("sending");
