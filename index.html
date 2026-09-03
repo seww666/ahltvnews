@@ -5177,6 +5177,38 @@
     applyRotation();
   }
 
+  const NEWS_CACHE_KEY="ahltv-news-cache-v1";
+  const SETTINGS_CACHE_KEY="ahltv-site-settings-cache";
+
+  function readJsonCache(key){
+    try{
+      const raw=localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
+    }catch{
+      return null;
+    }
+  }
+
+  function writeJsonCache(key,value){
+    try{
+      localStorage.setItem(key,JSON.stringify(value));
+    }catch{}
+  }
+
+  function hydratePublicCache(){
+    const cachedSettings=readJsonCache(SETTINGS_CACHE_KEY);
+    if(cachedSettings && typeof cachedSettings==="object"){
+      state.settings={...state.settings,...cachedSettings};
+      applySettings();
+    }
+
+    const cachedNews=readJsonCache(NEWS_CACHE_KEY);
+    if(Array.isArray(cachedNews) && cachedNews.length){
+      state.news=cachedNews;
+      renderNews();
+    }
+  }
+
   function withTimeout(promise,ms,label="Запит"){
     return Promise.race([
       Promise.resolve(promise),
@@ -5272,7 +5304,7 @@
     });
   }
 
-  async function init(){
+    async function init(){
     icons();
     bindUI();
     initPremiumBottomDock();
@@ -5280,38 +5312,40 @@
     applyLanguage();
     setupAutomaticPageRefresh();
 
-    // Public content must NEVER wait for Supabase Auth.
-    // News and site settings start loading immediately.
-    const publicBoot=Promise.allSettled([
-      loadSettings({boot:true}),
-      loadNews({silent:false,force:true})
-    ]);
+    // Show cached public content immediately.
+    hydratePublicCache();
 
-    // Auth runs in parallel. Even if anonymous sign-in is slow,
-    // the public feed and uploaded logo still appear.
-    const authBoot=withTimeout(
-      ensureSession(),
-      6500,
-      "Auth"
-    ).catch(error=>{
-      console.warn("Auth boot timeout/error:",error);
-      return null;
-    });
+    // Public data starts first and does not wait for auth.
+    loadSettings({boot:true}).catch(()=>{});
+    loadNews({silent:!!state.news.length,force:true}).catch(()=>{});
 
-    await publicBoot;
-
-    // Automatic retries — no manual refresh should be required.
-    if(!state.news.length){
-      scheduleBootNewsRetry(500);
-      scheduleBootNewsRetry(1600);
-      scheduleBootNewsRetry(3800);
-    }
-
-    // Realtime can start as soon as the public data boot is done.
     setupRealtime();
 
-    await authBoot;
-    renderSession();
+    // Auth is fully independent from news/logo.
+    withTimeout(ensureSession(),6500,"Auth")
+      .catch(error=>{
+        console.warn("Auth startup:",error);
+        return null;
+      })
+      .finally(()=>{
+        renderSession();
+      });
+
+    // Self-healing retries.
+    setTimeout(()=>{
+      if(!state.news.length) loadNews({silent:true,force:true}).catch(()=>{});
+      if(!state.settings.logo_url) loadSettings({boot:true}).catch(()=>{});
+    },1200);
+
+    setTimeout(()=>{
+      if(!state.news.length) loadNews({silent:true,force:true}).catch(()=>{});
+      if(!state.settings.logo_url) loadSettings({boot:true}).catch(()=>{});
+    },3500);
+
+    setTimeout(()=>{
+      if(!state.news.length) loadNews({silent:true,force:true}).catch(()=>{});
+      if(!state.settings.logo_url) loadSettings({boot:true}).catch(()=>{});
+    },7000);
   }
 
   function bindUI(){
@@ -5966,7 +6000,52 @@
     toast("ID скопійовано");
   }
 
-  async function loadSettings(options={}){
+    async function loadSettings(options={}){
+    const boot=!!options.boot;
+
+    const cached=readJsonCache(SETTINGS_CACHE_KEY);
+    if(cached && typeof cached==="object"){
+      state.settings={...state.settings,...cached};
+      applySettings();
+    }
+
+    try{
+      const request=sb
+        .from("site_settings")
+        .select("title,subtitle,logo_url,updated_at")
+        .eq("id",1)
+        .maybeSingle();
+
+      const {data,error}=await withTimeout(
+        request,
+        boot ? 5000 : 8000,
+        "Site settings"
+      );
+
+      if(error) throw error;
+
+      if(data){
+        state.settings={
+          ...state.settings,
+          title:data.title ?? state.settings.title,
+          subtitle:data.subtitle ?? state.settings.subtitle,
+          logo_url:data.logo_url ?? state.settings.logo_url
+        };
+
+        writeJsonCache(SETTINGS_CACHE_KEY,{
+          title:state.settings.title,
+          subtitle:state.settings.subtitle,
+          logo_url:state.settings.logo_url,
+          updated_at:data.updated_at||null
+        });
+      }
+    }catch(error){
+      console.warn("loadSettings:",error);
+    }
+
+    applySettings();
+    return state.settings;
+  }){
     // Show the last known uploaded logo instantly while Supabase responds.
     try{
       const cached=JSON.parse(localStorage.getItem("ahltv-site-settings-cache")||"null");
@@ -6012,7 +6091,7 @@
     applySettings();
   }
 
-  function applySettings(){
+    function applySettings(){
     $("brandTitle").textContent=state.settings.title || "News AHLTV & UMP";
     $("brandSub").textContent=state.settings.subtitle || "by sewa/vadim777";
     document.title=`${state.settings.title || "News AHLTV & UMP"} ${state.settings.subtitle || ""}`.trim();
@@ -6023,7 +6102,6 @@
     if(logoUrl){
       const current=mark.querySelector("img");
 
-      // Avoid replacing a working image on every settings/realtime refresh.
       if(!current || current.dataset.src!==logoUrl){
         const img=new Image();
         img.alt="Logo";
@@ -6038,8 +6116,6 @@
 
         img.onerror=()=>{
           console.warn("Logo image failed to load:",logoUrl);
-
-          // Keep an already-rendered logo if there is one.
           if(!mark.querySelector("img")){
             mark.textContent=(state.settings.title?.trim()?.[0]||"A").toUpperCase();
             mark.classList.remove("has-logo");
@@ -6056,69 +6132,52 @@
 
   let newsLoadPromise=null;
   let newsRealtimeTimer=null;
-  let newsLastErrorAt=0;
 
   async function fetchPublishedNews(){
-    const modernQuery=sb
+    const modern=sb
       .from("news")
-      .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,test_view_count,status,published_at,created_at")
+      .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,status,published_at,created_at")
       .eq("status","published")
       .order("published_at",{ascending:false,nullsFirst:false})
       .order("created_at",{ascending:false});
 
     try{
-      const result=await withTimeout(
-        modernQuery,
-        7000,
-        "News"
-      );
+      const result=await withTimeout(modern,6500,"News");
 
       if(!result.error) return result;
 
-      const message=String(result.error?.message||"").toLowerCase();
-
-      // Compatibility fallback if the v22 migration has not been applied
-      // or Supabase schema cache is temporarily stale.
+      const msg=String(result.error.message||"").toLowerCase();
       if(
-        message.includes("status") ||
-        message.includes("published_at") ||
-        message.includes("schema cache") ||
-        message.includes("column")
+        !msg.includes("status") &&
+        !msg.includes("published_at") &&
+        !msg.includes("schema cache") &&
+        !msg.includes("column")
       ){
-        throw new Error("USE_LEGACY_NEWS_QUERY");
+        return result;
       }
-
-      return result;
     }catch(error){
-      if(String(error?.message||"").includes("USE_LEGACY_NEWS_QUERY")){
-        // continue to legacy query below
-      }else if(/timeout/i.test(String(error?.message||""))){
+      if(/timeout/i.test(String(error?.message||""))){
         throw error;
-      }else{
-        console.warn("Modern news query fallback:",error);
       }
+      console.warn("modern news query:",error);
     }
 
-    const legacyQuery=sb
+    const legacy=sb
       .from("news")
       .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
       .order("created_at",{ascending:false});
 
-    const legacy=await withTimeout(
-      legacyQuery,
-      7000,
-      "Legacy news"
-    );
+    const result=await withTimeout(legacy,6500,"Legacy news");
 
-    if(legacy.data){
-      legacy.data=legacy.data.map(n=>({
+    if(Array.isArray(result.data)){
+      result.data=result.data.map(n=>({
         ...n,
         status:"published",
         published_at:n.created_at
       }));
     }
 
-    return legacy;
+    return result;
   }
 
   async function loadNews(options={}){
@@ -6127,52 +6186,48 @@
 
     if(newsLoadPromise && !force) return newsLoadPromise;
 
-    // If force=true while another request is hanging, create a fresh request
-    // rather than making the UI wait forever for the old one.
-    const thisPromise=(async()=>{
-      if(!silent && !state.news.length){
+    const task=(async()=>{
+      const cached=readJsonCache(NEWS_CACHE_KEY);
+
+      if(!state.news.length && Array.isArray(cached) && cached.length){
+        state.news=cached;
+        renderNews();
+      }else if(!silent && !state.news.length){
         $("newsList").innerHTML=
           '<div class="loading"><div class="spinner"></div>Завантажую новини</div>';
       }
 
       try{
         const {data,error}=await fetchPublishedNews();
-
         if(error) throw error;
 
-        state.news=data||[];
-        newsLastErrorAt=0;
+        state.news=Array.isArray(data) ? data : [];
+        writeJsonCache(NEWS_CACHE_KEY,state.news);
         renderNews();
         return state.news;
       }catch(error){
-        newsLastErrorAt=Date.now();
         console.error("loadNews:",error);
 
         if(!state.news.length){
           $("newsList").innerHTML=`
             <div class="empty">
-              <strong>Новини тимчасово не завантажились</strong>
-              Сайт спробує ще раз автоматично.
+              <strong>Новини ще завантажуються</strong>
+              Автоматично пробую підключитися ще раз.
             </div>
           `;
           $("newsCount").textContent="Повторна спроба…";
-
-          // Self-healing retry. No button press required.
-          scheduleBootNewsRetry(1200);
         }
 
         return state.news;
       }
     })();
 
-    newsLoadPromise=thisPromise;
+    newsLoadPromise=task;
 
     try{
-      return await thisPromise;
+      return await task;
     }finally{
-      if(newsLoadPromise===thisPromise){
-        newsLoadPromise=null;
-      }
+      if(newsLoadPromise===task) newsLoadPromise=null;
     }
   }
 
