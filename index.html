@@ -6051,69 +6051,22 @@
   let newsRealtimeTimer=null;
   let newsLastErrorAt=0;
 
-  async function fetchPublishedNews(){
-    const modernQuery=sb
+    async function fetchPublishedNews(){
+    const query=sb
       .from("news")
-      .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,test_view_count,status,published_at,created_at")
+      .select("id,title,description,image_url,category,author,view_count,status,published_at,created_at")
       .eq("status","published")
       .order("published_at",{ascending:false,nullsFirst:false})
       .order("created_at",{ascending:false});
 
-    try{
-      const result=await withTimeout(
-        modernQuery,
-        7000,
-        "News"
-      );
-
-      if(!result.error) return result;
-
-      const message=String(result.error?.message||"").toLowerCase();
-
-      // Compatibility fallback if the v22 migration has not been applied
-      // or Supabase schema cache is temporarily stale.
-      if(
-        message.includes("status") ||
-        message.includes("published_at") ||
-        message.includes("schema cache") ||
-        message.includes("column")
-      ){
-        throw new Error("USE_LEGACY_NEWS_QUERY");
-      }
-
-      return result;
-    }catch(error){
-      if(String(error?.message||"").includes("USE_LEGACY_NEWS_QUERY")){
-        // continue to legacy query below
-      }else if(/timeout/i.test(String(error?.message||""))){
-        throw error;
-      }else{
-        console.warn("Modern news query fallback:",error);
-      }
-    }
-
-    const legacyQuery=sb
-      .from("news")
-      .select("id,title,description,title_uk,title_en,title_ru,description_uk,description_en,description_ru,image_url,category,author,view_count,created_at")
-      .order("created_at",{ascending:false});
-
-    const legacy=await withTimeout(
-      legacyQuery,
+    return await withTimeout(
+      query,
       7000,
-      "Legacy news"
+      "News"
     );
-
-    if(legacy.data){
-      legacy.data=legacy.data.map(n=>({
-        ...n,
-        status:"published",
-        published_at:n.created_at
-      }));
-    }
-
-    return legacy;
   }
 
+  // v32 PUBLIC QUERY: uses only columns confirmed readable by anon RLS.
   async function loadNews(options={}){
     const silent=!!options.silent;
     const force=!!options.force;
